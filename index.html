@@ -3,431 +3,551 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>EarnX Admin Panel</title>
-
-<!-- Firebase -->
+<title>EarnX Admin</title>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
-
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap');
-
-:root {
-  --bg:#0c0e16; --bg2:#111420; --bg3:#181c2c; --card:#13172a;
-  --border:rgba(255,255,255,0.08); --accent:#7c6ffd;
-  --accent-soft:rgba(124,111,253,0.12);
-  --green:#00e096; --green-soft:rgba(0,224,150,0.1);
-  --yellow:#ffc84a; --yellow-soft:rgba(255,200,74,0.1);
-  --red:#ff5f5f; --red-soft:rgba(255,95,95,0.1);
-  --text:#e2e4ef; --muted:#5a6280; --r:12px;
-  --sidebar:240px;
-}
+:root{--bg:#0c0e16;--bg2:#111420;--bg3:#181c2c;--card:#13172a;--border:rgba(255,255,255,0.08);--accent:#7c6ffd;--as:rgba(124,111,253,0.12);--green:#00e096;--gs:rgba(0,224,150,0.1);--yellow:#ffc84a;--ys:rgba(255,200,74,0.1);--red:#ff5f5f;--rs:rgba(255,95,95,0.1);--text:#e2e4ef;--muted:#5a6280;--sw:240px}
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex}
-::-webkit-scrollbar{width:5px}
-::-webkit-scrollbar-track{background:transparent}
-::-webkit-scrollbar-thumb{background:var(--border);border-radius:10px}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-thumb{background:var(--border);border-radius:10px}
 
-/* ── LOGIN ── */
-#loginScreen{position:fixed;inset:0;background:var(--bg);z-index:999;display:flex;align-items:center;justify-content:center}
-.login-box{background:var(--bg2);border:1px solid var(--border);border-radius:20px;padding:40px 32px;width:360px;text-align:center}
-.login-logo{font-family:'Syne',sans-serif;font-size:32px;font-weight:800;background:linear-gradient(135deg,#fff,var(--accent));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:6px}
-.login-sub{font-size:13px;color:var(--muted);margin-bottom:28px}
-.login-input{width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:13px 16px;font-size:14px;color:#fff;font-family:'DM Sans',sans-serif;outline:none;margin-bottom:12px;transition:border-color .2s}
-.login-input:focus{border-color:rgba(124,111,253,.5)}
-.login-btn{width:100%;background:linear-gradient(135deg,var(--accent),#b06bff);color:#fff;border:none;border-radius:10px;padding:14px;font-size:15px;font-weight:700;cursor:pointer;font-family:'Syne',sans-serif}
-.login-err{font-size:12px;color:var(--red);margin-top:8px;min-height:18px}
+/* LOGIN */
+#ls{position:fixed;inset:0;background:var(--bg);z-index:999;display:flex;align-items:center;justify-content:center}
+.lbox{background:var(--bg2);border:1px solid var(--border);border-radius:20px;padding:40px 32px;width:360px;text-align:center}
+.llogo{font-family:'Syne',sans-serif;font-size:32px;font-weight:800;background:linear-gradient(135deg,#fff,var(--accent));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:6px}
+.lsub{font-size:13px;color:var(--muted);margin-bottom:28px}
+.linput{width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:13px 16px;font-size:14px;color:#fff;font-family:'DM Sans',sans-serif;outline:none;margin-bottom:12px;transition:border-color .2s}
+.linput:focus{border-color:rgba(124,111,253,.5)}
+.lbtn{width:100%;background:linear-gradient(135deg,var(--accent),#b06bff);color:#fff;border:none;border-radius:10px;padding:14px;font-size:15px;font-weight:700;cursor:pointer;font-family:'Syne',sans-serif}
+.lerr{font-size:12px;color:var(--red);margin-top:8px;min-height:18px}
 
-/* ── SIDEBAR ── */
-.sidebar{width:var(--sidebar);background:var(--bg2);border-right:1px solid var(--border);height:100vh;position:fixed;left:0;top:0;display:flex;flex-direction:column;z-index:50;padding:24px 0}
-.sb-logo{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:#fff;padding:0 20px;margin-bottom:6px}
-.sb-sub{font-size:11px;color:var(--muted);padding:0 20px;margin-bottom:24px}
-.sb-divider{height:1px;background:var(--border);margin:10px 16px}
-.sb-item{display:flex;align-items:center;gap:10px;padding:11px 20px;cursor:pointer;transition:all .18s;border-radius:0;position:relative;font-size:14px;font-weight:500;color:var(--muted)}
-.sb-item:hover{background:rgba(255,255,255,.04);color:var(--text)}
-.sb-item.active{background:var(--accent-soft);color:var(--accent)}
-.sb-item.active::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--accent);border-radius:0 3px 3px 0}
-.sb-item .sb-ic{font-size:18px;width:24px;text-align:center}
-.sb-badge{background:var(--red);color:#fff;border-radius:20px;padding:2px 7px;font-size:10px;font-weight:700;margin-left:auto}
-.sb-logout{margin-top:auto;padding:0 16px}
-.logout-btn{width:100%;background:var(--red-soft);color:var(--red);border:1px solid rgba(255,95,95,.2);border-radius:10px;padding:11px;font-size:13px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif}
+/* SIDEBAR */
+.sidebar{width:var(--sw);background:var(--bg2);border-right:1px solid var(--border);height:100vh;position:fixed;left:0;top:0;display:flex;flex-direction:column;z-index:50;padding:24px 0;overflow-y:auto}
+.sb-logo{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:#fff;padding:0 20px;margin-bottom:4px}
+.sb-sub{font-size:11px;color:var(--muted);padding:0 20px;margin-bottom:18px}
+.sb-div{height:1px;background:var(--border);margin:8px 16px}
+.si{display:flex;align-items:center;gap:10px;padding:10px 20px;cursor:pointer;transition:all .18s;position:relative;font-size:13px;font-weight:500;color:var(--muted)}
+.si:hover{background:rgba(255,255,255,.04);color:var(--text)}
+.si.active{background:var(--as);color:var(--accent)}
+.si.active::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--accent);border-radius:0 3px 3px 0}
+.sic{font-size:17px;width:22px;text-align:center}
+.sbadge{background:var(--red);color:#fff;border-radius:20px;padding:2px 7px;font-size:10px;font-weight:700;margin-left:auto}
+.sb-out{margin-top:auto;padding:12px 16px 0}
+.outbtn{width:100%;background:var(--rs);color:var(--red);border:1px solid rgba(255,95,95,.2);border-radius:10px;padding:11px;font-size:13px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif}
 
-/* ── MAIN ── */
-.main{margin-left:var(--sidebar);flex:1;padding:28px 28px 40px;min-height:100vh}
-.section{display:none}
-.section.active{display:block;animation:fadein .25s ease}
-@keyframes fadein{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+/* MAIN */
+.main{margin-left:var(--sw);flex:1;padding:28px;min-height:100vh;overflow-x:hidden}
+.sec{display:none}.sec.active{display:block;animation:fi .25s ease}
+@keyframes fi{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.shd{display:flex;align-items:center;justify-content:space-between;margin-bottom:22px;flex-wrap:wrap;gap:10px}
+.stitle{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:#fff}
+.ssub{font-size:13px;color:var(--muted);margin-top:3px}
 
-.sec-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px}
-.sec-title{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:#fff}
-.sec-sub{font-size:13px;color:var(--muted);margin-top:3px}
+/* STATS */
+.sgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:24px}
+.scard{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px}
+.sic{font-size:24px;margin-bottom:10px}
+.sval{font-family:'Syne',sans-serif;font-size:26px;font-weight:800;color:#fff}
+.slbl{font-size:12px;color:var(--muted);margin-top:4px}
 
-/* Stats */
-.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:28px}
-.stat-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px}
-.stat-ic{font-size:24px;margin-bottom:10px}
-.stat-val{font-family:'Syne',sans-serif;font-size:26px;font-weight:800;color:#fff}
-.stat-lbl{font-size:12px;color:var(--muted);margin-top:4px}
-
-/* Table */
-.table-card{background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:18px}
-.table-head{padding:14px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
-.table-title{font-family:'Syne',sans-serif;font-size:15px;font-weight:700;color:#fff}
+/* TABLE */
+.tc{background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:18px}
+.thead{padding:14px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.ttitle{font-family:'Syne',sans-serif;font-size:15px;font-weight:700;color:#fff}
 table{width:100%;border-collapse:collapse}
 th{text-align:left;padding:10px 18px;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;border-bottom:1px solid var(--border)}
 td{padding:12px 18px;font-size:13px;border-bottom:1px solid rgba(255,255,255,.04);vertical-align:middle}
 tr:last-child td{border-bottom:none}
 tr:hover td{background:rgba(255,255,255,.02)}
+.erow td{text-align:center;padding:30px;color:var(--muted);font-size:13px}
 
-/* Forms */
-.form-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:22px;margin-bottom:16px}
-.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.form-grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+/* FORM */
+.fc{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:22px;margin-bottom:16px}
+.fg2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 .fg{display:flex;flex-direction:column;gap:6px}
 .fg.full{grid-column:span 2}
 label{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.8px}
 input[type=text],input[type=number],input[type=password],select,textarea{background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:11px 14px;font-size:14px;color:#fff;font-family:'DM Sans',sans-serif;outline:none;transition:border-color .2s;width:100%}
 input:focus,select:focus,textarea:focus{border-color:rgba(124,111,253,.5)}
 select option{background:#1a1d26}
-textarea{resize:vertical;min-height:80px}
-.toggle-row{display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--border)}
-.toggle-row:last-child{border-bottom:none}
-.toggle-lbl{font-size:14px;font-weight:500;color:var(--text)}
-.toggle{position:relative;width:44px;height:24px}
-.toggle input{opacity:0;width:0;height:0}
-.slider{position:absolute;inset:0;background:var(--bg3);border-radius:24px;cursor:pointer;transition:.3s;border:1px solid var(--border)}
-.slider:before{content:'';position:absolute;height:18px;width:18px;left:2px;top:2px;background:var(--muted);border-radius:50%;transition:.3s}
-input:checked+.slider{background:var(--accent);border-color:var(--accent)}
-input:checked+.slider:before{transform:translateX(20px);background:#fff}
+textarea{resize:vertical;min-height:70px}
 
-/* Buttons */
-.btn{border:none;border-radius:10px;padding:10px 18px;font-size:13px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .18s;display:inline-flex;align-items:center;gap:6px}
+/* AD CHAIN SECTION */
+.chain-wrap{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px;margin-bottom:16px}
+.chain-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px}
+.chain-title{font-family:'Syne',sans-serif;font-size:15px;font-weight:700;color:#fff;display:flex;align-items:center;gap:8px}
+.chain-sub{font-size:12px;color:var(--muted);margin-bottom:16px}
+.chain-enabled{border-color:rgba(0,224,150,.3)!important;background:rgba(0,224,150,.03)!important}
+
+/* ADNET CARDS */
+.anet-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:14px 0}
+.anet-card{background:var(--bg3);border:2px solid var(--border);border-radius:14px;padding:16px;transition:all .2s}
+.anet-card.on{border-color:rgba(0,224,150,.3);background:rgba(0,224,150,.03)}
+.anet-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.anet-name{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:#fff;display:flex;align-items:center;gap:7px}
+.anet-fields{display:flex;flex-direction:column;gap:9px}
+.anet-f{display:flex;flex-direction:column;gap:4px}
+.anet-f label{font-size:10px}
+.anet-f input,.anet-f select,.anet-f textarea{font-size:12px;padding:8px 10px;border-radius:8px}
+.anet-f textarea{min-height:55px;font-family:monospace;font-size:11px}
+.anet-note{font-size:11px;color:var(--muted);margin-top:8px;line-height:1.5}
+.anet-note a{color:var(--accent)}
+
+/* COUNT SELECTOR */
+.cnt-sel{display:flex;gap:7px;margin-top:7px}
+.cnt-opt{width:40px;height:40px;border-radius:9px;border:2px solid var(--border);background:var(--bg3);color:var(--muted);font-size:15px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;font-family:'Syne',sans-serif}
+.cnt-opt.active{border-color:var(--accent);background:var(--as);color:var(--accent)}
+
+/* FLOW PREVIEW */
+.flow-prev{display:flex;align-items:center;gap:7px;flex-wrap:wrap;padding:12px;background:var(--bg3);border-radius:10px;margin-top:12px;min-height:48px}
+.fp-chip{border-radius:8px;padding:6px 11px;font-size:12px;font-weight:600;display:flex;align-items:center;gap:5px}
+.fp-arr{color:var(--muted);font-size:14px}
+
+/* TOGGLE */
+.tog{position:relative;width:44px;height:24px;flex-shrink:0}
+.tog input{opacity:0;width:0;height:0}
+.sldr{position:absolute;inset:0;background:var(--bg3);border-radius:24px;cursor:pointer;transition:.3s;border:1px solid var(--border)}
+.sldr:before{content:'';position:absolute;height:18px;width:18px;left:2px;top:2px;background:var(--muted);border-radius:50%;transition:.3s}
+input:checked+.sldr{background:var(--green);border-color:var(--green)}
+input:checked+.sldr:before{transform:translateX(20px);background:#fff}
+
+/* BUTTONS */
+.btn{border:none;border-radius:10px;padding:10px 18px;font-size:13px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .18s;display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
 .btn:active{transform:scale(.96)}
-.btn-primary{background:var(--accent);color:#fff}
-.btn-green{background:var(--green);color:#000}
-.btn-red{background:var(--red-soft);color:var(--red);border:1px solid rgba(255,95,95,.25)}
-.btn-yellow{background:var(--yellow-soft);color:var(--yellow);border:1px solid rgba(255,200,74,.25)}
-.btn-ghost{background:rgba(255,255,255,.06);color:var(--text);border:1px solid var(--border)}
-.btn-sm{padding:7px 13px;font-size:12px;border-radius:8px}
-.btn-full{width:100%;justify-content:center}
+.bp{background:var(--accent);color:#fff}
+.bg{background:var(--green);color:#000}
+.br{background:var(--rs);color:var(--red);border:1px solid rgba(255,95,95,.25)}
+.bgh{background:rgba(255,255,255,.06);color:var(--text);border:1px solid var(--border)}
+.bsm{padding:7px 12px;font-size:12px;border-radius:8px}
+.bfu{width:100%;justify-content:center}
 
-/* Badges */
-.badge{border-radius:20px;padding:4px 10px;font-size:11px;font-weight:700}
-.b-pending{background:var(--yellow-soft);color:var(--yellow);border:1px solid rgba(255,200,74,.25)}
-.b-approved{background:var(--green-soft);color:var(--green);border:1px solid rgba(0,224,150,.25)}
-.b-rejected{background:var(--red-soft);color:var(--red);border:1px solid rgba(255,95,95,.25)}
+/* BADGES */
+.bdg{border-radius:20px;padding:4px 10px;font-size:11px;font-weight:700}
+.b-p{background:var(--ys);color:var(--yellow);border:1px solid rgba(255,200,74,.25)}
+.b-a{background:var(--gs);color:var(--green);border:1px solid rgba(0,224,150,.25)}
+.b-r{background:var(--rs);color:var(--red);border:1px solid rgba(255,95,95,.25)}
 
-/* Modal */
-.modal-ov{position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:200;display:none;align-items:center;justify-content:center;padding:20px}
-.modal-ov.open{display:flex}
-.modal{background:var(--bg2);border:1px solid var(--border);border-radius:18px;padding:28px;width:100%;max-width:480px;animation:slideUp .28s ease}
-@keyframes slideUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-.modal-title{font-family:'Syne',sans-serif;font-size:18px;font-weight:800;color:#fff;margin-bottom:18px;display:flex;align-items:center;gap:10px}
-.modal-row{display:flex;gap:10px;margin-top:16px}
+/* INFO BOX */
+.ibox{background:rgba(124,111,253,.07);border:1px solid rgba(124,111,253,.2);border-radius:12px;padding:14px;margin-bottom:16px;font-size:13px;color:rgba(255,255,255,.65);line-height:1.7}
+.ibox strong{color:var(--accent)}
 
-/* Toast */
-.toast{position:fixed;top:20px;right:20px;background:rgba(20,24,38,.97);border:1px solid rgba(124,111,253,.3);color:#fff;padding:12px 20px;border-radius:12px;font-size:13px;font-weight:600;z-index:999;transition:all .3s;opacity:0;transform:translateX(20px);backdrop-filter:blur(20px)}
+/* MODAL */
+.mov{position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:200;display:none;align-items:center;justify-content:center;padding:20px}
+.mov.open{display:flex}
+.modal{background:var(--bg2);border:1px solid var(--border);border-radius:18px;padding:28px;width:100%;max-width:480px;animation:su .28s ease;max-height:90vh;overflow-y:auto}
+@keyframes su{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.mtitle{font-family:'Syne',sans-serif;font-size:18px;font-weight:800;color:#fff;margin-bottom:18px;display:flex;align-items:center;gap:10px}
+.mrow{display:flex;gap:10px;margin-top:16px}
+
+.toast{position:fixed;top:20px;right:20px;background:rgba(20,24,38,.97);border:1px solid rgba(124,111,253,.3);color:#fff;padding:12px 20px;border-radius:12px;font-size:13px;font-weight:600;z-index:999;transition:all .3s;opacity:0;transform:translateX(20px)}
 .toast.show{opacity:1;transform:translateX(0)}
-
-/* Empty */
-.empty-row td{text-align:center;padding:30px;color:var(--muted);font-size:13px}
 </style>
 </head>
 <body>
 
 <!-- LOGIN -->
-<div id="loginScreen">
-  <div class="login-box">
-    <div class="login-logo">EarnX</div>
-    <div class="login-sub">Admin Panel — Secure Login</div>
-    <input class="login-input" type="password" id="loginPass" placeholder="Enter admin password..." onkeydown="if(event.key==='Enter')doLogin()">
-    <button class="login-btn" onclick="doLogin()">Login →</button>
-    <div class="login-err" id="loginErr"></div>
+<div id="ls">
+  <div class="lbox">
+    <div class="llogo">EarnX</div>
+    <div class="lsub">Admin Panel</div>
+    <input class="linput" type="password" id="lpass" placeholder="Enter password..." onkeydown="if(event.key==='Enter')doLogin()">
+    <button class="lbtn" onclick="doLogin()">Login →</button>
+    <div class="lerr" id="lerr"></div>
   </div>
 </div>
 
 <!-- SIDEBAR -->
-<aside class="sidebar" id="sidebar" style="display:none">
+<aside class="sidebar" id="sb" style="display:none">
   <div class="sb-logo">EarnX</div>
   <div class="sb-sub">Admin Panel</div>
-  <div class="sb-item active" onclick="showSec('dashboard',this)"><span class="sb-ic">📊</span> Dashboard</div>
-  <div class="sb-item" onclick="showSec('users',this)"><span class="sb-ic">👥</span> Users</div>
-  <div class="sb-item" onclick="showSec('withdrawals',this)" id="wdNavItem"><span class="sb-ic">💸</span> Withdrawals <span class="sb-badge" id="pendingBadge" style="display:none">0</span></div>
-  <div class="sb-divider"></div>
-  <div class="sb-item" onclick="showSec('ads',this)"><span class="sb-ic">📺</span> Ads</div>
-  <div class="sb-item" onclick="showSec('tasks',this)"><span class="sb-ic">⚡</span> Tasks</div>
-  <div class="sb-item" onclick="showSec('support',this)"><span class="sb-ic">🛟</span> Support</div>
-  <div class="sb-item" onclick="showSec('video',this)"><span class="sb-ic">🎬</span> Video</div>
-  <div class="sb-item" onclick="showSec('settings',this)"><span class="sb-ic">⚙️</span> Settings</div>
-  <div class="sb-logout">
-    <button class="logout-btn" onclick="doLogout()">🚪 Logout</button>
-  </div>
+  <div class="si active" onclick="go('dashboard',this)"><span class="sic">📊</span> Dashboard</div>
+  <div class="si" onclick="go('users',this)"><span class="sic">👥</span> Users</div>
+  <div class="si" onclick="go('withdrawals',this)"><span class="sic">💸</span> Withdrawals <span class="sbadge" id="pbadge" style="display:none">0</span></div>
+  <div class="sb-div"></div>
+  <div class="si" onclick="go('adchain',this)"><span class="sic">📺</span> Ad Chains</div>
+  <div class="si" onclick="go('ads',this)"><span class="sic">🎯</span> Ads List</div>
+  <div class="si" onclick="go('tasks',this)"><span class="sic">⚡</span> Tasks</div>
+  <div class="si" onclick="go('support',this)"><span class="sic">🛟</span> Support</div>
+  <div class="si" onclick="go('video',this)"><span class="sic">🎬</span> Video</div>
+  <div class="si" onclick="go('settings',this)"><span class="sic">⚙️</span> Settings</div>
+  <div class="sb-out"><button class="outbtn" onclick="location.reload()">🚪 Logout</button></div>
 </aside>
 
 <!-- MAIN -->
-<main class="main" id="mainContent" style="display:none">
+<main class="main" id="main" style="display:none">
 
-  <!-- ── DASHBOARD ── -->
-  <div class="section active" id="sec-dashboard">
-    <div class="sec-hd">
-      <div><div class="sec-title">Dashboard</div><div class="sec-sub">Real-time overview</div></div>
-    </div>
-    <div class="stats-grid">
-      <div class="stat-card"><div class="stat-ic">👥</div><div class="stat-val" id="st-users">0</div><div class="stat-lbl">Total Users</div></div>
-      <div class="stat-card"><div class="stat-ic">💰</div><div class="stat-val" id="st-coins">0</div><div class="stat-lbl">Total Coins Issued</div></div>
-      <div class="stat-card"><div class="stat-ic">💸</div><div class="stat-val" id="st-wd">0</div><div class="stat-lbl">Pending Withdrawals</div></div>
-      <div class="stat-card"><div class="stat-ic">✅</div><div class="stat-val" id="st-done">0</div><div class="stat-lbl">Approved Withdrawals</div></div>
-    </div>
+<!-- DASHBOARD -->
+<div class="sec active" id="sec-dashboard">
+  <div class="shd"><div><div class="stitle">Dashboard</div><div class="ssub">Real-time overview</div></div></div>
+  <div class="sgrid">
+    <div class="scard"><div class="sic">👥</div><div class="sval" id="st-u">0</div><div class="slbl">Total Users</div></div>
+    <div class="scard"><div class="sic">💰</div><div class="sval" id="st-c">0</div><div class="slbl">Coins Issued</div></div>
+    <div class="scard"><div class="sic">⏳</div><div class="sval" id="st-w">0</div><div class="slbl">Pending Withdrawals</div></div>
+    <div class="scard"><div class="sic">✅</div><div class="sval" id="st-a">0</div><div class="slbl">Approved</div></div>
+  </div>
+  <div class="tc"><div class="thead"><div class="ttitle">🕐 Recent Users</div></div>
+    <table><thead><tr><th>User</th><th>ID</th><th>Balance</th><th>Joined</th><th>Refs</th></tr></thead>
+    <tbody id="rut"><tr class="erow"><td colspan="5">Loading...</td></tr></tbody></table>
+  </div>
+  <div class="tc"><div class="thead"><div class="ttitle">⏳ Pending Withdrawals</div></div>
+    <table><thead><tr><th>User</th><th>Wallet</th><th>Account</th><th>Amount</th><th>Time</th><th>Action</th></tr></thead>
+    <tbody id="pwt"><tr class="erow"><td colspan="6">No pending</td></tr></tbody></table>
+  </div>
+</div>
 
-    <div class="table-card">
-      <div class="table-head"><div class="table-title">🕐 Recent Users</div></div>
-      <table>
-        <thead><tr><th>User</th><th>ID</th><th>Balance</th><th>Joined</th><th>Refs</th></tr></thead>
-        <tbody id="recentUsersTbl"><tr class="empty-row"><td colspan="5">Loading...</td></tr></tbody>
-      </table>
-    </div>
+<!-- USERS -->
+<div class="sec" id="sec-users">
+  <div class="shd">
+    <div><div class="stitle">Users</div><div class="ssub" id="ucl">0 users</div></div>
+    <input type="text" placeholder="🔍 Search..." style="width:220px;padding:9px 14px;border-radius:10px;font-size:13px" id="usrch" oninput="filterUsers()">
+  </div>
+  <div class="tc">
+    <table><thead><tr><th>User</th><th>TG ID</th><th>Balance</th><th>Earned</th><th>Withdrawn</th><th>Refs</th><th>Joined</th><th>Action</th></tr></thead>
+    <tbody id="utbl"><tr class="erow"><td colspan="8">Loading...</td></tr></tbody></table>
+  </div>
+</div>
 
-    <div class="table-card">
-      <div class="table-head"><div class="table-title">⏳ Pending Withdrawals</div><a href="#" onclick="showSec('withdrawals',document.querySelector('[onclick*=withdrawals]'))" style="font-size:12px;color:var(--accent)">View All →</a></div>
-      <table>
-        <thead><tr><th>User</th><th>Wallet</th><th>Account</th><th>Amount</th><th>Time</th><th>Action</th></tr></thead>
-        <tbody id="pendingWdTbl"><tr class="empty-row"><td colspan="6">No pending requests</td></tr></tbody>
-      </table>
+<!-- WITHDRAWALS -->
+<div class="sec" id="sec-withdrawals">
+  <div class="shd">
+    <div><div class="stitle">Withdrawals</div></div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <button class="btn bgh bsm" onclick="fw('all')">All</button>
+      <button class="btn bsm" style="background:var(--ys);color:var(--yellow)" onclick="fw('pending')">⏳ Pending</button>
+      <button class="btn bg bsm" onclick="fw('approved')">✓ Approved</button>
+      <button class="btn br bsm" onclick="fw('rejected')">✗ Rejected</button>
     </div>
   </div>
+  <div class="tc">
+    <table><thead><tr><th>User</th><th>Wallet</th><th>Account</th><th>Amount</th><th>Status</th><th>Time</th><th>Action</th></tr></thead>
+    <tbody id="wdt"><tr class="erow"><td colspan="7">Loading...</td></tr></tbody></table>
+  </div>
+</div>
 
-  <!-- ── USERS ── -->
-  <div class="section" id="sec-users">
-    <div class="sec-hd">
-      <div><div class="sec-title">Users</div><div class="sec-sub" id="userCountLbl">0 total users</div></div>
-      <input type="text" placeholder="🔍 Search by name or ID..." style="width:260px;padding:9px 14px;border-radius:10px;font-size:13px" id="userSearch" oninput="filterUsers()">
-    </div>
-    <div class="table-card">
-      <table>
-        <thead><tr><th>User</th><th>TG ID</th><th>Balance</th><th>Earned</th><th>Withdrawn</th><th>Refs</th><th>Joined</th><th>Action</th></tr></thead>
-        <tbody id="usersTbl"><tr class="empty-row"><td colspan="8">Loading...</td></tr></tbody>
-      </table>
-    </div>
+<!-- ══════ AD CHAINS ══════ -->
+<div class="sec" id="sec-adchain">
+  <div class="shd">
+    <div><div class="stitle">📺 Ad Chains</div><div class="ssub">Watch Chain + Withdraw Chain — আলাদাভাবে configure করো</div></div>
   </div>
 
-  <!-- ── WITHDRAWALS ── -->
-  <div class="section" id="sec-withdrawals">
-    <div class="sec-hd">
-      <div><div class="sec-title">Withdrawals</div><div class="sec-sub">Approve or reject requests</div></div>
-      <div style="display:flex;gap:8px">
-        <button class="btn btn-ghost btn-sm" onclick="filterWd('all')" id="f-all">All</button>
-        <button class="btn btn-yellow btn-sm" onclick="filterWd('pending')" id="f-pending">⏳ Pending</button>
-        <button class="btn btn-green btn-sm" onclick="filterWd('approved')" id="f-approved">✓ Approved</button>
-        <button class="btn btn-red btn-sm" onclick="filterWd('rejected')" id="f-rejected">✗ Rejected</button>
+  <div class="ibox">
+    💡 <strong>Ad Chain কী?</strong> একটার পর একটা ads চলে — সব শেষ হলে action complete হয়।<br>
+    📺 <strong>Watch Chain</strong> → Home এ Watch button চাপলে চলে, শেষে <strong>Coins add</strong> হয়।<br>
+    💸 <strong>Withdraw Chain</strong> → Withdraw button চাপলে চলে, শেষে <strong>Withdraw submit</strong> হয়।<br>
+    ✅ প্রতিটার জন্য আলাদা <strong>Ad network, count, order</strong> set করতে পারবে।
+  </div>
+
+  <!-- ══ WATCH CHAIN ══ -->
+  <div class="chain-wrap" id="watchChainCard">
+    <div class="chain-hd">
+      <div class="chain-title">📺 Watch & Earn Chain</div>
+      <button class="btn bg" onclick="saveChain('watch')">💾 Save Watch Chain</button>
+    </div>
+    <div class="chain-sub">Home page এ Watch button চাপলে এই chain চলবে → শেষে Coins পাবে</div>
+
+    <div class="fc" style="margin-bottom:12px">
+      <div class="fg2">
+        <div class="fg">
+          <label>Total Ads Per Session</label>
+          <div class="cnt-sel" id="wc-count-sel">
+            <div class="cnt-opt" onclick="setCnt('wc',1)">1</div>
+            <div class="cnt-opt" onclick="setCnt('wc',2)">2</div>
+            <div class="cnt-opt active" onclick="setCnt('wc',3)">3</div>
+            <div class="cnt-opt" onclick="setCnt('wc',4)">4</div>
+            <div class="cnt-opt" onclick="setCnt('wc',5)">5</div>
+          </div>
+          <input type="hidden" id="wc-count" value="3">
+          <div style="font-size:11px;color:var(--muted);margin-top:5px">Watch click এ মোট কতটা ad চলবে</div>
+        </div>
+        <div class="fg">
+          <label>Reward After All Ads (Coins)</label>
+          <input type="number" id="wc-reward" value="50" placeholder="50">
+          <div style="font-size:11px;color:var(--muted);margin-top:5px">সব ads শেষে user এই coins পাবে</div>
+        </div>
       </div>
     </div>
-    <div class="table-card">
-      <table>
-        <thead><tr><th>User</th><th>Wallet</th><th>Account</th><th>Amount</th><th>Status</th><th>Time</th><th>Action</th></tr></thead>
-        <tbody id="wdTbl"><tr class="empty-row"><td colspan="7">Loading...</td></tr></tbody>
-      </table>
-    </div>
-  </div>
 
-  <!-- ── ADS ── -->
-  <div class="section" id="sec-ads">
-    <div class="sec-hd">
-      <div><div class="sec-title">Ads</div><div class="sec-sub">Manage watch ads</div></div>
-      <button class="btn btn-primary" onclick="openAdModal()">+ Add Ad</button>
-    </div>
-    <div class="table-card">
-      <table>
-        <thead><tr><th>Icon</th><th>Name</th><th>Description</th><th>Reward</th><th>Duration</th><th>Status</th><th>Action</th></tr></thead>
-        <tbody id="adsTbl"><tr class="empty-row"><td colspan="7">No ads yet</td></tr></tbody>
-      </table>
-    </div>
-  </div>
-
-  <!-- ── TASKS ── -->
-  <div class="section" id="sec-tasks">
-    <div class="sec-hd">
-      <div><div class="sec-title">Tasks</div><div class="sec-sub">Manage user tasks</div></div>
-      <button class="btn btn-primary" onclick="openTaskModal()">+ Add Task</button>
-    </div>
-    <div class="table-card">
-      <table>
-        <thead><tr><th>Icon</th><th>Name</th><th>Description</th><th>Reward</th><th>Link</th><th>Status</th><th>Action</th></tr></thead>
-        <tbody id="tasksTbl"><tr class="empty-row"><td colspan="7">No tasks yet</td></tr></tbody>
-      </table>
-    </div>
-  </div>
-
-  <!-- ── SUPPORT ── -->
-  <div class="section" id="sec-support">
-    <div class="sec-hd">
-      <div><div class="sec-title">Support Cards</div><div class="sec-sub">4 cards shown on support page</div></div>
-      <button class="btn btn-primary" onclick="openSupportModal()">+ Add Card</button>
-    </div>
-    <div class="table-card">
-      <table>
-        <thead><tr><th>Icon</th><th>Title</th><th>Description</th><th>Link</th><th>Action</th></tr></thead>
-        <tbody id="supportTbl"><tr class="empty-row"><td colspan="5">No cards yet</td></tr></tbody>
-      </table>
-    </div>
-  </div>
-
-  <!-- ── VIDEO ── -->
-  <div class="section" id="sec-video">
-    <div class="sec-hd"><div class="sec-title">Tutorial Video</div></div>
-    <div class="form-card">
-      <div style="display:flex;flex-direction:column;gap:14px">
-        <div class="fg"><label>Video Title</label><input type="text" id="vTitle" placeholder="How to use EarnX..."></div>
-        <div class="fg"><label>YouTube / Video URL</label><input type="text" id="vUrl" placeholder="https://youtu.be/..."></div>
-        <div id="vPreview" style="display:none;margin-top:4px">
-          <div style="font-size:11px;color:var(--muted);margin-bottom:8px;text-transform:uppercase;letter-spacing:1px;font-weight:700">Preview</div>
-          <div style="border-radius:12px;overflow:hidden;aspect-ratio:16/9;background:#000">
-            <iframe id="vFrame" style="width:100%;height:100%;border:none" allowfullscreen></iframe>
+    <!-- Watch Network Cards -->
+    <div style="font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;margin-bottom:10px">Ad Networks</div>
+    <div class="anet-grid">
+      <div class="anet-card" id="wc-card-adsgram">
+        <div class="anet-hd">
+          <div class="anet-name">🎯 Adsgram</div>
+          <label class="tog"><input type="checkbox" id="wc-adsgram-on" onchange="toggleAnet('wc','adsgram')"><span class="sldr"></span></label>
+        </div>
+        <div class="anet-fields">
+          <div class="anet-f"><label>Order</label>
+            <select id="wc-adsgram-order"><option value="1">1st</option><option value="2">2nd</option><option value="3">3rd</option><option value="4">4th</option><option value="5">5th</option></select>
+          </div>
+          <div class="anet-f"><label>Block ID</label><input type="text" id="wc-adsgram-blockId" placeholder="1234"></div>
+        </div>
+        <div class="anet-note">📌 <a href="https://ads.gram.io" target="_blank">ads.gram.io</a> → Block ID</div>
+      </div>
+      <div class="anet-card" id="wc-card-monetag">
+        <div class="anet-hd">
+          <div class="anet-name">💰 Monetag</div>
+          <label class="tog"><input type="checkbox" id="wc-monetag-on" onchange="toggleAnet('wc','monetag')"><span class="sldr"></span></label>
+        </div>
+        <div class="anet-fields">
+          <div class="anet-f"><label>Order</label>
+            <select id="wc-monetag-order"><option value="1">1st</option><option value="2" selected>2nd</option><option value="3">3rd</option><option value="4">4th</option><option value="5">5th</option></select>
+          </div>
+          <div class="anet-f"><label>Zone ID</label><input type="text" id="wc-monetag-zoneId" placeholder="8765432"></div>
+          <div class="anet-f"><label>Type</label>
+            <select id="wc-monetag-type"><option value="popunder">Popunder</option><option value="interstitial">Interstitial</option><option value="inpage">In-Page Push</option></select>
           </div>
         </div>
-        <button class="btn btn-primary btn-full" onclick="saveVideo()">💾 Save Video</button>
+        <div class="anet-note">📌 <a href="https://monetag.com" target="_blank">monetag.com</a> → Zone ID</div>
+      </div>
+      <div class="anet-card" id="wc-card-adsterra">
+        <div class="anet-hd">
+          <div class="anet-name">⭐ Adsterra</div>
+          <label class="tog"><input type="checkbox" id="wc-adsterra-on" onchange="toggleAnet('wc','adsterra')"><span class="sldr"></span></label>
+        </div>
+        <div class="anet-fields">
+          <div class="anet-f"><label>Order</label>
+            <select id="wc-adsterra-order"><option value="1">1st</option><option value="2">2nd</option><option value="3" selected>3rd</option><option value="4">4th</option><option value="5">5th</option></select>
+          </div>
+          <div class="anet-f"><label>Direct Link / Script</label>
+            <textarea id="wc-adsterra-script" placeholder="Adsterra link বা script..."></textarea>
+          </div>
+        </div>
+        <div class="anet-note">📌 <a href="https://adsterra.com" target="_blank">adsterra.com</a> → Direct Link</div>
       </div>
     </div>
+
+    <div style="font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;margin-bottom:6px">Flow Preview</div>
+    <div class="flow-prev" id="wc-preview"><span style="color:var(--muted);font-size:12px">Save করলে দেখাবে</span></div>
   </div>
 
-  <!-- ── SETTINGS ── -->
-  <div class="section" id="sec-settings">
-    <div class="sec-hd"><div class="sec-title">Settings</div></div>
-    <div class="form-card">
-      <div style="font-family:'Syne',sans-serif;font-size:15px;font-weight:700;color:#fff;margin-bottom:16px">💰 Economy Settings</div>
-      <div class="form-grid">
-        <div class="fg"><label>Referral Bonus (Coins)</label><input type="number" id="sRefBonus" value="100"></div>
-        <div class="fg"><label>Welcome Bonus (Coins)</label><input type="number" id="sWelcome" value="50"></div>
-        <div class="fg"><label>Min Withdraw (Coins)</label><input type="number" id="sMinWd" value="500"></div>
-        <div class="fg"><label>Bot Username</label><input type="text" id="sBotName" placeholder="YourBotUsername"></div>
+  <div style="height:20px"></div>
+
+  <!-- ══ WITHDRAW CHAIN ══ -->
+  <div class="chain-wrap" id="wdChainCard">
+    <div class="chain-hd">
+      <div class="chain-title">💸 Withdraw Ad Chain
+        <span style="background:var(--ys);color:var(--yellow);border:1px solid rgba(255,200,74,.3);border-radius:20px;padding:3px 10px;font-size:11px;font-weight:700" id="wdChainStatusBadge">OFF</span>
       </div>
-      <button class="btn btn-primary" style="margin-top:16px" onclick="saveSettings()">💾 Save Settings</button>
+      <div style="display:flex;gap:10px;align-items:center">
+        <label class="tog"><input type="checkbox" id="wd-chain-enabled" onchange="toggleWdChain()"><span class="sldr"></span></label>
+        <button class="btn bg" onclick="saveChain('wd')">💾 Save Withdraw Chain</button>
+      </div>
+    </div>
+    <div class="chain-sub">Withdraw button চাপলে এই chain চলবে → সব ads শেষ হলে withdraw submit হবে</div>
+
+    <div class="fc" style="margin-bottom:12px">
+      <div class="fg2">
+        <div class="fg">
+          <label>Total Ads Before Withdraw</label>
+          <div class="cnt-sel" id="wd-count-sel">
+            <div class="cnt-opt" onclick="setCnt('wd',1)">1</div>
+            <div class="cnt-opt" onclick="setCnt('wd',2)">2</div>
+            <div class="cnt-opt active" onclick="setCnt('wd',3)">3</div>
+            <div class="cnt-opt" onclick="setCnt('wd',4)">4</div>
+            <div class="cnt-opt" onclick="setCnt('wd',5)">5</div>
+          </div>
+          <input type="hidden" id="wd-count" value="3">
+          <div style="font-size:11px;color:var(--muted);margin-top:5px">Withdraw এর আগে কতটা ad দেখতে হবে</div>
+        </div>
+        <div class="fg">
+          <label>Message to User</label>
+          <input type="text" id="wd-msg" value="Withdraw করতে ads দেখুন 👇" placeholder="Message...">
+          <div style="font-size:11px;color:var(--muted);margin-top:5px">Ads শুরু হওয়ার আগে user এটা দেখবে</div>
+        </div>
+      </div>
     </div>
 
-    <div class="form-card">
-      <div style="font-family:'Syne',sans-serif;font-size:15px;font-weight:700;color:#fff;margin-bottom:16px">🔐 Change Admin Password</div>
-      <div class="form-grid">
-        <div class="fg"><label>New Password</label><input type="password" id="newPass" placeholder="New password..."></div>
-        <div class="fg"><label>Confirm Password</label><input type="password" id="confPass" placeholder="Confirm..."></div>
+    <!-- Withdraw Network Cards -->
+    <div style="font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;margin-bottom:10px">Ad Networks</div>
+    <div class="anet-grid">
+      <div class="anet-card" id="wd-card-adsgram">
+        <div class="anet-hd">
+          <div class="anet-name">🎯 Adsgram</div>
+          <label class="tog"><input type="checkbox" id="wd-adsgram-on" onchange="toggleAnet('wd','adsgram')"><span class="sldr"></span></label>
+        </div>
+        <div class="anet-fields">
+          <div class="anet-f"><label>Order</label>
+            <select id="wd-adsgram-order"><option value="1">1st</option><option value="2">2nd</option><option value="3">3rd</option><option value="4">4th</option><option value="5">5th</option></select>
+          </div>
+          <div class="anet-f"><label>Block ID</label><input type="text" id="wd-adsgram-blockId" placeholder="1234"></div>
+        </div>
+        <div class="anet-note">📌 <a href="https://ads.gram.io" target="_blank">ads.gram.io</a> → Block ID</div>
       </div>
-      <button class="btn btn-red" style="margin-top:16px" onclick="changePass()">🔐 Update Password</button>
+      <div class="anet-card" id="wd-card-monetag">
+        <div class="anet-hd">
+          <div class="anet-name">💰 Monetag</div>
+          <label class="tog"><input type="checkbox" id="wd-monetag-on" onchange="toggleAnet('wd','monetag')"><span class="sldr"></span></label>
+        </div>
+        <div class="anet-fields">
+          <div class="anet-f"><label>Order</label>
+            <select id="wd-monetag-order"><option value="1">1st</option><option value="2" selected>2nd</option><option value="3">3rd</option><option value="4">4th</option><option value="5">5th</option></select>
+          </div>
+          <div class="anet-f"><label>Zone ID</label><input type="text" id="wd-monetag-zoneId" placeholder="8765432"></div>
+          <div class="anet-f"><label>Type</label>
+            <select id="wd-monetag-type"><option value="popunder">Popunder</option><option value="interstitial">Interstitial</option><option value="inpage">In-Page Push</option></select>
+          </div>
+        </div>
+        <div class="anet-note">📌 <a href="https://monetag.com" target="_blank">monetag.com</a> → Zone ID</div>
+      </div>
+      <div class="anet-card" id="wd-card-adsterra">
+        <div class="anet-hd">
+          <div class="anet-name">⭐ Adsterra</div>
+          <label class="tog"><input type="checkbox" id="wd-adsterra-on" onchange="toggleAnet('wd','adsterra')"><span class="sldr"></span></label>
+        </div>
+        <div class="anet-fields">
+          <div class="anet-f"><label>Order</label>
+            <select id="wd-adsterra-order"><option value="1">1st</option><option value="2">2nd</option><option value="3" selected>3rd</option><option value="4">4th</option><option value="5">5th</option></select>
+          </div>
+          <div class="anet-f"><label>Direct Link / Script</label>
+            <textarea id="wd-adsterra-script" placeholder="Adsterra link বা script..."></textarea>
+          </div>
+        </div>
+        <div class="anet-note">📌 <a href="https://adsterra.com" target="_blank">adsterra.com</a> → Direct Link</div>
+      </div>
     </div>
+
+    <div style="font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;margin-bottom:6px">Flow Preview</div>
+    <div class="flow-prev" id="wd-preview"><span style="color:var(--muted);font-size:12px">Save করলে দেখাবে</span></div>
   </div>
+</div>
+
+<!-- ADS LIST -->
+<div class="sec" id="sec-ads">
+  <div class="shd"><div><div class="stitle">🎯 Ads List</div></div><button class="btn bp" onclick="openAdModal()">+ Add Ad</button></div>
+  <div class="tc"><table><thead><tr><th>Icon</th><th>Name</th><th>Desc</th><th>Reward</th><th>Duration</th><th>Status</th><th>Action</th></tr></thead>
+  <tbody id="atbl"><tr class="erow"><td colspan="7">No ads yet</td></tr></tbody></table></div>
+</div>
+
+<!-- TASKS -->
+<div class="sec" id="sec-tasks">
+  <div class="shd"><div><div class="stitle">Tasks</div></div><button class="btn bp" onclick="openTaskModal()">+ Add Task</button></div>
+  <div class="tc"><table><thead><tr><th>Icon</th><th>Name</th><th>Desc</th><th>Reward</th><th>Link</th><th>Status</th><th>Action</th></tr></thead>
+  <tbody id="ttbl"><tr class="erow"><td colspan="7">No tasks yet</td></tr></tbody></table></div>
+</div>
+
+<!-- SUPPORT -->
+<div class="sec" id="sec-support">
+  <div class="shd"><div><div class="stitle">Support Cards</div></div><button class="btn bp" onclick="openSupModal()">+ Add Card</button></div>
+  <div class="tc"><table><thead><tr><th>Icon</th><th>Title</th><th>Desc</th><th>Link</th><th>Action</th></tr></thead>
+  <tbody id="stbl"><tr class="erow"><td colspan="5">No cards yet</td></tr></tbody></table></div>
+</div>
+
+<!-- VIDEO -->
+<div class="sec" id="sec-video">
+  <div class="shd"><div class="stitle">Tutorial Video</div></div>
+  <div class="fc">
+    <div class="fg" style="margin-bottom:14px"><label>Video Title</label><input type="text" id="vt" placeholder="How to use EarnX..."></div>
+    <div class="fg" style="margin-bottom:14px"><label>YouTube URL</label><input type="text" id="vu" placeholder="https://youtu.be/..."></div>
+    <div id="vp" style="display:none;margin-bottom:14px"><div style="border-radius:12px;overflow:hidden;aspect-ratio:16/9;background:#000"><iframe id="vf" style="width:100%;height:100%;border:none" allowfullscreen></iframe></div></div>
+    <button class="btn bp bfu" onclick="saveVideo()">💾 Save Video</button>
+  </div>
+</div>
+
+<!-- SETTINGS -->
+<div class="sec" id="sec-settings">
+  <div class="shd"><div class="stitle">Settings</div></div>
+  <div class="fc">
+    <div style="font-family:'Syne',sans-serif;font-size:15px;font-weight:700;color:#fff;margin-bottom:16px">💰 Economy</div>
+    <div class="fg2">
+      <div class="fg"><label>Referral Bonus (Coins)</label><input type="number" id="sref" value="100"></div>
+      <div class="fg"><label>Welcome Bonus (Coins)</label><input type="number" id="swel" value="50"></div>
+      <div class="fg"><label>Min Withdraw (Coins)</label><input type="number" id="smwd" value="500"></div>
+      <div class="fg"><label>Bot Username</label><input type="text" id="sbot" placeholder="YourBotUsername"></div>
+    </div>
+    <button class="btn bp" style="margin-top:16px" onclick="saveSettings()">💾 Save</button>
+  </div>
+  <div class="fc">
+    <div style="font-family:'Syne',sans-serif;font-size:15px;font-weight:700;color:#fff;margin-bottom:16px">🔐 Change Password</div>
+    <div class="fg2">
+      <div class="fg"><label>New Password</label><input type="password" id="np"></div>
+      <div class="fg"><label>Confirm</label><input type="password" id="cp"></div>
+    </div>
+    <button class="btn br" style="margin-top:16px" onclick="changePass()">🔐 Update Password</button>
+  </div>
+</div>
 
 </main>
 
-<!-- ── MODALS ── -->
-
-<!-- Ad Modal -->
-<div class="modal-ov" id="adModal">
+<!-- MODALS -->
+<div class="mov" id="adMod">
   <div class="modal">
-    <div class="modal-title">📺 <span id="adModalTitle">Add New Ad</span></div>
-    <div class="form-grid">
-      <div class="fg"><label>Ad Name</label><input type="text" id="adName" placeholder="e.g. TechZone App"></div>
-      <div class="fg"><label>Icon (Emoji)</label><input type="text" id="adIcon" placeholder="📱"></div>
-      <div class="fg"><label>Description</label><input type="text" id="adDesc" placeholder="Short description..."></div>
-      <div class="fg"><label>Background Color</label><input type="text" id="adBg" placeholder="rgba(124,111,253,.15)"></div>
-      <div class="fg"><label>Reward (Coins)</label><input type="number" id="adReward" placeholder="50"></div>
-      <div class="fg"><label>Duration (seconds)</label><input type="number" id="adDuration" placeholder="15"></div>
+    <div class="mtitle">🎯 <span id="adModT">Add Ad</span></div>
+    <div class="fg2">
+      <div class="fg"><label>Name</label><input type="text" id="an"></div>
+      <div class="fg"><label>Icon</label><input type="text" id="ai" placeholder="📱"></div>
+      <div class="fg"><label>Description</label><input type="text" id="ad_"></div>
+      <div class="fg"><label>BG Color</label><input type="text" id="ab" placeholder="rgba(124,111,253,.15)"></div>
+      <div class="fg"><label>Reward</label><input type="number" id="ar"></div>
+      <div class="fg"><label>Duration (sec)</label><input type="number" id="adu"></div>
     </div>
-    <div style="margin-top:14px;display:flex;align-items:center;justify-content:space-between">
-      <label style="font-size:13px;font-weight:500;color:var(--text)">Active</label>
-      <label class="toggle"><input type="checkbox" id="adActive" checked><span class="slider"></span></label>
-    </div>
-    <input type="hidden" id="adEditId">
-    <div class="modal-row">
-      <button class="btn btn-ghost" style="flex:1" onclick="closeModal('adModal')">Cancel</button>
-      <button class="btn btn-primary" style="flex:2" onclick="saveAd()">💾 Save Ad</button>
-    </div>
+    <div style="margin-top:14px;display:flex;align-items:center;justify-content:space-between"><span style="font-size:13px">Active</span><label class="tog"><input type="checkbox" id="aac" checked><span class="sldr"></span></label></div>
+    <input type="hidden" id="aei">
+    <div class="mrow"><button class="btn bgh" style="flex:1" onclick="cm('adMod')">Cancel</button><button class="btn bp" style="flex:2" onclick="saveAd()">💾 Save</button></div>
   </div>
 </div>
 
-<!-- Task Modal -->
-<div class="modal-ov" id="taskModal">
+<div class="mov" id="taskMod">
   <div class="modal">
-    <div class="modal-title">⚡ <span id="taskModalTitle">Add New Task</span></div>
-    <div class="form-grid">
-      <div class="fg"><label>Task Name</label><input type="text" id="tkName" placeholder="Join Telegram Channel"></div>
-      <div class="fg"><label>Icon (Emoji)</label><input type="text" id="tkIcon" placeholder="📢"></div>
-      <div class="fg"><label>Description</label><input type="text" id="tkDesc" placeholder="t.me/channel"></div>
-      <div class="fg"><label>Background</label><input type="text" id="tkBg" placeholder="rgba(124,111,253,.15)"></div>
-      <div class="fg"><label>Reward (Coins)</label><input type="number" id="tkReward" placeholder="200"></div>
-      <div class="fg"><label>Link (optional)</label><input type="text" id="tkLink" placeholder="https://t.me/..."></div>
+    <div class="mtitle">⚡ <span id="taskModT">Add Task</span></div>
+    <div class="fg2">
+      <div class="fg"><label>Name</label><input type="text" id="tn"></div>
+      <div class="fg"><label>Icon</label><input type="text" id="ti" placeholder="📢"></div>
+      <div class="fg"><label>Description</label><input type="text" id="td_"></div>
+      <div class="fg"><label>BG Color</label><input type="text" id="tb" placeholder="rgba(0,224,150,.12)"></div>
+      <div class="fg"><label>Reward</label><input type="number" id="tr_"></div>
+      <div class="fg"><label>Link</label><input type="text" id="tl" placeholder="https://t.me/..."></div>
     </div>
-    <div style="margin-top:14px;display:flex;align-items:center;justify-content:space-between">
-      <label style="font-size:13px;font-weight:500;color:var(--text)">Active</label>
-      <label class="toggle"><input type="checkbox" id="tkActive" checked><span class="slider"></span></label>
-    </div>
-    <input type="hidden" id="tkEditId">
-    <div class="modal-row">
-      <button class="btn btn-ghost" style="flex:1" onclick="closeModal('taskModal')">Cancel</button>
-      <button class="btn btn-primary" style="flex:2" onclick="saveTask()">💾 Save Task</button>
-    </div>
+    <div style="margin-top:14px;display:flex;align-items:center;justify-content:space-between"><span style="font-size:13px">Active</span><label class="tog"><input type="checkbox" id="tac" checked><span class="sldr"></span></label></div>
+    <input type="hidden" id="tei">
+    <div class="mrow"><button class="btn bgh" style="flex:1" onclick="cm('taskMod')">Cancel</button><button class="btn bp" style="flex:2" onclick="saveTask()">💾 Save</button></div>
   </div>
 </div>
 
-<!-- Support Card Modal -->
-<div class="modal-ov" id="supModal">
+<div class="mov" id="supMod">
   <div class="modal">
-    <div class="modal-title">🛟 <span id="supModalTitle">Add Support Card</span></div>
-    <div class="form-grid">
-      <div class="fg"><label>Title</label><input type="text" id="spTitle" placeholder="Telegram Support"></div>
-      <div class="fg"><label>Icon (Emoji)</label><input type="text" id="spIcon" placeholder="💬"></div>
-      <div class="fg"><label>Description</label><input type="text" id="spDesc" placeholder="Chat with admin"></div>
-      <div class="fg"><label>Background</label><input type="text" id="spBg" placeholder="rgba(124,111,253,.15)"></div>
-      <div class="fg full"><label>Link</label><input type="text" id="spLink" placeholder="https://t.me/..."></div>
+    <div class="mtitle">🛟 <span id="supModT">Add Card</span></div>
+    <div class="fg2">
+      <div class="fg"><label>Title</label><input type="text" id="spt"></div>
+      <div class="fg"><label>Icon</label><input type="text" id="spi" placeholder="💬"></div>
+      <div class="fg"><label>Description</label><input type="text" id="spd"></div>
+      <div class="fg"><label>BG Color</label><input type="text" id="spb"></div>
+      <div class="fg full"><label>Link</label><input type="text" id="spl" placeholder="https://t.me/..."></div>
     </div>
-    <input type="hidden" id="spEditId">
-    <div class="modal-row">
-      <button class="btn btn-ghost" style="flex:1" onclick="closeModal('supModal')">Cancel</button>
-      <button class="btn btn-primary" style="flex:2" onclick="saveSupport()">💾 Save Card</button>
-    </div>
+    <input type="hidden" id="spei">
+    <div class="mrow"><button class="btn bgh" style="flex:1" onclick="cm('supMod')">Cancel</button><button class="btn bp" style="flex:2" onclick="saveSupport()">💾 Save</button></div>
   </div>
 </div>
 
-<!-- Reject Reason Modal -->
-<div class="modal-ov" id="rejectModal">
+<div class="mov" id="rejMod">
   <div class="modal">
-    <div class="modal-title">✗ Reject Withdrawal</div>
-    <div class="fg"><label>Rejection Reason</label><textarea id="rejectReason" placeholder="e.g. Invalid account number. Please check and resubmit." style="height:100px"></textarea></div>
-    <input type="hidden" id="rejectWdId">
-    <input type="hidden" id="rejectUserId">
-    <input type="hidden" id="rejectAmount">
-    <div class="modal-row">
-      <button class="btn btn-ghost" style="flex:1" onclick="closeModal('rejectModal')">Cancel</button>
-      <button class="btn btn-red" style="flex:2" onclick="confirmReject()">✗ Reject & Refund</button>
-    </div>
+    <div class="mtitle">✗ Reject Withdrawal</div>
+    <div class="fg"><label>Rejection Reason</label><textarea id="rr" style="height:90px" placeholder="e.g. Invalid account number..."></textarea></div>
+    <input type="hidden" id="rwi"><input type="hidden" id="rui"><input type="hidden" id="ram">
+    <div class="mrow"><button class="btn bgh" style="flex:1" onclick="cm('rejMod')">Cancel</button><button class="btn br" style="flex:2" onclick="confirmReject()">✗ Reject & Refund</button></div>
   </div>
 </div>
 
-<!-- User Balance Modal -->
-<div class="modal-ov" id="balModal">
+<div class="mov" id="balMod">
   <div class="modal">
-    <div class="modal-title">💰 Adjust Balance</div>
-    <div style="font-size:13px;color:var(--muted);margin-bottom:16px">User: <span id="balUserName" style="color:#fff;font-weight:600"></span></div>
-    <div class="form-grid">
-      <div class="fg"><label>Action</label>
-        <select id="balAction">
-          <option value="add">➕ Add Coins</option>
-          <option value="sub">➖ Remove Coins</option>
-          <option value="set">🔄 Set Balance</option>
-        </select>
-      </div>
-      <div class="fg"><label>Amount</label><input type="number" id="balAmount" placeholder="0"></div>
+    <div class="mtitle">💰 Adjust Balance</div>
+    <div style="font-size:13px;color:var(--muted);margin-bottom:16px">User: <span id="bun" style="color:#fff;font-weight:600"></span></div>
+    <div class="fg2">
+      <div class="fg"><label>Action</label><select id="ba"><option value="add">➕ Add</option><option value="sub">➖ Remove</option><option value="set">🔄 Set</option></select></div>
+      <div class="fg"><label>Amount</label><input type="number" id="bamt"></div>
     </div>
-    <input type="hidden" id="balUserId">
-    <div class="modal-row">
-      <button class="btn btn-ghost" style="flex:1" onclick="closeModal('balModal')">Cancel</button>
-      <button class="btn btn-primary" style="flex:2" onclick="adjustBalance()">✓ Apply</button>
-    </div>
+    <input type="hidden" id="bui">
+    <div class="mrow"><button class="btn bgh" style="flex:1" onclick="cm('balMod')">Cancel</button><button class="btn bp" style="flex:2" onclick="adjustBal()">✓ Apply</button></div>
   </div>
 </div>
 
 <div class="toast" id="toast"></div>
 
 <script>
-// ════════════════════════════════════════
-// FIREBASE CONFIG — REPLACE WITH YOURS
-// ════════════════════════════════════════
+// ════════════════════════════════
+// FIREBASE CONFIG — REPLACE
+// ════════════════════════════════
 const firebaseConfig = {
   apiKey: "AIzaSyCS9W1gnMSaIV2KjH1QMBTLgTt-ew0mnTo",
   authDomain: "zomato-platform.firebaseapp.com",
@@ -437,613 +557,230 @@ const firebaseConfig = {
   messagingSenderId: "183991686104",
   appId: "1:183991686104:web:247a3edcd71a1148f418ad"
 };
-
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 
-// ════════════════════════════════════════
-// AUTH
-// ════════════════════════════════════════
-let isLoggedIn = false;
+let AU={}, AW={}, wdf='all';
+const CHAINS = { wc:{count:3}, wd:{count:3} };
 
+// ══ AUTH ══
 async function doLogin() {
-  const pass = document.getElementById('loginPass').value;
-  if (!pass) return;
+  const p=document.getElementById('lpass').value; if(!p) return;
   try {
-    const snap = await db.ref('adminAuth/password').get();
-    const correct = snap.val() || 'admin123';
-    if (pass === correct) {
-      isLoggedIn = true;
-      document.getElementById('loginScreen').style.display = 'none';
-      document.getElementById('sidebar').style.display = 'flex';
-      document.getElementById('mainContent').style.display = 'block';
-      initAdmin();
-    } else {
-      document.getElementById('loginErr').textContent = '❌ Wrong password';
-      setTimeout(() => document.getElementById('loginErr').textContent = '', 2000);
-    }
-  } catch (e) {
-    // Demo: accept 'admin123' if firebase not configured
-    if (pass === 'admin123') {
-      isLoggedIn = true;
-      document.getElementById('loginScreen').style.display = 'none';
-      document.getElementById('sidebar').style.display = 'flex';
-      document.getElementById('mainContent').style.display = 'block';
-      initAdmin();
-    } else {
-      document.getElementById('loginErr').textContent = '❌ Firebase error or wrong password';
-    }
-  }
+    const s=await db.ref('adminAuth/password').get();
+    if(p===(s.val()||'admin123')) showAdmin();
+    else { document.getElementById('lerr').textContent='❌ Wrong password'; setTimeout(()=>document.getElementById('lerr').textContent='',2000); }
+  } catch(e) { if(p==='admin123') showAdmin(); else document.getElementById('lerr').textContent='❌ '+e.message; }
 }
-document.getElementById('loginPass').addEventListener('keydown', e => { if (e.key==='Enter') doLogin(); });
+document.getElementById('lpass').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
 
-function doLogout() {
-  isLoggedIn = false;
-  document.getElementById('loginScreen').style.display = 'flex';
-  document.getElementById('sidebar').style.display = 'none';
-  document.getElementById('mainContent').style.display = 'none';
-  document.getElementById('loginPass').value = '';
+function showAdmin() {
+  document.getElementById('ls').style.display='none';
+  document.getElementById('sb').style.display='flex';
+  document.getElementById('main').style.display='block';
+  initAdmin();
 }
-
-// ════════════════════════════════════════
-// INIT
-// ════════════════════════════════════════
-let allUsers = {};
-let allWithdrawals = {};
-let wdFilter = 'all';
 
 function initAdmin() {
-  // Realtime listeners
-  db.ref('users').on('value', snap => {
-    allUsers = snap.val() || {};
-    renderDashboard();
-    renderUsersTable();
+  db.ref('users').on('value',s=>{AU=s.val()||{};renderDash();renderUsers();});
+  db.ref('withdrawals').on('value',s=>{AW=s.val()||{};renderWd();renderPendDash();updateBadge();});
+  db.ref('settings').on('value',s=>{
+    const d=s.val()||{};
+    renderAdsT(d.ads||[]); renderTasksT(d.tasks||[]); renderSupT(d.supportCards||[]);
+    if(d.referralBonus) document.getElementById('sref').value=d.referralBonus;
+    if(d.welcomeBonus) document.getElementById('swel').value=d.welcomeBonus;
+    if(d.minWithdraw) document.getElementById('smwd').value=d.minWithdraw;
+    if(d.botUsername) document.getElementById('sbot').value=d.botUsername;
+    if(d.video){document.getElementById('vt').value=d.video.title||'';document.getElementById('vu').value=d.video.url||'';if(d.video.url)showVP(d.video.url);}
+    if(d.watchChain) loadChain('wc', d.watchChain);
+    if(d.withdrawChain) loadChain('wd', d.withdrawChain);
   });
+}
 
-  db.ref('withdrawals').on('value', snap => {
-    allWithdrawals = snap.val() || {};
-    renderWithdrawals();
-    renderPendingDash();
-    updatePendingBadge();
-  });
+// ══ AD CHAINS ══
+function setCnt(chain, n) {
+  CHAINS[chain].count = n;
+  document.getElementById(chain+'-count').value = n;
+  document.querySelectorAll(`#${chain}-count-sel .cnt-opt`).forEach((el,i)=>el.classList.toggle('active',i+1===n));
+}
 
-  db.ref('settings').on('value', snap => {
-    const s = snap.val() || {};
-    renderAdsTable(s.ads || []);
-    renderTasksTable(s.tasks || []);
-    renderSupportTable(s.supportCards || []);
-    // Settings form
-    if (s.referralBonus) document.getElementById('sRefBonus').value = s.referralBonus;
-    if (s.welcomeBonus) document.getElementById('sWelcome').value = s.welcomeBonus;
-    if (s.minWithdraw) document.getElementById('sMinWd').value = s.minWithdraw;
-    if (s.botUsername) document.getElementById('sBotName').value = s.botUsername;
-    if (s.video) {
-      document.getElementById('vTitle').value = s.video.title || '';
-      document.getElementById('vUrl').value = s.video.url || '';
-      if (s.video.url) showVideoPreview(s.video.url);
+function toggleAnet(chain, name) {
+  const on=document.getElementById(`${chain}-${name}-on`).checked;
+  document.getElementById(`${chain}-card-${name}`).classList.toggle('on', on);
+}
+
+function toggleWdChain() {
+  const on=document.getElementById('wd-chain-enabled').checked;
+  document.getElementById('wdChainCard').classList.toggle('chain-enabled', on);
+  document.getElementById('wdChainStatusBadge').textContent = on ? 'ON' : 'OFF';
+  document.getElementById('wdChainStatusBadge').style.background = on ? 'var(--gs)' : 'var(--ys)';
+  document.getElementById('wdChainStatusBadge').style.color = on ? 'var(--green)' : 'var(--yellow)';
+  document.getElementById('wdChainStatusBadge').style.borderColor = on ? 'rgba(0,224,150,.3)' : 'rgba(255,200,74,.3)';
+}
+
+function getChainData(prefix) {
+  return {
+    count: parseInt(document.getElementById(prefix+'-count').value) || 3,
+    reward: prefix==='wc' ? (parseInt(document.getElementById('wc-reward').value)||50) : undefined,
+    message: prefix==='wd' ? document.getElementById('wd-msg').value.trim() : undefined,
+    enabled: prefix==='wd' ? document.getElementById('wd-chain-enabled').checked : true,
+    networks: {
+      adsgram: {
+        enabled: document.getElementById(`${prefix}-adsgram-on`).checked,
+        order: parseInt(document.getElementById(`${prefix}-adsgram-order`).value)||1,
+        blockId: document.getElementById(`${prefix}-adsgram-blockId`).value.trim()
+      },
+      monetag: {
+        enabled: document.getElementById(`${prefix}-monetag-on`).checked,
+        order: parseInt(document.getElementById(`${prefix}-monetag-order`).value)||2,
+        zoneId: document.getElementById(`${prefix}-monetag-zoneId`).value.trim(),
+        type: document.getElementById(`${prefix}-monetag-type`).value
+      },
+      adsterra: {
+        enabled: document.getElementById(`${prefix}-adsterra-on`).checked,
+        order: parseInt(document.getElementById(`${prefix}-adsterra-order`).value)||3,
+        script: document.getElementById(`${prefix}-adsterra-script`).value.trim()
+      }
     }
+  };
+}
+
+async function saveChain(type) {
+  const prefix = type==='watch' ? 'wc' : 'wd';
+  const data = getChainData(prefix);
+  const key = type==='watch' ? 'watchChain' : 'withdrawChain';
+  await db.ref('settings/'+key).set(data);
+  renderChainPreview(prefix, data);
+  showToast(`✅ ${type==='watch'?'Watch':'Withdraw'} Chain saved!`);
+}
+
+function loadChain(prefix, data) {
+  if(!data) return;
+  setCnt(prefix, data.count||3);
+  if(prefix==='wc' && data.reward) document.getElementById('wc-reward').value=data.reward;
+  if(prefix==='wd') {
+    if(data.message) document.getElementById('wd-msg').value=data.message;
+    document.getElementById('wd-chain-enabled').checked=data.enabled||false;
+    toggleWdChain();
+  }
+  const nets=data.networks||{};
+  ['adsgram','monetag','adsterra'].forEach(name=>{
+    const n=nets[name]; if(!n) return;
+    const cb=document.getElementById(`${prefix}-${name}-on`);
+    if(cb){cb.checked=n.enabled||false; toggleAnet(prefix,name);}
+    const ord=document.getElementById(`${prefix}-${name}-order`);
+    if(ord&&n.order) ord.value=n.order;
+    if(name==='adsgram'&&n.blockId) document.getElementById(`${prefix}-adsgram-blockId`).value=n.blockId;
+    if(name==='monetag'){if(n.zoneId)document.getElementById(`${prefix}-monetag-zoneId`).value=n.zoneId;if(n.type)document.getElementById(`${prefix}-monetag-type`).value=n.type;}
+    if(name==='adsterra'&&n.script) document.getElementById(`${prefix}-adsterra-script`).value=n.script;
   });
+  renderChainPreview(prefix, data);
 }
 
-// ════════════════════════════════════════
-// DASHBOARD
-// ════════════════════════════════════════
-function renderDashboard() {
-  const users = Object.values(allUsers);
-  document.getElementById('st-users').textContent = users.length;
-  document.getElementById('st-coins').textContent = users.reduce((a,u) => a + (u.totalEarned||0), 0).toLocaleString();
-  document.getElementById('userCountLbl').textContent = users.length + ' total users';
+function renderChainPreview(prefix, data) {
+  const el=document.getElementById(prefix+'-preview');
+  const nets=data.networks||{};
+  const enabled=Object.entries(nets).filter(([,v])=>v.enabled).sort((a,b)=>(a[1].order||1)-(b[1].order||1));
+  const ic={adsgram:'🎯',monetag:'💰',adsterra:'⭐'};
+  const nm={adsgram:'Adsgram',monetag:'Monetag',adsterra:'Adsterra'};
+  const reward=prefix==='wc'?(document.getElementById('wc-reward')?.value||50):null;
+  const count=data.count||3;
+  if(!enabled.length){el.innerHTML=`<span style="color:var(--muted);font-size:12px">No networks enabled</span>`;return;}
 
-  const recent = [...users].sort((a,b) => new Date(b.joinedAt||0) - new Date(a.joinedAt||0)).slice(0,8);
-  const tbl = document.getElementById('recentUsersTbl');
-  if (!recent.length) { tbl.innerHTML = `<tr class="empty-row"><td colspan="5">No users yet</td></tr>`; return; }
-  tbl.innerHTML = recent.map(u => `
-    <tr>
-      <td><strong>${u.userName||'Unknown'}</strong></td>
-      <td style="font-family:monospace;color:var(--muted)">${u.userId}</td>
-      <td style="color:var(--yellow);font-weight:700">${(u.balance||0).toLocaleString()}</td>
-      <td>${timeAgo(u.joinedAt)}</td>
-      <td>${(u.referrals||[]).length}</td>
-    </tr>`).join('');
+  // Build full queue with count
+  const queue=[];
+  for(let i=0;i<count;i++) queue.push(enabled[i%enabled.length]);
+
+  el.innerHTML=`
+    <div class="fp-chip" style="background:var(--as);color:var(--accent)">
+      ${prefix==='wc'?'▶ Watch':'💸 Withdraw'}
+    </div>
+    <span class="fp-arr">→</span>
+    ${queue.map((([name,v],i)=>`
+      <div class="fp-chip" style="background:rgba(255,255,255,.06);color:var(--text)">
+        ${ic[name]} ${nm[name]} <span style="background:var(--accent);color:#fff;border-radius:10px;padding:1px 6px;font-size:10px">#${i+1}</span>
+      </div>
+      ${i<queue.length-1?'<span class="fp-arr">→</span>':''}
+    `)).join('')}
+    <span class="fp-arr">→</span>
+    <div class="fp-chip" style="background:${prefix==='wc'?'var(--ys)':'var(--gs)'};color:${prefix==='wc'?'var(--yellow)':'var(--green)'}">
+      ${prefix==='wc'?`🎉 +${reward} Coins`:'✅ Submit'}
+    </div>`;
 }
 
-function renderPendingDash() {
-  const pending = Object.entries(allWithdrawals).filter(([,v]) => v.status==='pending').map(([k,v]) => ({id:k,...v}));
-  const approved = Object.values(allWithdrawals).filter(v => v.status==='approved').length;
-  document.getElementById('st-wd').textContent = pending.length;
-  document.getElementById('st-done').textContent = approved;
-
-  const tbl = document.getElementById('pendingWdTbl');
-  if (!pending.length) { tbl.innerHTML = `<tr class="empty-row"><td colspan="6">No pending requests</td></tr>`; return; }
-  tbl.innerHTML = pending.slice(0,6).map(w => `
-    <tr>
-      <td><strong>${w.userName}</strong></td>
-      <td>${w.walletLabel||w.wallet}</td>
-      <td style="font-family:monospace">${w.account}</td>
-      <td style="color:var(--yellow);font-weight:700">${w.amount} Coins</td>
-      <td style="color:var(--muted);font-size:11px">${timeAgo(w.createdAt)}</td>
-      <td>
-        <div style="display:flex;gap:6px">
-          <button class="btn btn-green btn-sm" onclick="approveWd('${w.id}','${w.userId}',${w.amount})">✓</button>
-          <button class="btn btn-red btn-sm" onclick="openRejectModal('${w.id}','${w.userId}',${w.amount})">✗</button>
-        </div>
-      </td>
-    </tr>`).join('');
+// ══ DASHBOARD ══
+function renderDash() {
+  const u=Object.values(AU);
+  document.getElementById('st-u').textContent=u.length;
+  document.getElementById('st-c').textContent=u.reduce((a,x)=>a+(x.totalEarned||0),0).toLocaleString();
+  document.getElementById('ucl').textContent=u.length+' users';
+  const rec=[...u].sort((a,b)=>new Date(b.joinedAt||0)-new Date(a.joinedAt||0)).slice(0,8);
+  const t=document.getElementById('rut');
+  if(!rec.length){t.innerHTML=`<tr class="erow"><td colspan="5">No users yet</td></tr>`;return;}
+  t.innerHTML=rec.map(u=>`<tr><td><strong>${u.userName||'?'}</strong></td><td style="font-family:monospace;color:var(--muted);font-size:12px">${u.userId}</td><td style="color:var(--yellow);font-weight:700">${(u.balance||0).toLocaleString()}</td><td>${ta(u.joinedAt)}</td><td>${(u.referrals||[]).length}</td></tr>`).join('');
 }
-
-function updatePendingBadge() {
-  const count = Object.values(allWithdrawals).filter(v => v.status==='pending').length;
-  const badge = document.getElementById('pendingBadge');
-  badge.textContent = count;
-  badge.style.display = count > 0 ? 'inline' : 'none';
+function renderPendDash() {
+  const pend=Object.entries(AW).filter(([,v])=>v.status==='pending').map(([k,v])=>({id:k,...v}));
+  document.getElementById('st-w').textContent=pend.length;
+  document.getElementById('st-a').textContent=Object.values(AW).filter(v=>v.status==='approved').length;
+  const t=document.getElementById('pwt');
+  if(!pend.length){t.innerHTML=`<tr class="erow"><td colspan="6">No pending</td></tr>`;return;}
+  t.innerHTML=pend.slice(0,5).map(w=>`<tr><td><strong>${w.userName}</strong></td><td>${w.walletLabel||w.wallet}</td><td style="font-family:monospace;font-size:12px">${w.account}</td><td style="color:var(--yellow);font-weight:700">${w.amount}</td><td style="color:var(--muted);font-size:11px">${ta(w.createdAt)}</td><td><div style="display:flex;gap:6px"><button class="btn bg bsm" onclick="apprWd('${w.id}')">✓</button><button class="btn br bsm" onclick="openRej('${w.id}','${w.userId}',${w.amount})">✗</button></div></td></tr>`).join('');
 }
+function updateBadge(){const c=Object.values(AW).filter(v=>v.status==='pending').length;const b=document.getElementById('pbadge');b.textContent=c;b.style.display=c>0?'inline':'none';}
 
-// ════════════════════════════════════════
-// USERS
-// ════════════════════════════════════════
-function renderUsersTable(filter='') {
-  let users = Object.values(allUsers);
-  if (filter) users = users.filter(u => (u.userName||'').toLowerCase().includes(filter) || (u.userId||'').includes(filter));
-  users.sort((a,b) => new Date(b.joinedAt||0) - new Date(a.joinedAt||0));
+// ══ USERS ══
+function renderUsers(f=''){let u=Object.values(AU);if(f)u=u.filter(x=>(x.userName||'').toLowerCase().includes(f)||(x.userId||'').includes(f));u.sort((a,b)=>new Date(b.joinedAt||0)-new Date(a.joinedAt||0));const t=document.getElementById('utbl');if(!u.length){t.innerHTML=`<tr class="erow"><td colspan="8">No users</td></tr>`;return;}t.innerHTML=u.map(x=>`<tr><td><strong>${x.userName||'?'}</strong></td><td style="font-family:monospace;font-size:11px;color:var(--muted)">${x.userId}</td><td style="color:var(--yellow);font-weight:700">${(x.balance||0).toLocaleString()}</td><td style="color:var(--green)">${(x.totalEarned||0).toLocaleString()}</td><td style="color:var(--red)">${(x.totalWithdrawn||0).toLocaleString()}</td><td>${(x.referrals||[]).length}</td><td style="color:var(--muted);font-size:12px">${ta(x.joinedAt)}</td><td><button class="btn bgh bsm" onclick="openBal('${x.userId}','${x.userName||'?'}')">💰</button></td></tr>`).join('');}
+function filterUsers(){renderUsers(document.getElementById('usrch').value.toLowerCase());}
 
-  const tbl = document.getElementById('usersTbl');
-  if (!users.length) { tbl.innerHTML = `<tr class="empty-row"><td colspan="8">No users found</td></tr>`; return; }
-  tbl.innerHTML = users.map(u => `
-    <tr>
-      <td><strong>${u.userName||'Unknown'}</strong></td>
-      <td style="font-family:monospace;font-size:12px;color:var(--muted)">${u.userId}</td>
-      <td><span style="color:var(--yellow);font-weight:700">${(u.balance||0).toLocaleString()}</span></td>
-      <td style="color:var(--green)">${(u.totalEarned||0).toLocaleString()}</td>
-      <td style="color:var(--red)">${(u.totalWithdrawn||0).toLocaleString()}</td>
-      <td>${(u.referrals||[]).length}</td>
-      <td style="color:var(--muted);font-size:12px">${timeAgo(u.joinedAt)}</td>
-      <td>
-        <button class="btn btn-ghost btn-sm" onclick="openBalModal('${u.userId}','${u.userName||'User'}')">💰 Balance</button>
-      </td>
-    </tr>`).join('');
-}
+// ══ WITHDRAWALS ══
+function renderWd(){let it=Object.entries(AW).map(([k,v])=>({id:k,...v}));if(wdf!=='all')it=it.filter(w=>w.status===wdf);it.sort((a,b)=>new Date(b.createdAt||0)-new Date(a.createdAt||0));const sM={pending:'b-p',approved:'b-a',rejected:'b-r'};const sL={pending:'⏳ Pending',approved:'✓ Approved',rejected:'✗ Rejected'};const t=document.getElementById('wdt');if(!it.length){t.innerHTML=`<tr class="erow"><td colspan="7">No withdrawals</td></tr>`;return;}t.innerHTML=it.map(w=>`<tr><td><strong>${w.userName}</strong><br><span style="font-size:11px;color:var(--muted)">${w.userId}</span></td><td>${w.walletLabel||w.wallet}</td><td style="font-family:monospace;font-size:12px">${w.account}</td><td style="color:var(--yellow);font-weight:700">${w.amount}</td><td><span class="bdg ${sM[w.status]||'b-p'}">${sL[w.status]||'Pending'}</span>${w.status==='rejected'&&w.reason?`<br><span style="font-size:11px;color:var(--red)">${w.reason}</span>`:''}</td><td style="color:var(--muted);font-size:12px">${fd(w.createdAt)}</td><td>${w.status==='pending'?`<div style="display:flex;gap:6px"><button class="btn bg bsm" onclick="apprWd('${w.id}')">✓</button><button class="btn br bsm" onclick="openRej('${w.id}','${w.userId}',${w.amount})">✗</button></div>`:'—'}</td></tr>`).join('');}
+function fw(f){wdf=f;renderWd();}
+async function apprWd(id){await db.ref('withdrawals/'+id).update({status:'approved'});showToast('✅ Approved!');}
+function openRej(id,uid,amt){document.getElementById('rwi').value=id;document.getElementById('rui').value=uid;document.getElementById('ram').value=amt;document.getElementById('rr').value='';document.getElementById('rejMod').classList.add('open');}
+async function confirmReject(){const id=document.getElementById('rwi').value,uid=document.getElementById('rui').value,amt=parseInt(document.getElementById('ram').value),r=document.getElementById('rr').value.trim();if(!r)return showToast('⚠️ Enter reason');await db.ref('withdrawals/'+id).update({status:'rejected',reason:r});const s=await db.ref('users/'+uid).get();if(s.exists()){const d=s.val();await db.ref('users/'+uid).update({balance:(d.balance||0)+amt,totalWithdrawn:Math.max(0,(d.totalWithdrawn||0)-amt)});}cm('rejMod');showToast('✗ Rejected & refunded');}
 
-function filterUsers() {
-  renderUsersTable(document.getElementById('userSearch').value.toLowerCase());
-}
+// ══ ADS ══
+function renderAdsT(ads){const t=document.getElementById('atbl');if(!ads.length){t.innerHTML=`<tr class="erow"><td colspan="7">No ads yet</td></tr>`;return;}t.innerHTML=ads.map((a,i)=>`<tr><td style="font-size:22px">${a.icon||'📺'}</td><td><strong>${a.name}</strong></td><td style="color:var(--muted)">${a.desc||''}</td><td style="color:var(--yellow);font-weight:700">+${a.reward}</td><td>${a.duration}s</td><td><span class="bdg ${a.active!==false?'b-a':'b-r'}">${a.active!==false?'Active':'Off'}</span></td><td><div style="display:flex;gap:6px"><button class="btn bgh bsm" onclick="editAd(${i})">✏️</button><button class="btn br bsm" onclick="delAd(${i})">🗑️</button></div></td></tr>`).join('');}
+function openAdModal(){['an','ai','ad_','ab','ar','adu'].forEach(id=>document.getElementById(id).value='');document.getElementById('aac').checked=true;document.getElementById('aei').value='';document.getElementById('adModT').textContent='Add Ad';document.getElementById('adMod').classList.add('open');}
+async function editAd(i){const s=await db.ref('settings/ads').get();const a=(s.val()||[])[i];if(!a)return;document.getElementById('an').value=a.name||'';document.getElementById('ai').value=a.icon||'';document.getElementById('ad_').value=a.desc||'';document.getElementById('ab').value=a.bg||'';document.getElementById('ar').value=a.reward||'';document.getElementById('adu').value=a.duration||'';document.getElementById('aac').checked=a.active!==false;document.getElementById('aei').value=i;document.getElementById('adModT').textContent='Edit Ad';document.getElementById('adMod').classList.add('open');}
+async function saveAd(){const n=document.getElementById('an').value.trim();if(!n)return showToast('⚠️ Enter name');const s=await db.ref('settings/ads').get();const ads=s.val()||[];const ei=document.getElementById('aei').value;const obj={id:ei!==''?(ads[parseInt(ei)]?.id||'ad_'+Date.now()):'ad_'+Date.now(),name:n,icon:document.getElementById('ai').value.trim()||'📺',desc:document.getElementById('ad_').value.trim(),bg:document.getElementById('ab').value.trim()||'rgba(124,111,253,.15)',reward:parseInt(document.getElementById('ar').value)||0,duration:parseInt(document.getElementById('adu').value)||15,active:document.getElementById('aac').checked};if(ei!=='')ads[parseInt(ei)]=obj;else ads.push(obj);await db.ref('settings/ads').set(ads);cm('adMod');showToast('✅ Saved!');}
+async function delAd(i){if(!confirm('Delete?'))return;const s=await db.ref('settings/ads').get();const ads=s.val()||[];ads.splice(i,1);await db.ref('settings/ads').set(ads);showToast('🗑️ Deleted');}
 
-// ════════════════════════════════════════
-// WITHDRAWALS
-// ════════════════════════════════════════
-function renderWithdrawals() {
-  let items = Object.entries(allWithdrawals).map(([k,v]) => ({id:k,...v}));
-  if (wdFilter !== 'all') items = items.filter(w => w.status === wdFilter);
-  items.sort((a,b) => new Date(b.createdAt||0) - new Date(a.createdAt||0));
+// ══ TASKS ══
+function renderTasksT(tasks){const t=document.getElementById('ttbl');if(!tasks.length){t.innerHTML=`<tr class="erow"><td colspan="7">No tasks yet</td></tr>`;return;}t.innerHTML=tasks.map((x,i)=>`<tr><td style="font-size:22px">${x.icon||'✅'}</td><td><strong>${x.name}</strong></td><td style="color:var(--muted)">${x.desc||''}</td><td style="color:var(--green);font-weight:700">+${x.reward}</td><td style="font-size:11px;color:var(--accent)">${x.link||'—'}</td><td><span class="bdg ${x.active!==false?'b-a':'b-r'}">${x.active!==false?'Active':'Off'}</span></td><td><div style="display:flex;gap:6px"><button class="btn bgh bsm" onclick="editTask(${i})">✏️</button><button class="btn br bsm" onclick="delTask(${i})">🗑️</button></div></td></tr>`).join('');}
+function openTaskModal(){['tn','ti','td_','tb','tr_','tl'].forEach(id=>document.getElementById(id).value='');document.getElementById('tac').checked=true;document.getElementById('tei').value='';document.getElementById('taskModT').textContent='Add Task';document.getElementById('taskMod').classList.add('open');}
+async function editTask(i){const s=await db.ref('settings/tasks').get();const x=(s.val()||[])[i];if(!x)return;document.getElementById('tn').value=x.name||'';document.getElementById('ti').value=x.icon||'';document.getElementById('td_').value=x.desc||'';document.getElementById('tb').value=x.bg||'';document.getElementById('tr_').value=x.reward||'';document.getElementById('tl').value=x.link||'';document.getElementById('tac').checked=x.active!==false;document.getElementById('tei').value=i;document.getElementById('taskModT').textContent='Edit Task';document.getElementById('taskMod').classList.add('open');}
+async function saveTask(){const n=document.getElementById('tn').value.trim();if(!n)return showToast('⚠️ Enter name');const s=await db.ref('settings/tasks').get();const tasks=s.val()||[];const ei=document.getElementById('tei').value;const obj={id:ei!==''?(tasks[parseInt(ei)]?.id||'task_'+Date.now()):'task_'+Date.now(),name:n,icon:document.getElementById('ti').value.trim()||'✅',desc:document.getElementById('td_').value.trim(),bg:document.getElementById('tb').value.trim()||'rgba(0,224,150,.12)',reward:parseInt(document.getElementById('tr_').value)||0,link:document.getElementById('tl').value.trim(),active:document.getElementById('tac').checked};if(ei!=='')tasks[parseInt(ei)]=obj;else tasks.push(obj);await db.ref('settings/tasks').set(tasks);cm('taskMod');showToast('✅ Saved!');}
+async function delTask(i){if(!confirm('Delete?'))return;const s=await db.ref('settings/tasks').get();const t=s.val()||[];t.splice(i,1);await db.ref('settings/tasks').set(t);showToast('🗑️ Deleted');}
 
-  const sMap = { pending:'b-pending', approved:'b-approved', rejected:'b-rejected' };
-  const sLbl = { pending:'⏳ Pending', approved:'✓ Approved', rejected:'✗ Rejected' };
+// ══ SUPPORT ══
+function renderSupT(cards){const t=document.getElementById('stbl');if(!cards.length){t.innerHTML=`<tr class="erow"><td colspan="5">No cards yet</td></tr>`;return;}t.innerHTML=cards.map((c,i)=>`<tr><td style="font-size:22px">${c.icon||'💬'}</td><td><strong>${c.title}</strong></td><td style="color:var(--muted)">${c.desc||''}</td><td style="font-size:12px;color:var(--accent)">${c.link||'—'}</td><td><div style="display:flex;gap:6px"><button class="btn bgh bsm" onclick="editSup(${i})">✏️</button><button class="btn br bsm" onclick="delSup(${i})">🗑️</button></div></td></tr>`).join('');}
+function openSupModal(){['spt','spi','spd','spb','spl'].forEach(id=>document.getElementById(id).value='');document.getElementById('spei').value='';document.getElementById('supModT').textContent='Add Card';document.getElementById('supMod').classList.add('open');}
+async function editSup(i){const s=await db.ref('settings/supportCards').get();const c=(s.val()||[])[i];if(!c)return;document.getElementById('spt').value=c.title||'';document.getElementById('spi').value=c.icon||'';document.getElementById('spd').value=c.desc||'';document.getElementById('spb').value=c.bg||'';document.getElementById('spl').value=c.link||'';document.getElementById('spei').value=i;document.getElementById('supModT').textContent='Edit Card';document.getElementById('supMod').classList.add('open');}
+async function saveSupport(){const t=document.getElementById('spt').value.trim();if(!t)return showToast('⚠️ Enter title');const s=await db.ref('settings/supportCards').get();const cards=s.val()||[];const ei=document.getElementById('spei').value;const obj={title:t,icon:document.getElementById('spi').value.trim()||'💬',desc:document.getElementById('spd').value.trim(),bg:document.getElementById('spb').value.trim()||'var(--as)',link:document.getElementById('spl').value.trim()};if(ei!=='')cards[parseInt(ei)]=obj;else cards.push(obj);await db.ref('settings/supportCards').set(cards);cm('supMod');showToast('✅ Saved!');}
+async function delSup(i){if(!confirm('Delete?'))return;const s=await db.ref('settings/supportCards').get();const c=s.val()||[];c.splice(i,1);await db.ref('settings/supportCards').set(c);showToast('🗑️ Deleted');}
 
-  const tbl = document.getElementById('wdTbl');
-  if (!items.length) { tbl.innerHTML = `<tr class="empty-row"><td colspan="7">No withdrawals</td></tr>`; return; }
-  tbl.innerHTML = items.map(w => `
-    <tr>
-      <td><strong>${w.userName}</strong><br><span style="font-size:11px;color:var(--muted)">${w.userId}</span></td>
-      <td>${w.walletLabel||w.wallet}</td>
-      <td style="font-family:monospace;font-size:12px">${w.account}</td>
-      <td style="color:var(--yellow);font-weight:700">${w.amount} Coins</td>
-      <td><span class="badge ${sMap[w.status]||'b-pending'}">${sLbl[w.status]||'Pending'}</span>
-        ${w.status==='rejected'&&w.reason ? `<br><span style="font-size:11px;color:var(--red);margin-top:3px;display:block">${w.reason}</span>` : ''}
-      </td>
-      <td style="color:var(--muted);font-size:12px">${formatDate(w.createdAt)}</td>
-      <td>
-        ${w.status==='pending' ? `
-          <div style="display:flex;gap:6px">
-            <button class="btn btn-green btn-sm" onclick="approveWd('${w.id}','${w.userId}',${w.amount})">✓ Approve</button>
-            <button class="btn btn-red btn-sm" onclick="openRejectModal('${w.id}','${w.userId}',${w.amount})">✗ Reject</button>
-          </div>` : `<span style="color:var(--muted);font-size:12px">—</span>`}
-      </td>
-    </tr>`).join('');
-}
+// ══ VIDEO ══
+function showVP(u){let e=u;const y=u.match(/(?:youtu\.be\/|v=)([^&?#\s]+)/);if(y)e=`https://www.youtube.com/embed/${y[1]}?rel=0`;document.getElementById('vf').src=e;document.getElementById('vp').style.display='block';}
+async function saveVideo(){await db.ref('settings/video').set({title:document.getElementById('vt').value.trim(),url:document.getElementById('vu').value.trim()});if(document.getElementById('vu').value)showVP(document.getElementById('vu').value);showToast('✅ Saved!');}
+document.getElementById('vu').addEventListener('input',e=>{if(e.target.value)showVP(e.target.value);});
 
-function filterWd(f) {
-  wdFilter = f;
-  renderWithdrawals();
-}
+// ══ SETTINGS ══
+async function saveSettings(){await db.ref('settings').update({referralBonus:parseInt(document.getElementById('sref').value)||100,welcomeBonus:parseInt(document.getElementById('swel').value)||50,minWithdraw:parseInt(document.getElementById('smwd').value)||500,botUsername:document.getElementById('sbot').value.trim()});showToast('✅ Saved!');}
+async function changePass(){const n=document.getElementById('np').value,c=document.getElementById('cp').value;if(!n)return showToast('⚠️ Enter password');if(n!==c)return showToast('⚠️ No match');await db.ref('adminAuth/password').set(n);document.getElementById('np').value='';document.getElementById('cp').value='';showToast('✅ Password updated!');}
 
-async function approveWd(wdId, userId, amount) {
-  await db.ref('withdrawals/' + wdId).update({ status: 'approved' });
-  showToast('✅ Withdrawal approved!');
-}
+// ══ BALANCE ══
+function openBal(uid,name){document.getElementById('bui').value=uid;document.getElementById('bun').textContent=name;document.getElementById('bamt').value='';document.getElementById('balMod').classList.add('open');}
+async function adjustBal(){const uid=document.getElementById('bui').value,act=document.getElementById('ba').value,amt=parseInt(document.getElementById('bamt').value);if(!amt)return showToast('⚠️ Enter amount');const s=await db.ref('users/'+uid).get();if(!s.exists())return showToast('❌ Not found');const d=s.val();let nb=d.balance||0;if(act==='add')nb+=amt;else if(act==='sub')nb=Math.max(0,nb-amt);else nb=amt;await db.ref('users/'+uid).update({balance:nb});cm('balMod');showToast(`✅ Balance → ${nb}`);}
 
-function openRejectModal(wdId, userId, amount) {
-  document.getElementById('rejectWdId').value = wdId;
-  document.getElementById('rejectUserId').value = userId;
-  document.getElementById('rejectAmount').value = amount;
-  document.getElementById('rejectReason').value = '';
-  document.getElementById('rejectModal').classList.add('open');
-}
-
-async function confirmReject() {
-  const wdId = document.getElementById('rejectWdId').value;
-  const userId = document.getElementById('rejectUserId').value;
-  const amount = parseInt(document.getElementById('rejectAmount').value);
-  const reason = document.getElementById('rejectReason').value.trim();
-
-  if (!reason) return showToast('⚠️ Enter rejection reason');
-
-  // Reject withdrawal
-  await db.ref('withdrawals/' + wdId).update({ status: 'rejected', reason });
-
-  // Refund balance to user
-  const snap = await db.ref('users/' + userId).get();
-  if (snap.exists()) {
-    const d = snap.val();
-    await db.ref('users/' + userId).update({
-      balance: (d.balance || 0) + amount,
-      totalWithdrawn: Math.max(0, (d.totalWithdrawn || 0) - amount)
-    });
-  }
-
-  closeModal('rejectModal');
-  showToast('✗ Rejected & balance refunded');
-}
-
-// ════════════════════════════════════════
-// ADS CRUD
-// ════════════════════════════════════════
-function renderAdsTable(ads) {
-  const tbl = document.getElementById('adsTbl');
-  if (!ads.length) { tbl.innerHTML = `<tr class="empty-row"><td colspan="7">No ads yet</td></tr>`; return; }
-  tbl.innerHTML = ads.map((ad,i) => `
-    <tr>
-      <td style="font-size:24px">${ad.icon||'📺'}</td>
-      <td><strong>${ad.name}</strong></td>
-      <td style="color:var(--muted)">${ad.desc||''}</td>
-      <td style="color:var(--yellow);font-weight:700">+${ad.reward}</td>
-      <td>${ad.duration}s</td>
-      <td><span class="badge ${ad.active!==false?'b-approved':'b-rejected'}">${ad.active!==false?'Active':'Off'}</span></td>
-      <td>
-        <div style="display:flex;gap:6px">
-          <button class="btn btn-ghost btn-sm" onclick="editAd(${i})">✏️</button>
-          <button class="btn btn-red btn-sm" onclick="deleteAd(${i})">🗑️</button>
-        </div>
-      </td>
-    </tr>`).join('');
-}
-
-function openAdModal(reset=true) {
-  if (reset) {
-    ['adName','adIcon','adDesc','adBg','adReward','adDuration'].forEach(id => document.getElementById(id).value = '');
-    document.getElementById('adActive').checked = true;
-    document.getElementById('adEditId').value = '';
-    document.getElementById('adModalTitle').textContent = 'Add New Ad';
-  }
-  document.getElementById('adModal').classList.add('open');
-}
-
-async function editAd(idx) {
-  const snap = await db.ref('settings/ads').get();
-  const ads = snap.val() || [];
-  const ad = ads[idx];
-  if (!ad) return;
-  document.getElementById('adName').value = ad.name||'';
-  document.getElementById('adIcon').value = ad.icon||'';
-  document.getElementById('adDesc').value = ad.desc||'';
-  document.getElementById('adBg').value = ad.bg||'';
-  document.getElementById('adReward').value = ad.reward||'';
-  document.getElementById('adDuration').value = ad.duration||'';
-  document.getElementById('adActive').checked = ad.active!==false;
-  document.getElementById('adEditId').value = idx;
-  document.getElementById('adModalTitle').textContent = 'Edit Ad';
-  document.getElementById('adModal').classList.add('open');
-}
-
-async function saveAd() {
-  const name = document.getElementById('adName').value.trim();
-  const icon = document.getElementById('adIcon').value.trim() || '📺';
-  const desc = document.getElementById('adDesc').value.trim();
-  const bg = document.getElementById('adBg').value.trim() || 'rgba(124,111,253,.15)';
-  const reward = parseInt(document.getElementById('adReward').value) || 0;
-  const duration = parseInt(document.getElementById('adDuration').value) || 15;
-  const active = document.getElementById('adActive').checked;
-  const editId = document.getElementById('adEditId').value;
-
-  if (!name) return showToast('⚠️ Enter ad name');
-  if (!reward) return showToast('⚠️ Enter reward amount');
-
-  const snap = await db.ref('settings/ads').get();
-  const ads = snap.val() || [];
-  const id = editId !== '' ? ads[editId]?.id : 'ad_' + Date.now();
-  const adObj = { id: id || ('ad_'+Date.now()), name, icon, desc, bg, reward, duration, active };
-
-  if (editId !== '') ads[parseInt(editId)] = adObj;
-  else ads.push(adObj);
-
-  await db.ref('settings/ads').set(ads);
-  closeModal('adModal');
-  showToast('✅ Ad saved!');
-}
-
-async function deleteAd(idx) {
-  if (!confirm('Delete this ad?')) return;
-  const snap = await db.ref('settings/ads').get();
-  const ads = snap.val() || [];
-  ads.splice(idx, 1);
-  await db.ref('settings/ads').set(ads);
-  showToast('🗑️ Ad deleted');
-}
-
-// ════════════════════════════════════════
-// TASKS CRUD
-// ════════════════════════════════════════
-function renderTasksTable(tasks) {
-  const tbl = document.getElementById('tasksTbl');
-  if (!tasks.length) { tbl.innerHTML = `<tr class="empty-row"><td colspan="7">No tasks yet</td></tr>`; return; }
-  tbl.innerHTML = tasks.map((t,i) => `
-    <tr>
-      <td style="font-size:22px">${t.icon||'✅'}</td>
-      <td><strong>${t.name}</strong></td>
-      <td style="color:var(--muted)">${t.desc||''}</td>
-      <td style="color:var(--green);font-weight:700">+${t.reward}</td>
-      <td style="font-size:11px;color:var(--accent)">${t.link||'—'}</td>
-      <td><span class="badge ${t.active!==false?'b-approved':'b-rejected'}">${t.active!==false?'Active':'Off'}</span></td>
-      <td>
-        <div style="display:flex;gap:6px">
-          <button class="btn btn-ghost btn-sm" onclick="editTask(${i})">✏️</button>
-          <button class="btn btn-red btn-sm" onclick="deleteTask(${i})">🗑️</button>
-        </div>
-      </td>
-    </tr>`).join('');
-}
-
-function openTaskModal(reset=true) {
-  if (reset) {
-    ['tkName','tkIcon','tkDesc','tkBg','tkReward','tkLink'].forEach(id => document.getElementById(id).value = '');
-    document.getElementById('tkActive').checked = true;
-    document.getElementById('tkEditId').value = '';
-    document.getElementById('taskModalTitle').textContent = 'Add New Task';
-  }
-  document.getElementById('taskModal').classList.add('open');
-}
-
-async function editTask(idx) {
-  const snap = await db.ref('settings/tasks').get();
-  const tasks = snap.val() || [];
-  const t = tasks[idx];
-  if (!t) return;
-  document.getElementById('tkName').value = t.name||'';
-  document.getElementById('tkIcon').value = t.icon||'';
-  document.getElementById('tkDesc').value = t.desc||'';
-  document.getElementById('tkBg').value = t.bg||'';
-  document.getElementById('tkReward').value = t.reward||'';
-  document.getElementById('tkLink').value = t.link||'';
-  document.getElementById('tkActive').checked = t.active!==false;
-  document.getElementById('tkEditId').value = idx;
-  document.getElementById('taskModalTitle').textContent = 'Edit Task';
-  document.getElementById('taskModal').classList.add('open');
-}
-
-async function saveTask() {
-  const name = document.getElementById('tkName').value.trim();
-  const icon = document.getElementById('tkIcon').value.trim() || '✅';
-  const desc = document.getElementById('tkDesc').value.trim();
-  const bg = document.getElementById('tkBg').value.trim() || 'rgba(0,224,150,.12)';
-  const reward = parseInt(document.getElementById('tkReward').value) || 0;
-  const link = document.getElementById('tkLink').value.trim();
-  const active = document.getElementById('tkActive').checked;
-  const editId = document.getElementById('tkEditId').value;
-
-  if (!name) return showToast('⚠️ Enter task name');
-
-  const snap = await db.ref('settings/tasks').get();
-  const tasks = snap.val() || [];
-  const id = editId !== '' ? tasks[editId]?.id : 'task_' + Date.now();
-  const taskObj = { id: id || ('task_'+Date.now()), name, icon, desc, bg, reward, link, active };
-
-  if (editId !== '') tasks[parseInt(editId)] = taskObj;
-  else tasks.push(taskObj);
-
-  await db.ref('settings/tasks').set(tasks);
-  closeModal('taskModal');
-  showToast('✅ Task saved!');
-}
-
-async function deleteTask(idx) {
-  if (!confirm('Delete this task?')) return;
-  const snap = await db.ref('settings/tasks').get();
-  const tasks = snap.val() || [];
-  tasks.splice(idx, 1);
-  await db.ref('settings/tasks').set(tasks);
-  showToast('🗑️ Task deleted');
-}
-
-// ════════════════════════════════════════
-// SUPPORT CARDS CRUD
-// ════════════════════════════════════════
-function renderSupportTable(cards) {
-  const tbl = document.getElementById('supportTbl');
-  if (!cards.length) { tbl.innerHTML = `<tr class="empty-row"><td colspan="5">No cards yet</td></tr>`; return; }
-  tbl.innerHTML = cards.map((c,i) => `
-    <tr>
-      <td style="font-size:22px">${c.icon||'💬'}</td>
-      <td><strong>${c.title}</strong></td>
-      <td style="color:var(--muted)">${c.desc||''}</td>
-      <td style="font-size:12px;color:var(--accent)">${c.link||'—'}</td>
-      <td>
-        <div style="display:flex;gap:6px">
-          <button class="btn btn-ghost btn-sm" onclick="editSupport(${i})">✏️</button>
-          <button class="btn btn-red btn-sm" onclick="deleteSupport(${i})">🗑️</button>
-        </div>
-      </td>
-    </tr>`).join('');
-}
-
-function openSupportModal(reset=true) {
-  if (reset) {
-    ['spTitle','spIcon','spDesc','spBg','spLink'].forEach(id => document.getElementById(id).value = '');
-    document.getElementById('spEditId').value = '';
-    document.getElementById('supModalTitle').textContent = 'Add Support Card';
-  }
-  document.getElementById('supModal').classList.add('open');
-}
-
-async function editSupport(idx) {
-  const snap = await db.ref('settings/supportCards').get();
-  const cards = snap.val() || [];
-  const c = cards[idx];
-  if (!c) return;
-  document.getElementById('spTitle').value = c.title||'';
-  document.getElementById('spIcon').value = c.icon||'';
-  document.getElementById('spDesc').value = c.desc||'';
-  document.getElementById('spBg').value = c.bg||'';
-  document.getElementById('spLink').value = c.link||'';
-  document.getElementById('spEditId').value = idx;
-  document.getElementById('supModalTitle').textContent = 'Edit Support Card';
-  document.getElementById('supModal').classList.add('open');
-}
-
-async function saveSupport() {
-  const title = document.getElementById('spTitle').value.trim();
-  const icon = document.getElementById('spIcon').value.trim() || '💬';
-  const desc = document.getElementById('spDesc').value.trim();
-  const bg = document.getElementById('spBg').value.trim() || 'var(--accent-soft)';
-  const link = document.getElementById('spLink').value.trim();
-  const editId = document.getElementById('spEditId').value;
-
-  if (!title) return showToast('⚠️ Enter card title');
-
-  const snap = await db.ref('settings/supportCards').get();
-  const cards = snap.val() || [];
-  const cardObj = { title, icon, desc, bg, link };
-
-  if (editId !== '') cards[parseInt(editId)] = cardObj;
-  else cards.push(cardObj);
-
-  await db.ref('settings/supportCards').set(cards);
-  closeModal('supModal');
-  showToast('✅ Support card saved!');
-}
-
-async function deleteSupport(idx) {
-  if (!confirm('Delete this card?')) return;
-  const snap = await db.ref('settings/supportCards').get();
-  const cards = snap.val() || [];
-  cards.splice(idx, 1);
-  await db.ref('settings/supportCards').set(cards);
-  showToast('🗑️ Card deleted');
-}
-
-// ════════════════════════════════════════
-// VIDEO
-// ════════════════════════════════════════
-function showVideoPreview(url) {
-  let embed = url;
-  const yt = url.match(/(?:youtu\.be\/|v=)([^&?#\s]+)/);
-  if (yt) embed = `https://www.youtube.com/embed/${yt[1]}?rel=0`;
-  document.getElementById('vFrame').src = embed;
-  document.getElementById('vPreview').style.display = 'block';
-}
-
-async function saveVideo() {
-  const title = document.getElementById('vTitle').value.trim();
-  const url = document.getElementById('vUrl').value.trim();
-  if (!title && !url) return showToast('⚠️ Enter title or URL');
-  await db.ref('settings/video').set({ title, url });
-  if (url) showVideoPreview(url);
-  showToast('✅ Video saved!');
-}
-document.getElementById('vUrl').addEventListener('input', e => {
-  if (e.target.value) showVideoPreview(e.target.value);
-});
-
-// ════════════════════════════════════════
-// SETTINGS
-// ════════════════════════════════════════
-async function saveSettings() {
-  await db.ref('settings').update({
-    referralBonus: parseInt(document.getElementById('sRefBonus').value) || 100,
-    welcomeBonus: parseInt(document.getElementById('sWelcome').value) || 50,
-    minWithdraw: parseInt(document.getElementById('sMinWd').value) || 500,
-    botUsername: document.getElementById('sBotName').value.trim()
-  });
-  showToast('✅ Settings saved!');
-}
-
-async function changePass() {
-  const np = document.getElementById('newPass').value;
-  const cp = document.getElementById('confPass').value;
-  if (!np) return showToast('⚠️ Enter new password');
-  if (np !== cp) return showToast('⚠️ Passwords do not match');
-  await db.ref('adminAuth/password').set(np);
-  document.getElementById('newPass').value = '';
-  document.getElementById('confPass').value = '';
-  showToast('✅ Password updated!');
-}
-
-// ════════════════════════════════════════
-// BALANCE ADJUST
-// ════════════════════════════════════════
-function openBalModal(userId, userName) {
-  document.getElementById('balUserId').value = userId;
-  document.getElementById('balUserName').textContent = userName;
-  document.getElementById('balAmount').value = '';
-  document.getElementById('balModal').classList.add('open');
-}
-
-async function adjustBalance() {
-  const userId = document.getElementById('balUserId').value;
-  const action = document.getElementById('balAction').value;
-  const amount = parseInt(document.getElementById('balAmount').value);
-  if (!amount) return showToast('⚠️ Enter amount');
-
-  const snap = await db.ref('users/' + userId).get();
-  if (!snap.exists()) return showToast('❌ User not found');
-  const d = snap.val();
-  let newBal = d.balance || 0;
-  if (action === 'add') newBal += amount;
-  else if (action === 'sub') newBal = Math.max(0, newBal - amount);
-  else newBal = amount;
-
-  await db.ref('users/' + userId).update({ balance: newBal });
-  closeModal('balModal');
-  showToast(`✅ Balance updated to ${newBal} coins`);
-}
-
-// ════════════════════════════════════════
-// HELPERS
-// ════════════════════════════════════════
-function showSec(sec, el) {
-  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-  document.querySelectorAll('.sb-item').forEach(s => s.classList.remove('active'));
-  document.getElementById('sec-' + sec).classList.add('active');
-  el.classList.add('active');
-}
-
-function closeModal(id) {
-  document.getElementById(id).classList.remove('open');
-}
-
-document.querySelectorAll('.modal-ov').forEach(m => {
-  m.addEventListener('click', e => { if (e.target === m) m.classList.remove('open'); });
-});
-
-function showToast(msg) {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 2800);
-}
-
-function timeAgo(iso) {
-  if (!iso) return '—';
-  const diff = Date.now() - new Date(iso).getTime();
-  const m = Math.floor(diff/60000);
-  if (m < 1) return 'Just now';
-  if (m < 60) return m + 'm ago';
-  const h = Math.floor(m/60);
-  if (h < 24) return h + 'h ago';
-  return Math.floor(h/24) + 'd ago';
-}
-
-function formatDate(iso) {
-  if (!iso) return '—';
-  return new Date(iso).toLocaleString('en-BD', { dateStyle:'medium', timeStyle:'short' });
-}
+// ══ HELPERS ══
+function go(s,el){document.querySelectorAll('.sec').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.si').forEach(x=>x.classList.remove('active'));document.getElementById('sec-'+s).classList.add('active');el.classList.add('active');}
+function cm(id){document.getElementById(id).classList.remove('open');}
+document.querySelectorAll('.mov').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('open');}));
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2800);}
+function ta(iso){if(!iso)return'—';const m=Math.floor((Date.now()-new Date(iso))/60000);if(m<1)return'Just now';if(m<60)return m+'m ago';const h=Math.floor(m/60);if(h<24)return h+'h ago';return Math.floor(h/24)+'d ago';}
+function fd(iso){if(!iso)return'—';return new Date(iso).toLocaleString('en-BD',{dateStyle:'medium',timeStyle:'short'});}
 </script>
 </body>
-  </html>
+</html>
