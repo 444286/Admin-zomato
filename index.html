@@ -12,8 +12,6 @@
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex}
 ::-webkit-scrollbar{width:5px}::-webkit-scrollbar-thumb{background:var(--border);border-radius:10px}
-
-/* LOGIN */
 #ls{position:fixed;inset:0;background:var(--bg);z-index:999;display:flex;align-items:center;justify-content:center}
 .lbox{background:var(--bg2);border:1px solid var(--border);border-radius:20px;padding:40px 32px;width:360px;text-align:center}
 .llogo{font-family:'Syne',sans-serif;font-size:32px;font-weight:800;background:linear-gradient(135deg,#fff,var(--accent));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:6px}
@@ -22,8 +20,6 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 .linput:focus{border-color:rgba(124,111,253,.5)}
 .lbtn{width:100%;background:linear-gradient(135deg,var(--accent),#b06bff);color:#fff;border:none;border-radius:10px;padding:14px;font-size:15px;font-weight:700;cursor:pointer;font-family:'Syne',sans-serif}
 .lerr{font-size:12px;color:var(--red);margin-top:8px;min-height:18px}
-
-/* SIDEBAR */
 .sidebar{width:var(--sw);background:var(--bg2);border-right:1px solid var(--border);height:100vh;position:fixed;left:0;top:0;display:flex;flex-direction:column;z-index:50;padding:24px 0;overflow-y:auto}
 .sb-logo{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:#fff;padding:0 20px;margin-bottom:4px}
 .sb-sub{font-size:11px;color:var(--muted);padding:0 20px;margin-bottom:18px}
@@ -36,23 +32,17 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 .sbadge{background:var(--red);color:#fff;border-radius:20px;padding:2px 7px;font-size:10px;font-weight:700;margin-left:auto}
 .sb-out{margin-top:auto;padding:12px 16px 0}
 .outbtn{width:100%;background:var(--rs);color:var(--red);border:1px solid rgba(255,95,95,.2);border-radius:10px;padding:11px;font-size:13px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif}
-
-/* MAIN */
 .main{margin-left:var(--sw);flex:1;padding:28px;min-height:100vh;overflow-x:hidden}
 .sec{display:none}.sec.active{display:block;animation:fi .25s ease}
 @keyframes fi{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 .shd{display:flex;align-items:center;justify-content:space-between;margin-bottom:22px;flex-wrap:wrap;gap:10px}
 .stitle{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:#fff}
 .ssub{font-size:13px;color:var(--muted);margin-top:3px}
-
-/* STATS */
 .sgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:24px}
 .scard{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px}
-.sic{font-size:24px;margin-bottom:10px}
+.sic2{font-size:24px;margin-bottom:10px}
 .sval{font-family:'Syne',sans-serif;font-size:26px;font-weight:800;color:#fff}
 .slbl{font-size:12px;color:var(--muted);margin-top:4px}
-
-/* TABLE */
 .tc{background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:18px}
 .thead{padding:14px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
 .ttitle{font-family:'Syne',sans-serif;font-size:15px;font-weight:700;color:#fff}
@@ -62,8 +52,6 @@ td{padding:12px 18px;font-size:13px;border-bottom:1px solid rgba(255,255,255,.04
 tr:last-child td{border-bottom:none}
 tr:hover td{background:rgba(255,255,255,.02)}
 .erow td{text-align:center;padding:30px;color:var(--muted);font-size:13px}
-
-/* FORM */
 .fc{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:22px;margin-bottom:16px}
 .fg2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 .fg{display:flex;flex-direction:column;gap:6px}
@@ -74,36 +62,50 @@ input:focus,select:focus,textarea:focus{border-color:rgba(124,111,253,.5)}
 select option{background:#1a1d26}
 textarea{resize:vertical;min-height:70px}
 
-/* AD CHAIN SECTION */
-.chain-wrap{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px;margin-bottom:16px}
-.chain-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px}
-.chain-title{font-family:'Syne',sans-serif;font-size:15px;font-weight:700;color:#fff;display:flex;align-items:center;gap:8px}
-.chain-sub{font-size:12px;color:var(--muted);margin-bottom:16px}
-.chain-enabled{border-color:rgba(0,224,150,.3)!important;background:rgba(0,224,150,.03)!important}
+/* COUNT SELECTOR — fixed */
+.cnt-sel{display:flex;gap:7px;margin-top:7px;flex-wrap:wrap}
+.cnt-opt{width:38px;height:38px;border-radius:9px;border:2px solid var(--border);background:var(--bg3);color:var(--muted);font-size:15px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;font-family:'Syne',sans-serif;user-select:none}
+.cnt-opt:hover{border-color:rgba(124,111,253,.4);color:var(--text)}
+.cnt-opt.active{border-color:var(--accent)!important;background:var(--as)!important;color:var(--accent)!important}
 
-/* ADNET CARDS */
-.anet-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:14px 0}
-.anet-card{background:var(--bg3);border:2px solid var(--border);border-radius:14px;padding:16px;transition:all .2s}
-.anet-card.on{border-color:rgba(0,224,150,.3);background:rgba(0,224,150,.03)}
-.anet-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
-.anet-name{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:#fff;display:flex;align-items:center;gap:7px}
-.anet-fields{display:flex;flex-direction:column;gap:9px}
-.anet-f{display:flex;flex-direction:column;gap:4px}
-.anet-f label{font-size:10px}
-.anet-f input,.anet-f select,.anet-f textarea{font-size:12px;padding:8px 10px;border-radius:8px}
-.anet-f textarea{min-height:55px;font-family:monospace;font-size:11px}
-.anet-note{font-size:11px;color:var(--muted);margin-top:8px;line-height:1.5}
-.anet-note a{color:var(--accent)}
+/* AD SLOT QUEUE — key feature */
+.slot-queue{display:flex;flex-direction:column;gap:8px;margin:14px 0}
+.slot-row{display:flex;align-items:center;gap:10px;background:var(--bg3);border-radius:12px;padding:10px 14px;border:1px solid var(--border)}
+.slot-num{width:28px;height:28px;border-radius:50%;background:var(--accent);color:#fff;font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:'Syne',sans-serif}
+.slot-lbl{font-size:12px;color:var(--muted);flex:1}
+.slot-select{flex:2;background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:7px 10px;font-size:13px;color:#fff;font-family:'DM Sans',sans-serif;outline:none}
+.slot-select:focus{border-color:rgba(124,111,253,.5)}
 
-/* COUNT SELECTOR */
-.cnt-sel{display:flex;gap:7px;margin-top:7px}
-.cnt-opt{width:40px;height:40px;border-radius:9px;border:2px solid var(--border);background:var(--bg3);color:var(--muted);font-size:15px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;font-family:'Syne',sans-serif}
-.cnt-opt.active{border-color:var(--accent);background:var(--as);color:var(--accent)}
+/* NETWORK CREDENTIAL CARDS */
+.net-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:14px 0}
+.net-card{background:var(--bg3);border:2px solid var(--border);border-radius:14px;padding:16px;transition:all .2s}
+.net-card.on{border-color:rgba(0,224,150,.3);background:rgba(0,224,150,.03)}
+.nc-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.nc-name{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:#fff;display:flex;align-items:center;gap:7px}
+.nc-fields{display:flex;flex-direction:column;gap:8px}
+.nc-f{display:flex;flex-direction:column;gap:4px}
+.nc-f label{font-size:10px}
+.nc-f input,.nc-f select,.nc-f textarea{font-size:12px;padding:8px 10px;border-radius:8px}
+.nc-f textarea{min-height:55px;font-family:monospace;font-size:11px}
+.nc-note{font-size:11px;color:var(--muted);margin-top:8px;line-height:1.5}
+.nc-note a{color:var(--accent);text-decoration:none}
+
+/* SDK INFO BOX */
+.sdk-box{background:rgba(255,200,74,.06);border:1px solid rgba(255,200,74,.2);border-radius:12px;padding:14px;margin-bottom:14px}
+.sdk-box-title{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--yellow);margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.sdk-item{font-size:12px;color:rgba(255,255,255,.7);line-height:1.8}
+.sdk-item code{background:rgba(255,255,255,.08);padding:2px 7px;border-radius:5px;font-family:monospace;color:var(--accent);font-size:11px}
 
 /* FLOW PREVIEW */
-.flow-prev{display:flex;align-items:center;gap:7px;flex-wrap:wrap;padding:12px;background:var(--bg3);border-radius:10px;margin-top:12px;min-height:48px}
-.fp-chip{border-radius:8px;padding:6px 11px;font-size:12px;font-weight:600;display:flex;align-items:center;gap:5px}
-.fp-arr{color:var(--muted);font-size:14px}
+.flow-prev{display:flex;align-items:center;gap:7px;flex-wrap:wrap;padding:12px;background:var(--bg3);border-radius:10px;margin-top:10px;min-height:44px}
+.fp-chip{border-radius:8px;padding:5px 10px;font-size:12px;font-weight:600;display:flex;align-items:center;gap:5px;white-space:nowrap}
+
+/* CHAIN WRAP */
+.chain-wrap{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:22px;margin-bottom:20px}
+.chain-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;flex-wrap:wrap;gap:10px}
+.chain-title{font-family:'Syne',sans-serif;font-size:16px;font-weight:700;color:#fff;display:flex;align-items:center;gap:8px}
+.chain-sub{font-size:12px;color:var(--muted);margin-bottom:16px;line-height:1.6}
+.chain-enabled{border-color:rgba(0,224,150,.3)!important}
 
 /* TOGGLE */
 .tog{position:relative;width:44px;height:24px;flex-shrink:0}
@@ -122,32 +124,25 @@ input:checked+.sldr:before{transform:translateX(20px);background:#fff}
 .bgh{background:rgba(255,255,255,.06);color:var(--text);border:1px solid var(--border)}
 .bsm{padding:7px 12px;font-size:12px;border-radius:8px}
 .bfu{width:100%;justify-content:center}
-
-/* BADGES */
 .bdg{border-radius:20px;padding:4px 10px;font-size:11px;font-weight:700}
 .b-p{background:var(--ys);color:var(--yellow);border:1px solid rgba(255,200,74,.25)}
 .b-a{background:var(--gs);color:var(--green);border:1px solid rgba(0,224,150,.25)}
 .b-r{background:var(--rs);color:var(--red);border:1px solid rgba(255,95,95,.25)}
-
-/* INFO BOX */
 .ibox{background:rgba(124,111,253,.07);border:1px solid rgba(124,111,253,.2);border-radius:12px;padding:14px;margin-bottom:16px;font-size:13px;color:rgba(255,255,255,.65);line-height:1.7}
 .ibox strong{color:var(--accent)}
-
-/* MODAL */
 .mov{position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:200;display:none;align-items:center;justify-content:center;padding:20px}
 .mov.open{display:flex}
 .modal{background:var(--bg2);border:1px solid var(--border);border-radius:18px;padding:28px;width:100%;max-width:480px;animation:su .28s ease;max-height:90vh;overflow-y:auto}
 @keyframes su{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
 .mtitle{font-family:'Syne',sans-serif;font-size:18px;font-weight:800;color:#fff;margin-bottom:18px;display:flex;align-items:center;gap:10px}
 .mrow{display:flex;gap:10px;margin-top:16px}
-
 .toast{position:fixed;top:20px;right:20px;background:rgba(20,24,38,.97);border:1px solid rgba(124,111,253,.3);color:#fff;padding:12px 20px;border-radius:12px;font-size:13px;font-weight:600;z-index:999;transition:all .3s;opacity:0;transform:translateX(20px)}
 .toast.show{opacity:1;transform:translateX(0)}
+.sec-lbl{font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;margin:16px 0 10px;display:flex;align-items:center;gap:6px}
 </style>
 </head>
 <body>
 
-<!-- LOGIN -->
 <div id="ls">
   <div class="lbox">
     <div class="llogo">EarnX</div>
@@ -158,7 +153,6 @@ input:checked+.sldr:before{transform:translateX(20px);background:#fff}
   </div>
 </div>
 
-<!-- SIDEBAR -->
 <aside class="sidebar" id="sb" style="display:none">
   <div class="sb-logo">EarnX</div>
   <div class="sb-sub">Admin Panel</div>
@@ -175,17 +169,16 @@ input:checked+.sldr:before{transform:translateX(20px);background:#fff}
   <div class="sb-out"><button class="outbtn" onclick="location.reload()">🚪 Logout</button></div>
 </aside>
 
-<!-- MAIN -->
 <main class="main" id="main" style="display:none">
 
 <!-- DASHBOARD -->
 <div class="sec active" id="sec-dashboard">
   <div class="shd"><div><div class="stitle">Dashboard</div><div class="ssub">Real-time overview</div></div></div>
   <div class="sgrid">
-    <div class="scard"><div class="sic">👥</div><div class="sval" id="st-u">0</div><div class="slbl">Total Users</div></div>
-    <div class="scard"><div class="sic">💰</div><div class="sval" id="st-c">0</div><div class="slbl">Coins Issued</div></div>
-    <div class="scard"><div class="sic">⏳</div><div class="sval" id="st-w">0</div><div class="slbl">Pending Withdrawals</div></div>
-    <div class="scard"><div class="sic">✅</div><div class="sval" id="st-a">0</div><div class="slbl">Approved</div></div>
+    <div class="scard"><div class="sic2">👥</div><div class="sval" id="st-u">0</div><div class="slbl">Total Users</div></div>
+    <div class="scard"><div class="sic2">💰</div><div class="sval" id="st-c">0</div><div class="slbl">Coins Issued</div></div>
+    <div class="scard"><div class="sic2">⏳</div><div class="sval" id="st-w">0</div><div class="slbl">Pending Withdrawals</div></div>
+    <div class="scard"><div class="sic2">✅</div><div class="sval" id="st-a">0</div><div class="slbl">Approved</div></div>
   </div>
   <div class="tc"><div class="thead"><div class="ttitle">🕐 Recent Users</div></div>
     <table><thead><tr><th>User</th><th>ID</th><th>Balance</th><th>Joined</th><th>Refs</th></tr></thead>
@@ -226,17 +219,88 @@ input:checked+.sldr:before{transform:translateX(20px);background:#fff}
   </div>
 </div>
 
-<!-- ══════ AD CHAINS ══════ -->
+<!-- ════════ AD CHAINS ════════ -->
 <div class="sec" id="sec-adchain">
   <div class="shd">
-    <div><div class="stitle">📺 Ad Chains</div><div class="ssub">Watch Chain + Withdraw Chain — আলাদাভাবে configure করো</div></div>
+    <div><div class="stitle">📺 Ad Chains</div><div class="ssub">Watch Chain + Withdraw Chain</div></div>
   </div>
 
   <div class="ibox">
-    💡 <strong>Ad Chain কী?</strong> একটার পর একটা ads চলে — সব শেষ হলে action complete হয়।<br>
-    📺 <strong>Watch Chain</strong> → Home এ Watch button চাপলে চলে, শেষে <strong>Coins add</strong> হয়।<br>
-    💸 <strong>Withdraw Chain</strong> → Withdraw button চাপলে চলে, শেষে <strong>Withdraw submit</strong> হয়।<br>
-    ✅ প্রতিটার জন্য আলাদা <strong>Ad network, count, order</strong> set করতে পারবে।
+    💡 <strong>কিভাবে কাজ করে:</strong><br>
+    1️⃣ <strong>নিচে Network Credentials</strong> এ প্রতিটার ID/Key বসাও<br>
+    2️⃣ <strong>Total Ads</strong> select করো (1-5) — প্রতিটা slot এ কোন network চলবে সেটা আলাদাভাবে select করো<br>
+    3️⃣ <strong>Save</strong> করো → Mini App এ সাথে সাথে apply হবে
+  </div>
+
+  <!-- ══ NETWORK CREDENTIALS ══ -->
+  <div class="chain-wrap">
+    <div class="chain-hd">
+      <div class="chain-title">🔑 Ad Network Credentials</div>
+      <button class="btn bg" onclick="saveCredentials()">💾 Save Credentials</button>
+    </div>
+    <div class="chain-sub">এখানে একবার ID/Key বসাও — Watch Chain ও Withdraw Chain দুটোতেই automatically use হবে</div>
+
+    <div class="sdk-box">
+      <div class="sdk-box-title">📦 SDK Setup (earnx-miniapp.html এ যোগ করতে হবে)</div>
+      <div class="sdk-item">
+        🎯 <strong>Adsgram:</strong> <code>&lt;script src="https://sad.adsgram.ai/js/sad.min.js"&gt;&lt;/script&gt;</code><br>
+        💰 <strong>Monetag:</strong> SDK auto-load হয় Zone ID দিলে — আলাদা script লাগে না<br>
+        ⭐ <strong>Adsterra:</strong> Direct Link বা Script — Adsterra dashboard থেকে নিন
+      </div>
+    </div>
+
+    <div class="net-cards">
+      <!-- ADSGRAM -->
+      <div class="net-card" id="nc-adsgram">
+        <div class="nc-hd">
+          <div class="nc-name">🎯 Adsgram</div>
+          <label class="tog"><input type="checkbox" id="adsgram-active" onchange="toggleNetCard('adsgram')"><span class="sldr"></span></label>
+        </div>
+        <div class="nc-fields">
+          <div class="nc-f"><label>Block ID</label><input type="text" id="adsgram-blockId" placeholder="e.g. 1234"></div>
+        </div>
+        <div class="nc-note">
+          📌 <a href="https://ads.gram.io" target="_blank">ads.gram.io</a> → Create Block → Copy Block ID<br>
+          ✅ Telegram Mini App এর জন্য সবচেয়ে ভালো
+        </div>
+      </div>
+
+      <!-- MONETAG -->
+      <div class="net-card" id="nc-monetag">
+        <div class="nc-hd">
+          <div class="nc-name">💰 Monetag</div>
+          <label class="tog"><input type="checkbox" id="monetag-active" onchange="toggleNetCard('monetag')"><span class="sldr"></span></label>
+        </div>
+        <div class="nc-fields">
+          <div class="nc-f"><label>Zone ID / Publisher ID</label><input type="text" id="monetag-zoneId" placeholder="e.g. 8765432"></div>
+          <div class="nc-f"><label>Ad Type</label>
+            <select id="monetag-type">
+              <option value="onclick">Onclick/Popunder</option>
+              <option value="interstitial">Interstitial</option>
+              <option value="inpage">In-Page Push</option>
+            </select>
+          </div>
+        </div>
+        <div class="nc-note">
+          📌 <a href="https://monetag.com" target="_blank">monetag.com</a> → Zones → Zone ID নিন
+        </div>
+      </div>
+
+      <!-- ADSTERRA -->
+      <div class="net-card" id="nc-adsterra">
+        <div class="nc-hd">
+          <div class="nc-name">⭐ Adsterra</div>
+          <label class="tog"><input type="checkbox" id="adsterra-active" onchange="toggleNetCard('adsterra')"><span class="sldr"></span></label>
+        </div>
+        <div class="nc-fields">
+          <div class="nc-f"><label>Direct Link (Recommended)</label><input type="text" id="adsterra-link" placeholder="https://www.profitableratecpm.com/..."></div>
+          <div class="nc-f"><label>Or Script Code</label><textarea id="adsterra-script" placeholder="<!-- Adsterra script paste here -->"></textarea></div>
+        </div>
+        <div class="nc-note">
+          📌 <a href="https://adsterra.com" target="_blank">adsterra.com</a> → Direct Link বা Social Bar → Copy
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- ══ WATCH CHAIN ══ -->
@@ -245,170 +309,80 @@ input:checked+.sldr:before{transform:translateX(20px);background:#fff}
       <div class="chain-title">📺 Watch & Earn Chain</div>
       <button class="btn bg" onclick="saveChain('watch')">💾 Save Watch Chain</button>
     </div>
-    <div class="chain-sub">Home page এ Watch button চাপলে এই chain চলবে → শেষে Coins পাবে</div>
+    <div class="chain-sub">
+      Home page এ Watch button চাপলে এই chain চলবে → সব শেষে Coins পাবে<br>
+      <strong style="color:var(--yellow)">👇 প্রতিটা Slot এ কোন network চলবে সেটা select করো</strong>
+    </div>
 
-    <div class="fc" style="margin-bottom:12px">
+    <div class="fc" style="margin-bottom:14px">
       <div class="fg2">
         <div class="fg">
-          <label>Total Ads Per Session</label>
-          <div class="cnt-sel" id="wc-count-sel">
-            <div class="cnt-opt" onclick="setCnt('wc',1)">1</div>
-            <div class="cnt-opt" onclick="setCnt('wc',2)">2</div>
-            <div class="cnt-opt active" onclick="setCnt('wc',3)">3</div>
-            <div class="cnt-opt" onclick="setCnt('wc',4)">4</div>
-            <div class="cnt-opt" onclick="setCnt('wc',5)">5</div>
+          <label>Total Ads Per Session (1-5)</label>
+          <div class="cnt-sel" id="wc-cnt">
+            <div class="cnt-opt active" data-chain="wc" data-n="1" onclick="setCnt('wc',1)">1</div>
+            <div class="cnt-opt" data-chain="wc" data-n="2" onclick="setCnt('wc',2)">2</div>
+            <div class="cnt-opt" data-chain="wc" data-n="3" onclick="setCnt('wc',3)">3</div>
+            <div class="cnt-opt" data-chain="wc" data-n="4" onclick="setCnt('wc',4)">4</div>
+            <div class="cnt-opt" data-chain="wc" data-n="5" onclick="setCnt('wc',5)">5</div>
           </div>
-          <input type="hidden" id="wc-count" value="3">
-          <div style="font-size:11px;color:var(--muted);margin-top:5px">Watch click এ মোট কতটা ad চলবে</div>
+          <input type="hidden" id="wc-count" value="1">
         </div>
         <div class="fg">
           <label>Reward After All Ads (Coins)</label>
           <input type="number" id="wc-reward" value="50" placeholder="50">
-          <div style="font-size:11px;color:var(--muted);margin-top:5px">সব ads শেষে user এই coins পাবে</div>
         </div>
       </div>
     </div>
 
-    <!-- Watch Network Cards -->
-    <div style="font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;margin-bottom:10px">Ad Networks</div>
-    <div class="anet-grid">
-      <div class="anet-card" id="wc-card-adsgram">
-        <div class="anet-hd">
-          <div class="anet-name">🎯 Adsgram</div>
-          <label class="tog"><input type="checkbox" id="wc-adsgram-on" onchange="toggleAnet('wc','adsgram')"><span class="sldr"></span></label>
-        </div>
-        <div class="anet-fields">
-          <div class="anet-f"><label>Order</label>
-            <select id="wc-adsgram-order"><option value="1">1st</option><option value="2">2nd</option><option value="3">3rd</option><option value="4">4th</option><option value="5">5th</option></select>
-          </div>
-          <div class="anet-f"><label>Block ID</label><input type="text" id="wc-adsgram-blockId" placeholder="1234"></div>
-        </div>
-        <div class="anet-note">📌 <a href="https://ads.gram.io" target="_blank">ads.gram.io</a> → Block ID</div>
-      </div>
-      <div class="anet-card" id="wc-card-monetag">
-        <div class="anet-hd">
-          <div class="anet-name">💰 Monetag</div>
-          <label class="tog"><input type="checkbox" id="wc-monetag-on" onchange="toggleAnet('wc','monetag')"><span class="sldr"></span></label>
-        </div>
-        <div class="anet-fields">
-          <div class="anet-f"><label>Order</label>
-            <select id="wc-monetag-order"><option value="1">1st</option><option value="2" selected>2nd</option><option value="3">3rd</option><option value="4">4th</option><option value="5">5th</option></select>
-          </div>
-          <div class="anet-f"><label>Zone ID</label><input type="text" id="wc-monetag-zoneId" placeholder="8765432"></div>
-          <div class="anet-f"><label>Type</label>
-            <select id="wc-monetag-type"><option value="popunder">Popunder</option><option value="interstitial">Interstitial</option><option value="inpage">In-Page Push</option></select>
-          </div>
-        </div>
-        <div class="anet-note">📌 <a href="https://monetag.com" target="_blank">monetag.com</a> → Zone ID</div>
-      </div>
-      <div class="anet-card" id="wc-card-adsterra">
-        <div class="anet-hd">
-          <div class="anet-name">⭐ Adsterra</div>
-          <label class="tog"><input type="checkbox" id="wc-adsterra-on" onchange="toggleAnet('wc','adsterra')"><span class="sldr"></span></label>
-        </div>
-        <div class="anet-fields">
-          <div class="anet-f"><label>Order</label>
-            <select id="wc-adsterra-order"><option value="1">1st</option><option value="2">2nd</option><option value="3" selected>3rd</option><option value="4">4th</option><option value="5">5th</option></select>
-          </div>
-          <div class="anet-f"><label>Direct Link / Script</label>
-            <textarea id="wc-adsterra-script" placeholder="Adsterra link বা script..."></textarea>
-          </div>
-        </div>
-        <div class="anet-note">📌 <a href="https://adsterra.com" target="_blank">adsterra.com</a> → Direct Link</div>
-      </div>
-    </div>
+    <!-- Slot Queue — each slot has its own network selector -->
+    <div class="sec-lbl">📋 Ad Slot Queue — প্রতিটা slot এ কোন network চলবে</div>
+    <div class="slot-queue" id="wc-slots"></div>
 
-    <div style="font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;margin-bottom:6px">Flow Preview</div>
+    <div class="sec-lbl">👁️ Flow Preview</div>
     <div class="flow-prev" id="wc-preview"><span style="color:var(--muted);font-size:12px">Save করলে দেখাবে</span></div>
   </div>
-
-  <div style="height:20px"></div>
 
   <!-- ══ WITHDRAW CHAIN ══ -->
   <div class="chain-wrap" id="wdChainCard">
     <div class="chain-hd">
-      <div class="chain-title">💸 Withdraw Ad Chain
-        <span style="background:var(--ys);color:var(--yellow);border:1px solid rgba(255,200,74,.3);border-radius:20px;padding:3px 10px;font-size:11px;font-weight:700" id="wdChainStatusBadge">OFF</span>
+      <div class="chain-title">
+        💸 Withdraw Ad Chain
+        <span id="wdBadge" style="background:var(--ys);color:var(--yellow);border:1px solid rgba(255,200,74,.3);border-radius:20px;padding:3px 10px;font-size:11px;font-weight:700">OFF</span>
       </div>
       <div style="display:flex;gap:10px;align-items:center">
-        <label class="tog"><input type="checkbox" id="wd-chain-enabled" onchange="toggleWdChain()"><span class="sldr"></span></label>
+        <label class="tog"><input type="checkbox" id="wd-enabled" onchange="toggleWdChain()"><span class="sldr"></span></label>
         <button class="btn bg" onclick="saveChain('wd')">💾 Save Withdraw Chain</button>
       </div>
     </div>
-    <div class="chain-sub">Withdraw button চাপলে এই chain চলবে → সব ads শেষ হলে withdraw submit হবে</div>
+    <div class="chain-sub">
+      Withdraw button চাপলে এই chain চলবে → সব ads শেষ হলেই withdraw submit হবে<br>
+      <strong style="color:var(--yellow)">👇 প্রতিটা Slot এ কোন network চলবে সেটা select করো</strong>
+    </div>
 
-    <div class="fc" style="margin-bottom:12px">
+    <div class="fc" style="margin-bottom:14px">
       <div class="fg2">
         <div class="fg">
-          <label>Total Ads Before Withdraw</label>
-          <div class="cnt-sel" id="wd-count-sel">
-            <div class="cnt-opt" onclick="setCnt('wd',1)">1</div>
-            <div class="cnt-opt" onclick="setCnt('wd',2)">2</div>
-            <div class="cnt-opt active" onclick="setCnt('wd',3)">3</div>
-            <div class="cnt-opt" onclick="setCnt('wd',4)">4</div>
-            <div class="cnt-opt" onclick="setCnt('wd',5)">5</div>
+          <label>Total Ads Before Withdraw (1-5)</label>
+          <div class="cnt-sel" id="wd-cnt">
+            <div class="cnt-opt active" data-chain="wd" data-n="1" onclick="setCnt('wd',1)">1</div>
+            <div class="cnt-opt" data-chain="wd" data-n="2" onclick="setCnt('wd',2)">2</div>
+            <div class="cnt-opt" data-chain="wd" data-n="3" onclick="setCnt('wd',3)">3</div>
+            <div class="cnt-opt" data-chain="wd" data-n="4" onclick="setCnt('wd',4)">4</div>
+            <div class="cnt-opt" data-chain="wd" data-n="5" onclick="setCnt('wd',5)">5</div>
           </div>
-          <input type="hidden" id="wd-count" value="3">
-          <div style="font-size:11px;color:var(--muted);margin-top:5px">Withdraw এর আগে কতটা ad দেখতে হবে</div>
+          <input type="hidden" id="wd-count" value="1">
         </div>
         <div class="fg">
           <label>Message to User</label>
           <input type="text" id="wd-msg" value="Withdraw করতে ads দেখুন 👇" placeholder="Message...">
-          <div style="font-size:11px;color:var(--muted);margin-top:5px">Ads শুরু হওয়ার আগে user এটা দেখবে</div>
         </div>
       </div>
     </div>
 
-    <!-- Withdraw Network Cards -->
-    <div style="font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;margin-bottom:10px">Ad Networks</div>
-    <div class="anet-grid">
-      <div class="anet-card" id="wd-card-adsgram">
-        <div class="anet-hd">
-          <div class="anet-name">🎯 Adsgram</div>
-          <label class="tog"><input type="checkbox" id="wd-adsgram-on" onchange="toggleAnet('wd','adsgram')"><span class="sldr"></span></label>
-        </div>
-        <div class="anet-fields">
-          <div class="anet-f"><label>Order</label>
-            <select id="wd-adsgram-order"><option value="1">1st</option><option value="2">2nd</option><option value="3">3rd</option><option value="4">4th</option><option value="5">5th</option></select>
-          </div>
-          <div class="anet-f"><label>Block ID</label><input type="text" id="wd-adsgram-blockId" placeholder="1234"></div>
-        </div>
-        <div class="anet-note">📌 <a href="https://ads.gram.io" target="_blank">ads.gram.io</a> → Block ID</div>
-      </div>
-      <div class="anet-card" id="wd-card-monetag">
-        <div class="anet-hd">
-          <div class="anet-name">💰 Monetag</div>
-          <label class="tog"><input type="checkbox" id="wd-monetag-on" onchange="toggleAnet('wd','monetag')"><span class="sldr"></span></label>
-        </div>
-        <div class="anet-fields">
-          <div class="anet-f"><label>Order</label>
-            <select id="wd-monetag-order"><option value="1">1st</option><option value="2" selected>2nd</option><option value="3">3rd</option><option value="4">4th</option><option value="5">5th</option></select>
-          </div>
-          <div class="anet-f"><label>Zone ID</label><input type="text" id="wd-monetag-zoneId" placeholder="8765432"></div>
-          <div class="anet-f"><label>Type</label>
-            <select id="wd-monetag-type"><option value="popunder">Popunder</option><option value="interstitial">Interstitial</option><option value="inpage">In-Page Push</option></select>
-          </div>
-        </div>
-        <div class="anet-note">📌 <a href="https://monetag.com" target="_blank">monetag.com</a> → Zone ID</div>
-      </div>
-      <div class="anet-card" id="wd-card-adsterra">
-        <div class="anet-hd">
-          <div class="anet-name">⭐ Adsterra</div>
-          <label class="tog"><input type="checkbox" id="wd-adsterra-on" onchange="toggleAnet('wd','adsterra')"><span class="sldr"></span></label>
-        </div>
-        <div class="anet-fields">
-          <div class="anet-f"><label>Order</label>
-            <select id="wd-adsterra-order"><option value="1">1st</option><option value="2">2nd</option><option value="3" selected>3rd</option><option value="4">4th</option><option value="5">5th</option></select>
-          </div>
-          <div class="anet-f"><label>Direct Link / Script</label>
-            <textarea id="wd-adsterra-script" placeholder="Adsterra link বা script..."></textarea>
-          </div>
-        </div>
-        <div class="anet-note">📌 <a href="https://adsterra.com" target="_blank">adsterra.com</a> → Direct Link</div>
-      </div>
-    </div>
+    <div class="sec-lbl">📋 Ad Slot Queue — প্রতিটা slot এ কোন network চলবে</div>
+    <div class="slot-queue" id="wd-slots"></div>
 
-    <div style="font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;margin-bottom:6px">Flow Preview</div>
+    <div class="sec-lbl">👁️ Flow Preview</div>
     <div class="flow-prev" id="wd-preview"><span style="color:var(--muted);font-size:12px">Save করলে দেখাবে</span></div>
   </div>
 </div>
@@ -471,76 +445,66 @@ input:checked+.sldr:before{transform:translateX(20px);background:#fff}
 </main>
 
 <!-- MODALS -->
-<div class="mov" id="adMod">
-  <div class="modal">
-    <div class="mtitle">🎯 <span id="adModT">Add Ad</span></div>
-    <div class="fg2">
-      <div class="fg"><label>Name</label><input type="text" id="an"></div>
-      <div class="fg"><label>Icon</label><input type="text" id="ai" placeholder="📱"></div>
-      <div class="fg"><label>Description</label><input type="text" id="ad_"></div>
-      <div class="fg"><label>BG Color</label><input type="text" id="ab" placeholder="rgba(124,111,253,.15)"></div>
-      <div class="fg"><label>Reward</label><input type="number" id="ar"></div>
-      <div class="fg"><label>Duration (sec)</label><input type="number" id="adu"></div>
-    </div>
-    <div style="margin-top:14px;display:flex;align-items:center;justify-content:space-between"><span style="font-size:13px">Active</span><label class="tog"><input type="checkbox" id="aac" checked><span class="sldr"></span></label></div>
-    <input type="hidden" id="aei">
-    <div class="mrow"><button class="btn bgh" style="flex:1" onclick="cm('adMod')">Cancel</button><button class="btn bp" style="flex:2" onclick="saveAd()">💾 Save</button></div>
+<div class="mov" id="adMod"><div class="modal">
+  <div class="mtitle">🎯 <span id="adModT">Add Ad</span></div>
+  <div class="fg2">
+    <div class="fg"><label>Name</label><input type="text" id="an"></div>
+    <div class="fg"><label>Icon</label><input type="text" id="ai" placeholder="📱"></div>
+    <div class="fg"><label>Description</label><input type="text" id="ad_"></div>
+    <div class="fg"><label>BG Color</label><input type="text" id="ab" placeholder="rgba(124,111,253,.15)"></div>
+    <div class="fg"><label>Reward</label><input type="number" id="ar"></div>
+    <div class="fg"><label>Duration (sec)</label><input type="number" id="adu"></div>
   </div>
-</div>
+  <div style="margin-top:14px;display:flex;align-items:center;justify-content:space-between"><span style="font-size:13px">Active</span><label class="tog"><input type="checkbox" id="aac" checked><span class="sldr"></span></label></div>
+  <input type="hidden" id="aei">
+  <div class="mrow"><button class="btn bgh" style="flex:1" onclick="cm('adMod')">Cancel</button><button class="btn bp" style="flex:2" onclick="saveAd()">💾 Save</button></div>
+</div></div>
 
-<div class="mov" id="taskMod">
-  <div class="modal">
-    <div class="mtitle">⚡ <span id="taskModT">Add Task</span></div>
-    <div class="fg2">
-      <div class="fg"><label>Name</label><input type="text" id="tn"></div>
-      <div class="fg"><label>Icon</label><input type="text" id="ti" placeholder="📢"></div>
-      <div class="fg"><label>Description</label><input type="text" id="td_"></div>
-      <div class="fg"><label>BG Color</label><input type="text" id="tb" placeholder="rgba(0,224,150,.12)"></div>
-      <div class="fg"><label>Reward</label><input type="number" id="tr_"></div>
-      <div class="fg"><label>Link</label><input type="text" id="tl" placeholder="https://t.me/..."></div>
-    </div>
-    <div style="margin-top:14px;display:flex;align-items:center;justify-content:space-between"><span style="font-size:13px">Active</span><label class="tog"><input type="checkbox" id="tac" checked><span class="sldr"></span></label></div>
-    <input type="hidden" id="tei">
-    <div class="mrow"><button class="btn bgh" style="flex:1" onclick="cm('taskMod')">Cancel</button><button class="btn bp" style="flex:2" onclick="saveTask()">💾 Save</button></div>
+<div class="mov" id="taskMod"><div class="modal">
+  <div class="mtitle">⚡ <span id="taskModT">Add Task</span></div>
+  <div class="fg2">
+    <div class="fg"><label>Name</label><input type="text" id="tn"></div>
+    <div class="fg"><label>Icon</label><input type="text" id="ti" placeholder="📢"></div>
+    <div class="fg"><label>Description</label><input type="text" id="td_"></div>
+    <div class="fg"><label>BG Color</label><input type="text" id="tb" placeholder="rgba(0,224,150,.12)"></div>
+    <div class="fg"><label>Reward</label><input type="number" id="tr_"></div>
+    <div class="fg"><label>Link</label><input type="text" id="tl" placeholder="https://t.me/..."></div>
   </div>
-</div>
+  <div style="margin-top:14px;display:flex;align-items:center;justify-content:space-between"><span style="font-size:13px">Active</span><label class="tog"><input type="checkbox" id="tac" checked><span class="sldr"></span></label></div>
+  <input type="hidden" id="tei">
+  <div class="mrow"><button class="btn bgh" style="flex:1" onclick="cm('taskMod')">Cancel</button><button class="btn bp" style="flex:2" onclick="saveTask()">💾 Save</button></div>
+</div></div>
 
-<div class="mov" id="supMod">
-  <div class="modal">
-    <div class="mtitle">🛟 <span id="supModT">Add Card</span></div>
-    <div class="fg2">
-      <div class="fg"><label>Title</label><input type="text" id="spt"></div>
-      <div class="fg"><label>Icon</label><input type="text" id="spi" placeholder="💬"></div>
-      <div class="fg"><label>Description</label><input type="text" id="spd"></div>
-      <div class="fg"><label>BG Color</label><input type="text" id="spb"></div>
-      <div class="fg full"><label>Link</label><input type="text" id="spl" placeholder="https://t.me/..."></div>
-    </div>
-    <input type="hidden" id="spei">
-    <div class="mrow"><button class="btn bgh" style="flex:1" onclick="cm('supMod')">Cancel</button><button class="btn bp" style="flex:2" onclick="saveSupport()">💾 Save</button></div>
+<div class="mov" id="supMod"><div class="modal">
+  <div class="mtitle">🛟 <span id="supModT">Add Card</span></div>
+  <div class="fg2">
+    <div class="fg"><label>Title</label><input type="text" id="spt"></div>
+    <div class="fg"><label>Icon</label><input type="text" id="spi" placeholder="💬"></div>
+    <div class="fg"><label>Description</label><input type="text" id="spd"></div>
+    <div class="fg"><label>BG Color</label><input type="text" id="spb"></div>
+    <div class="fg full"><label>Link</label><input type="text" id="spl" placeholder="https://t.me/..."></div>
   </div>
-</div>
+  <input type="hidden" id="spei">
+  <div class="mrow"><button class="btn bgh" style="flex:1" onclick="cm('supMod')">Cancel</button><button class="btn bp" style="flex:2" onclick="saveSupport()">💾 Save</button></div>
+</div></div>
 
-<div class="mov" id="rejMod">
-  <div class="modal">
-    <div class="mtitle">✗ Reject Withdrawal</div>
-    <div class="fg"><label>Rejection Reason</label><textarea id="rr" style="height:90px" placeholder="e.g. Invalid account number..."></textarea></div>
-    <input type="hidden" id="rwi"><input type="hidden" id="rui"><input type="hidden" id="ram">
-    <div class="mrow"><button class="btn bgh" style="flex:1" onclick="cm('rejMod')">Cancel</button><button class="btn br" style="flex:2" onclick="confirmReject()">✗ Reject & Refund</button></div>
-  </div>
-</div>
+<div class="mov" id="rejMod"><div class="modal">
+  <div class="mtitle">✗ Reject Withdrawal</div>
+  <div class="fg"><label>Rejection Reason</label><textarea id="rr" style="height:90px" placeholder="e.g. Invalid account number..."></textarea></div>
+  <input type="hidden" id="rwi"><input type="hidden" id="rui"><input type="hidden" id="ram">
+  <div class="mrow"><button class="btn bgh" style="flex:1" onclick="cm('rejMod')">Cancel</button><button class="btn br" style="flex:2" onclick="confirmReject()">✗ Reject & Refund</button></div>
+</div></div>
 
-<div class="mov" id="balMod">
-  <div class="modal">
-    <div class="mtitle">💰 Adjust Balance</div>
-    <div style="font-size:13px;color:var(--muted);margin-bottom:16px">User: <span id="bun" style="color:#fff;font-weight:600"></span></div>
-    <div class="fg2">
-      <div class="fg"><label>Action</label><select id="ba"><option value="add">➕ Add</option><option value="sub">➖ Remove</option><option value="set">🔄 Set</option></select></div>
-      <div class="fg"><label>Amount</label><input type="number" id="bamt"></div>
-    </div>
-    <input type="hidden" id="bui">
-    <div class="mrow"><button class="btn bgh" style="flex:1" onclick="cm('balMod')">Cancel</button><button class="btn bp" style="flex:2" onclick="adjustBal()">✓ Apply</button></div>
+<div class="mov" id="balMod"><div class="modal">
+  <div class="mtitle">💰 Adjust Balance</div>
+  <div style="font-size:13px;color:var(--muted);margin-bottom:16px">User: <span id="bun" style="color:#fff;font-weight:600"></span></div>
+  <div class="fg2">
+    <div class="fg"><label>Action</label><select id="ba"><option value="add">➕ Add</option><option value="sub">➖ Remove</option><option value="set">🔄 Set</option></select></div>
+    <div class="fg"><label>Amount</label><input type="number" id="bamt"></div>
   </div>
-</div>
+  <input type="hidden" id="bui">
+  <div class="mrow"><button class="btn bgh" style="flex:1" onclick="cm('balMod')">Cancel</button><button class="btn bp" style="flex:2" onclick="adjustBal()">✓ Apply</button></div>
+</div></div>
 
 <div class="toast" id="toast"></div>
 
@@ -561,7 +525,14 @@ firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 
 let AU={}, AW={}, wdf='all';
-const CHAINS = { wc:{count:3}, wd:{count:3} };
+// Chain counts stored separately
+let wcCount = 1, wdCount = 1;
+
+const NET_OPTIONS = [
+  { val:'adsgram', label:'🎯 Adsgram' },
+  { val:'monetag', label:'💰 Monetag' },
+  { val:'adsterra', label:'⭐ Adsterra' }
+];
 
 // ══ AUTH ══
 async function doLogin() {
@@ -578,6 +549,9 @@ function showAdmin() {
   document.getElementById('ls').style.display='none';
   document.getElementById('sb').style.display='flex';
   document.getElementById('main').style.display='block';
+  // Init slot queues
+  renderSlots('wc', wcCount);
+  renderSlots('wd', wdCount);
   initAdmin();
 }
 
@@ -592,141 +566,175 @@ function initAdmin() {
     if(d.minWithdraw) document.getElementById('smwd').value=d.minWithdraw;
     if(d.botUsername) document.getElementById('sbot').value=d.botUsername;
     if(d.video){document.getElementById('vt').value=d.video.title||'';document.getElementById('vu').value=d.video.url||'';if(d.video.url)showVP(d.video.url);}
+    if(d.credentials) loadCredentials(d.credentials);
     if(d.watchChain) loadChain('wc', d.watchChain);
     if(d.withdrawChain) loadChain('wd', d.withdrawChain);
   });
 }
 
-// ══ AD CHAINS ══
+// ══════════════════════════════════════
+// COUNT SELECTOR — Fixed
+// ══════════════════════════════════════
 function setCnt(chain, n) {
-  CHAINS[chain].count = n;
+  if (chain === 'wc') wcCount = n;
+  else wdCount = n;
+
   document.getElementById(chain+'-count').value = n;
-  document.querySelectorAll(`#${chain}-count-sel .cnt-opt`).forEach((el,i)=>el.classList.toggle('active',i+1===n));
-}
 
-function toggleAnet(chain, name) {
-  const on=document.getElementById(`${chain}-${name}-on`).checked;
-  document.getElementById(`${chain}-card-${name}`).classList.toggle('on', on);
-}
-
-function toggleWdChain() {
-  const on=document.getElementById('wd-chain-enabled').checked;
-  document.getElementById('wdChainCard').classList.toggle('chain-enabled', on);
-  document.getElementById('wdChainStatusBadge').textContent = on ? 'ON' : 'OFF';
-  document.getElementById('wdChainStatusBadge').style.background = on ? 'var(--gs)' : 'var(--ys)';
-  document.getElementById('wdChainStatusBadge').style.color = on ? 'var(--green)' : 'var(--yellow)';
-  document.getElementById('wdChainStatusBadge').style.borderColor = on ? 'rgba(0,224,150,.3)' : 'rgba(255,200,74,.3)';
-}
-
-function getChainData(prefix) {
-  return {
-    count: parseInt(document.getElementById(prefix+'-count').value) || 3,
-    reward: prefix==='wc' ? (parseInt(document.getElementById('wc-reward').value)||50) : undefined,
-    message: prefix==='wd' ? document.getElementById('wd-msg').value.trim() : undefined,
-    enabled: prefix==='wd' ? document.getElementById('wd-chain-enabled').checked : true,
-    networks: {
-      adsgram: {
-        enabled: document.getElementById(`${prefix}-adsgram-on`).checked,
-        order: parseInt(document.getElementById(`${prefix}-adsgram-order`).value)||1,
-        blockId: document.getElementById(`${prefix}-adsgram-blockId`).value.trim()
-      },
-      monetag: {
-        enabled: document.getElementById(`${prefix}-monetag-on`).checked,
-        order: parseInt(document.getElementById(`${prefix}-monetag-order`).value)||2,
-        zoneId: document.getElementById(`${prefix}-monetag-zoneId`).value.trim(),
-        type: document.getElementById(`${prefix}-monetag-type`).value
-      },
-      adsterra: {
-        enabled: document.getElementById(`${prefix}-adsterra-on`).checked,
-        order: parseInt(document.getElementById(`${prefix}-adsterra-order`).value)||3,
-        script: document.getElementById(`${prefix}-adsterra-script`).value.trim()
-      }
+  // Update button styles
+  const sel = document.getElementById(chain+'-cnt');
+  sel.querySelectorAll('.cnt-opt').forEach(el => {
+    const elN = parseInt(el.getAttribute('data-n'));
+    if (elN === n) {
+      el.classList.add('active');
+    } else {
+      el.classList.remove('active');
     }
+  });
+
+  // Re-render slots with new count
+  renderSlots(chain, n);
+}
+
+// ══════════════════════════════════════
+// SLOT QUEUE — Each slot selects its own network
+// ══════════════════════════════════════
+function renderSlots(chain, count, savedSlots=[]) {
+  const container = document.getElementById(chain+'-slots');
+  const icons = { adsgram:'🎯', monetag:'💰', adsterra:'⭐' };
+  let html = '';
+  for (let i = 0; i < count; i++) {
+    const saved = savedSlots[i] || 'adsgram';
+    html += `
+    <div class="slot-row">
+      <div class="slot-num">${i+1}</div>
+      <div class="slot-lbl">Ad Slot ${i+1}</div>
+      <select class="slot-select" id="${chain}-slot-${i}">
+        <option value="adsgram" ${saved==='adsgram'?'selected':''}>🎯 Adsgram</option>
+        <option value="monetag" ${saved==='monetag'?'selected':''}>💰 Monetag</option>
+        <option value="adsterra" ${saved==='adsterra'?'selected':''}>⭐ Adsterra</option>
+      </select>
+    </div>`;
+  }
+  container.innerHTML = html;
+}
+
+function getSlotsData(chain) {
+  const count = chain==='wc' ? wcCount : wdCount;
+  const slots = [];
+  for (let i = 0; i < count; i++) {
+    const sel = document.getElementById(`${chain}-slot-${i}`);
+    slots.push(sel ? sel.value : 'adsgram');
+  }
+  return slots;
+}
+
+// ══ CREDENTIALS ══
+function toggleNetCard(name) {
+  const on = document.getElementById(name+'-active').checked;
+  document.getElementById('nc-'+name).classList.toggle('on', on);
+}
+
+function loadCredentials(creds) {
+  ['adsgram','monetag','adsterra'].forEach(name => {
+    const c = creds[name]; if(!c) return;
+    const cb = document.getElementById(name+'-active');
+    if(cb) { cb.checked = c.active||false; toggleNetCard(name); }
+    if(name==='adsgram'&&c.blockId) document.getElementById('adsgram-blockId').value=c.blockId;
+    if(name==='monetag'){if(c.zoneId)document.getElementById('monetag-zoneId').value=c.zoneId;if(c.type)document.getElementById('monetag-type').value=c.type;}
+    if(name==='adsterra'){if(c.link)document.getElementById('adsterra-link').value=c.link;if(c.script)document.getElementById('adsterra-script').value=c.script;}
+  });
+}
+
+async function saveCredentials() {
+  const creds = {
+    adsgram: { active:document.getElementById('adsgram-active').checked, blockId:document.getElementById('adsgram-blockId').value.trim() },
+    monetag: { active:document.getElementById('monetag-active').checked, zoneId:document.getElementById('monetag-zoneId').value.trim(), type:document.getElementById('monetag-type').value },
+    adsterra: { active:document.getElementById('adsterra-active').checked, link:document.getElementById('adsterra-link').value.trim(), script:document.getElementById('adsterra-script').value.trim() }
   };
+  await db.ref('settings/credentials').set(creds);
+  showToast('✅ Credentials saved!');
+}
+
+// ══ CHAIN SAVE/LOAD ══
+function loadChain(prefix, data) {
+  if(!data) return;
+  const count = data.count||1;
+  if(prefix==='wc') { wcCount=count; if(data.reward) document.getElementById('wc-reward').value=data.reward; }
+  if(prefix==='wd') {
+    wdCount=count;
+    if(data.message) document.getElementById('wd-msg').value=data.message;
+    document.getElementById('wd-enabled').checked=data.enabled||false;
+    toggleWdChain();
+  }
+  // Update count selector UI
+  document.getElementById(prefix+'-count').value=count;
+  const sel=document.getElementById(prefix+'-cnt');
+  sel.querySelectorAll('.cnt-opt').forEach(el=>{
+    el.classList.toggle('active', parseInt(el.getAttribute('data-n'))===count);
+  });
+  // Render slots with saved values
+  renderSlots(prefix, count, data.slots||[]);
+  renderChainPreview(prefix, data);
 }
 
 async function saveChain(type) {
   const prefix = type==='watch' ? 'wc' : 'wd';
-  const data = getChainData(prefix);
+  const count = prefix==='wc' ? wcCount : wdCount;
+  const slots = getSlotsData(prefix);
+  const data = {
+    count,
+    slots,
+    enabled: prefix==='wd' ? document.getElementById('wd-enabled').checked : true
+  };
+  if(prefix==='wc') data.reward = parseInt(document.getElementById('wc-reward').value)||50;
+  if(prefix==='wd') data.message = document.getElementById('wd-msg').value.trim();
+
   const key = type==='watch' ? 'watchChain' : 'withdrawChain';
   await db.ref('settings/'+key).set(data);
   renderChainPreview(prefix, data);
   showToast(`✅ ${type==='watch'?'Watch':'Withdraw'} Chain saved!`);
 }
 
-function loadChain(prefix, data) {
-  if(!data) return;
-  setCnt(prefix, data.count||3);
-  if(prefix==='wc' && data.reward) document.getElementById('wc-reward').value=data.reward;
-  if(prefix==='wd') {
-    if(data.message) document.getElementById('wd-msg').value=data.message;
-    document.getElementById('wd-chain-enabled').checked=data.enabled||false;
-    toggleWdChain();
-  }
-  const nets=data.networks||{};
-  ['adsgram','monetag','adsterra'].forEach(name=>{
-    const n=nets[name]; if(!n) return;
-    const cb=document.getElementById(`${prefix}-${name}-on`);
-    if(cb){cb.checked=n.enabled||false; toggleAnet(prefix,name);}
-    const ord=document.getElementById(`${prefix}-${name}-order`);
-    if(ord&&n.order) ord.value=n.order;
-    if(name==='adsgram'&&n.blockId) document.getElementById(`${prefix}-adsgram-blockId`).value=n.blockId;
-    if(name==='monetag'){if(n.zoneId)document.getElementById(`${prefix}-monetag-zoneId`).value=n.zoneId;if(n.type)document.getElementById(`${prefix}-monetag-type`).value=n.type;}
-    if(name==='adsterra'&&n.script) document.getElementById(`${prefix}-adsterra-script`).value=n.script;
-  });
-  renderChainPreview(prefix, data);
+function toggleWdChain() {
+  const on=document.getElementById('wd-enabled').checked;
+  document.getElementById('wdChainCard').classList.toggle('chain-enabled',on);
+  const b=document.getElementById('wdBadge');
+  b.textContent=on?'ON':'OFF';
+  b.style.background=on?'var(--gs)':'var(--ys)';
+  b.style.color=on?'var(--green)':'var(--yellow)';
+  b.style.borderColor=on?'rgba(0,224,150,.3)':'rgba(255,200,74,.3)';
 }
 
 function renderChainPreview(prefix, data) {
   const el=document.getElementById(prefix+'-preview');
-  const nets=data.networks||{};
-  const enabled=Object.entries(nets).filter(([,v])=>v.enabled).sort((a,b)=>(a[1].order||1)-(b[1].order||1));
+  const slots=data.slots||[];
+  const count=data.count||1;
   const ic={adsgram:'🎯',monetag:'💰',adsterra:'⭐'};
   const nm={adsgram:'Adsgram',monetag:'Monetag',adsterra:'Adsterra'};
   const reward=prefix==='wc'?(document.getElementById('wc-reward')?.value||50):null;
-  const count=data.count||3;
-  if(!enabled.length){el.innerHTML=`<span style="color:var(--muted);font-size:12px">No networks enabled</span>`;return;}
-
-  // Build full queue with count
-  const queue=[];
-  for(let i=0;i<count;i++) queue.push(enabled[i%enabled.length]);
-
+  if(!slots.length){el.innerHTML=`<span style="color:var(--muted);font-size:12px">Save করলে দেখাবে</span>`;return;}
   el.innerHTML=`
-    <div class="fp-chip" style="background:var(--as);color:var(--accent)">
+    <div class="fp-chip" style="background:${prefix==='wc'?'var(--ys)':'var(--gs)'};color:${prefix==='wc'?'var(--yellow)':'var(--green)'}">
       ${prefix==='wc'?'▶ Watch':'💸 Withdraw'}
     </div>
-    <span class="fp-arr">→</span>
-    ${queue.map((([name,v],i)=>`
+    <span style="color:var(--muted)">→</span>
+    ${slots.map((net,i)=>`
       <div class="fp-chip" style="background:rgba(255,255,255,.06);color:var(--text)">
-        ${ic[name]} ${nm[name]} <span style="background:var(--accent);color:#fff;border-radius:10px;padding:1px 6px;font-size:10px">#${i+1}</span>
+        ${ic[net]||'?'} ${nm[net]||net}
+        <span style="background:var(--accent);color:#fff;border-radius:10px;padding:1px 6px;font-size:10px;margin-left:2px">#${i+1}</span>
       </div>
-      ${i<queue.length-1?'<span class="fp-arr">→</span>':''}
-    `)).join('')}
-    <span class="fp-arr">→</span>
+      ${i<slots.length-1?'<span style="color:var(--muted)">→</span>':''}
+    `).join('')}
+    <span style="color:var(--muted)">→</span>
     <div class="fp-chip" style="background:${prefix==='wc'?'var(--ys)':'var(--gs)'};color:${prefix==='wc'?'var(--yellow)':'var(--green)'}">
       ${prefix==='wc'?`🎉 +${reward} Coins`:'✅ Submit'}
     </div>`;
 }
 
 // ══ DASHBOARD ══
-function renderDash() {
-  const u=Object.values(AU);
-  document.getElementById('st-u').textContent=u.length;
-  document.getElementById('st-c').textContent=u.reduce((a,x)=>a+(x.totalEarned||0),0).toLocaleString();
-  document.getElementById('ucl').textContent=u.length+' users';
-  const rec=[...u].sort((a,b)=>new Date(b.joinedAt||0)-new Date(a.joinedAt||0)).slice(0,8);
-  const t=document.getElementById('rut');
-  if(!rec.length){t.innerHTML=`<tr class="erow"><td colspan="5">No users yet</td></tr>`;return;}
-  t.innerHTML=rec.map(u=>`<tr><td><strong>${u.userName||'?'}</strong></td><td style="font-family:monospace;color:var(--muted);font-size:12px">${u.userId}</td><td style="color:var(--yellow);font-weight:700">${(u.balance||0).toLocaleString()}</td><td>${ta(u.joinedAt)}</td><td>${(u.referrals||[]).length}</td></tr>`).join('');
-}
-function renderPendDash() {
-  const pend=Object.entries(AW).filter(([,v])=>v.status==='pending').map(([k,v])=>({id:k,...v}));
-  document.getElementById('st-w').textContent=pend.length;
-  document.getElementById('st-a').textContent=Object.values(AW).filter(v=>v.status==='approved').length;
-  const t=document.getElementById('pwt');
-  if(!pend.length){t.innerHTML=`<tr class="erow"><td colspan="6">No pending</td></tr>`;return;}
-  t.innerHTML=pend.slice(0,5).map(w=>`<tr><td><strong>${w.userName}</strong></td><td>${w.walletLabel||w.wallet}</td><td style="font-family:monospace;font-size:12px">${w.account}</td><td style="color:var(--yellow);font-weight:700">${w.amount}</td><td style="color:var(--muted);font-size:11px">${ta(w.createdAt)}</td><td><div style="display:flex;gap:6px"><button class="btn bg bsm" onclick="apprWd('${w.id}')">✓</button><button class="btn br bsm" onclick="openRej('${w.id}','${w.userId}',${w.amount})">✗</button></div></td></tr>`).join('');
-}
+function renderDash(){const u=Object.values(AU);document.getElementById('st-u').textContent=u.length;document.getElementById('st-c').textContent=u.reduce((a,x)=>a+(x.totalEarned||0),0).toLocaleString();document.getElementById('ucl').textContent=u.length+' users';const rec=[...u].sort((a,b)=>new Date(b.joinedAt||0)-new Date(a.joinedAt||0)).slice(0,8);const t=document.getElementById('rut');if(!rec.length){t.innerHTML=`<tr class="erow"><td colspan="5">No users yet</td></tr>`;return;}t.innerHTML=rec.map(u=>`<tr><td><strong>${u.userName||'?'}</strong></td><td style="font-family:monospace;color:var(--muted);font-size:12px">${u.userId}</td><td style="color:var(--yellow);font-weight:700">${(u.balance||0).toLocaleString()}</td><td>${ta(u.joinedAt)}</td><td>${(u.referrals||[]).length}</td></tr>`).join('');}
+function renderPendDash(){const pend=Object.entries(AW).filter(([,v])=>v.status==='pending').map(([k,v])=>({id:k,...v}));document.getElementById('st-w').textContent=pend.length;document.getElementById('st-a').textContent=Object.values(AW).filter(v=>v.status==='approved').length;const t=document.getElementById('pwt');if(!pend.length){t.innerHTML=`<tr class="erow"><td colspan="6">No pending</td></tr>`;return;}t.innerHTML=pend.slice(0,5).map(w=>`<tr><td><strong>${w.userName}</strong></td><td>${w.walletLabel||w.wallet}</td><td style="font-family:monospace;font-size:12px">${w.account}</td><td style="color:var(--yellow);font-weight:700">${w.amount}</td><td style="color:var(--muted);font-size:11px">${ta(w.createdAt)}</td><td><div style="display:flex;gap:6px"><button class="btn bg bsm" onclick="apprWd('${w.id}')">✓</button><button class="btn br bsm" onclick="openRej('${w.id}','${w.userId}',${w.amount})">✗</button></div></td></tr>`).join('');}
 function updateBadge(){const c=Object.values(AW).filter(v=>v.status==='pending').length;const b=document.getElementById('pbadge');b.textContent=c;b.style.display=c>0?'inline':'none';}
 
 // ══ USERS ══
