@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>EarnX Admin</title>
+<title>Zomato Platform Admin</title>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
@@ -16,7 +16,7 @@ body{font-family:'Hind Siliguri',sans-serif;background:var(--bg);color:var(--tex
 /* LOGIN */
 #ls{position:fixed;inset:0;background:var(--bg);z-index:999;display:flex;align-items:center;justify-content:center}
 .lbox{background:var(--bg2);border:1px solid var(--border);border-radius:20px;padding:40px 32px;width:360px;text-align:center}
-.llogo{font-family:'Syne',sans-serif;font-size:32px;font-weight:800;background:linear-gradient(135deg,#fff,var(--accent));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:6px}
+.llogo{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;background:linear-gradient(135deg,#fff,var(--accent));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:6px}
 .lsub{font-size:13px;color:var(--muted);margin-bottom:28px}
 .linput{width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:13px 16px;font-size:14px;color:#fff;font-family:'Hind Siliguri',sans-serif;outline:none;margin-bottom:12px;transition:border-color .2s}
 .linput:focus{border-color:rgba(124,111,253,.5)}
@@ -25,7 +25,7 @@ body{font-family:'Hind Siliguri',sans-serif;background:var(--bg);color:var(--tex
 
 /* SIDEBAR */
 .sidebar{width:var(--sw);background:var(--bg2);border-right:1px solid var(--border);height:100vh;position:fixed;left:0;top:0;display:flex;flex-direction:column;z-index:50;padding:24px 0;overflow-y:auto}
-.sb-logo{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:#fff;padding:0 20px;margin-bottom:4px}
+.sb-logo{font-family:'Syne',sans-serif;font-size:16px;font-weight:800;color:#fff;padding:0 20px;margin-bottom:4px;line-height:1.3}
 .sb-sub{font-size:11px;color:var(--muted);padding:0 20px;margin-bottom:18px}
 .sb-div{height:1px;background:var(--border);margin:8px 16px}
 .si{display:flex;align-items:center;gap:10px;padding:10px 20px;cursor:pointer;transition:all .18s;position:relative;font-size:13px;font-weight:500;color:var(--muted)}
@@ -180,7 +180,7 @@ input:checked+.sldr:before{transform:translateX(20px);background:#fff}
 
 <div id="ls">
   <div class="lbox">
-    <div class="llogo">EarnX</div>
+    <div class="llogo">Zomato Platform</div>
     <div class="lsub">Admin Panel</div>
     <input class="linput" type="password" id="lpass" placeholder="পাসওয়ার্ড দিন..." onkeydown="if(event.key==='Enter')doLogin()">
     <button class="lbtn" onclick="doLogin()">লগইন →</button>
@@ -189,7 +189,7 @@ input:checked+.sldr:before{transform:translateX(20px);background:#fff}
 </div>
 
 <aside class="sidebar" id="sb" style="display:none">
-  <div class="sb-logo">EarnX</div>
+  <div class="sb-logo">Zomato Platform</div>
   <div class="sb-sub">Admin Panel</div>
   <div class="si active" onclick="go('dashboard',this)"><span class="sic">📊</span> ড্যাশবোর্ড</div>
   <div class="si" onclick="go('users',this)"><span class="sic">👥</span> ইউজার</div>
@@ -412,7 +412,7 @@ input:checked+.sldr:before{transform:translateX(20px);background:#fff}
 <!-- TASKS -->
 <div class="sec" id="sec-tasks">
   <div class="shd"><div><div class="stitle">⚡ টাস্ক</div></div><button class="btn bp" onclick="openTaskModal()">+ Add Task</button></div>
-  <div class="tc"><table><thead><tr><th>Icon</th><th>নাম</th><th>বিবরণ</th><th>পুরস্কার</th><th>লিংক</th><th>স্ট্যাটাস</th><th>অ্যাকশন</th></tr></thead>
+  <div class="tc"><table><thead><tr><th>Icon</th><th>নাম</th><th>বিবরণ</th><th>পুরস্কার</th><th>লিংক</th><th>Channel</th><th>স্ট্যাটাস</th><th>অ্যাকশন</th></tr></thead>
   <tbody id="ttbl"><tr class="erow"><td colspan="7">কোনো টাস্ক নেই</td></tr></tbody></table></div>
 </div>
 
@@ -437,6 +437,8 @@ input:checked+.sldr:before{transform:translateX(20px);background:#fff}
 <!-- SETTINGS -->
 <div class="sec" id="sec-settings">
   <div class="shd"><div class="stitle">⚙️ সেটিংস</div></div>
+
+  <!-- Economy -->
   <div class="fc">
     <div style="font-family:'Syne',sans-serif;font-size:15px;font-weight:700;color:#fff;margin-bottom:16px">💰 অর্থনীতি (৳ টাকা)</div>
     <div class="fg2">
@@ -446,6 +448,34 @@ input:checked+.sldr:before{transform:translateX(20px);background:#fff}
       <div class="fg"><label>Bot Username</label><input type="text" id="sbot" placeholder="YourBotUsername"></div>
     </div>
     <button class="btn bp" style="margin-top:16px" onclick="saveSettings()">💾 Save</button>
+  </div>
+
+  <!-- Bot Token for Channel Verify -->
+  <div class="fc">
+    <div style="font-family:'Syne',sans-serif;font-size:15px;font-weight:700;color:#fff;margin-bottom:8px">🤖 Bot Token (Channel Verify)</div>
+    <div style="font-size:12px;color:var(--muted);margin-bottom:14px;line-height:1.6">
+      Task এ channel join verify করতে Bot Token দরকার।<br>
+      BotFather → /mybots → API Token কপি করুন।<br>
+      Bot কে channel এ <strong style="color:var(--accent)">Admin</strong> করতে হবে।
+    </div>
+    <div class="fg"><label>Bot Token</label><input type="text" id="sBotToken" placeholder="123456789:AAF..."></div>
+    <button class="btn bp" style="margin-top:12px" onclick="saveBotToken()">💾 Save Token</button>
+  </div>
+
+  <!-- Welcome Screen -->
+  <div class="fc">
+    <div style="font-family:'Syne',sans-serif;font-size:15px;font-weight:700;color:#fff;margin-bottom:8px">🎉 Welcome Screen</div>
+    <div style="font-size:12px;color:var(--muted);margin-bottom:14px">App খুললেই একবার দেখাবে — প্রতিটা user কে শুধু একবার।</div>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+      <span style="font-size:13px;font-weight:600;color:#fff">Welcome Screen চালু</span>
+      <label class="tog"><input type="checkbox" id="welEnabled" onchange=""><span class="sldr"></span></label>
+    </div>
+    <div class="fg2">
+      <div class="fg"><label>Emoji</label><input type="text" id="welEmoji" placeholder="🎉" value="🎉"></div>
+      <div class="fg"><label>Title</label><input type="text" id="welTitle" placeholder="Welcome!"></div>
+      <div class="fg full"><label>Message</label><textarea id="welMsg" placeholder="Start watching ads and earn money daily..." style="height:80px;resize:none"></textarea></div>
+    </div>
+    <button class="btn bp bfu" style="margin-top:12px" onclick="saveWelcome()">💾 Save Welcome Screen</button>
   </div>
   <div class="fc">
     <div style="font-family:'Syne',sans-serif;font-size:15px;font-weight:700;color:#fff;margin-bottom:16px">🔐 পাসওয়ার্ড পরিবর্তন</div>
@@ -483,7 +513,12 @@ input:checked+.sldr:before{transform:translateX(20px);background:#fff}
     <div class="fg"><label>বিবরণ</label><input type="text" id="td_"></div>
     <div class="fg"><label>BG Color</label><input type="text" id="tb"></div>
     <div class="fg"><label>পুরস্কার (৳)</label><div class="input-prefix"><span>৳</span><input type="number" id="tr_" step="0.01"></div></div>
-    <div class="fg"><label>লিংক</label><input type="text" id="tl" placeholder="https://t.me/..."></div>
+    <div class="fg"><label>লিংক (Channel বা URL)</label><input type="text" id="tl" placeholder="https://t.me/yourchannel"></div>
+    <div class="fg full">
+      <label>Channel Username (Verify এর জন্য)</label>
+      <input type="text" id="tch" placeholder="yourchannel (@ ছাড়া)">
+      <div style="font-size:11px;color:var(--muted);margin-top:4px">দিলে Join + Verify button আসবে। না দিলে সরাসরি reward।</div>
+    </div>
   </div>
   <div style="margin-top:14px;display:flex;align-items:center;justify-content:space-between"><span style="font-size:13px">সক্রিয়</span><label class="tog"><input type="checkbox" id="tac" checked><span class="sldr"></span></label></div>
   <input type="hidden" id="tei">
@@ -571,6 +606,13 @@ function initAdmin() {
     if(d.welcomeBonus!=null) document.getElementById('swel').value=d.welcomeBonus;
     if(d.minWithdraw!=null) document.getElementById('smwd').value=d.minWithdraw;
     if(d.botUsername) document.getElementById('sbot').value=d.botUsername;
+    if(d.botToken) document.getElementById('sBotToken').value=d.botToken;
+    if(d.welcome){
+      document.getElementById('welEnabled').checked=d.welcome.enabled||false;
+      document.getElementById('welEmoji').value=d.welcome.emoji||'🎉';
+      document.getElementById('welTitle').value=d.welcome.title||'Welcome!';
+      document.getElementById('welMsg').value=d.welcome.message||'';
+    }
     if(d.video){document.getElementById('vt').value=d.video.title||'';document.getElementById('vu').value=d.video.url||'';if(d.video.url)showVP(d.video.url);}
     if(d.credentials) loadCreds(d.credentials);
     if(d.watchChain) loadChain('wc',d.watchChain);
@@ -820,10 +862,10 @@ async function saveAd(){const n=document.getElementById('an').value.trim();if(!n
 async function delAd(i){if(!confirm('মুছে ফেলবেন?'))return;const s=await db.ref('settings/ads').get();const ads=s.val()||[];ads.splice(i,1);await db.ref('settings/ads').set(ads);showToast('🗑️ মুছে ফেলা হয়েছে');}
 
 // ══ TASKS ══
-function renderTasksT(tasks){const t=document.getElementById('ttbl');if(!tasks.length){t.innerHTML=`<tr class="erow"><td colspan="7">কোনো টাস্ক নেই</td></tr>`;return;}t.innerHTML=tasks.map((x,i)=>`<tr><td style="font-size:22px">${x.icon||'✅'}</td><td><strong>${x.name}</strong></td><td style="color:var(--muted)">${x.desc||''}</td><td style="color:var(--green);font-weight:700">৳${Number(x.reward).toFixed(2)}</td><td style="font-size:11px;color:var(--accent)">${x.link||'—'}</td><td><span class="bdg ${x.active!==false?'b-a':'b-r'}">${x.active!==false?'সক্রিয়':'বন্ধ'}</span></td><td><div style="display:flex;gap:6px"><button class="btn bgh bsm" onclick="editTask(${i})">✏️</button><button class="btn br bsm" onclick="delTask(${i})">🗑️</button></div></td></tr>`).join('');}
-function openTaskModal(){['tn','ti','td_','tb','tr_','tl'].forEach(id=>document.getElementById(id).value='');document.getElementById('tac').checked=true;document.getElementById('tei').value='';document.getElementById('taskModT').textContent='টাস্ক যোগ করুন';document.getElementById('taskMod').classList.add('open');}
-async function editTask(i){const s=await db.ref('settings/tasks').get();const x=(s.val()||[])[i];if(!x)return;document.getElementById('tn').value=x.name||'';document.getElementById('ti').value=x.icon||'';document.getElementById('td_').value=x.desc||'';document.getElementById('tb').value=x.bg||'';document.getElementById('tr_').value=x.reward||'';document.getElementById('tl').value=x.link||'';document.getElementById('tac').checked=x.active!==false;document.getElementById('tei').value=i;document.getElementById('taskModT').textContent='টাস্ক সম্পাদনা করুন';document.getElementById('taskMod').classList.add('open');}
-async function saveTask(){const n=document.getElementById('tn').value.trim();if(!n)return showToast('⚠️ নাম দিন');const s=await db.ref('settings/tasks').get();const tasks=s.val()||[];const ei=document.getElementById('tei').value;const obj={id:ei!==''?(tasks[parseInt(ei)]?.id||'task_'+Date.now()):'task_'+Date.now(),name:n,icon:document.getElementById('ti').value.trim()||'✅',desc:document.getElementById('td_').value.trim(),bg:document.getElementById('tb').value.trim()||'rgba(0,224,150,.12)',reward:parseFloat(document.getElementById('tr_').value)||0,link:document.getElementById('tl').value.trim(),active:document.getElementById('tac').checked};if(ei!=='')tasks[parseInt(ei)]=obj;else tasks.push(obj);await db.ref('settings/tasks').set(tasks);cm('taskMod');showToast('✅ সংরক্ষিত!');}
+function renderTasksT(tasks){const t=document.getElementById('ttbl');if(!tasks.length){t.innerHTML=`<tr class="erow"><td colspan="8">কোনো টাস্ক নেই</td></tr>`;return;}t.innerHTML=tasks.map((x,i)=>`<tr><td style="font-size:22px">${x.icon||'✅'}</td><td><strong>${x.name}</strong></td><td style="color:var(--muted)">${x.desc||''}</td><td style="color:var(--green);font-weight:700">৳${Number(x.reward).toFixed(2)}</td><td style="font-size:11px;color:var(--accent)">${x.link||'—'}</td><td style="font-size:11px;color:var(--yellow)">${x.channelUsername?'@'+x.channelUsername:'—'}</td><td><span class="bdg ${x.active!==false?'b-a':'b-r'}">${x.active!==false?'সক্রিয়':'বন্ধ'}</span></td><td><div style="display:flex;gap:6px"><button class="btn bgh bsm" onclick="editTask(${i})">✏️</button><button class="btn br bsm" onclick="delTask(${i})">🗑️</button></div></td></tr>`).join('');}
+function openTaskModal(){['tn','ti','td_','tb','tr_','tl','tch'].forEach(id=>document.getElementById(id).value='');document.getElementById('tac').checked=true;document.getElementById('tei').value='';document.getElementById('taskModT').textContent='টাস্ক যোগ করুন';document.getElementById('taskMod').classList.add('open');}
+async function editTask(i){const s=await db.ref('settings/tasks').get();const x=(s.val()||[])[i];if(!x)return;document.getElementById('tn').value=x.name||'';document.getElementById('ti').value=x.icon||'';document.getElementById('td_').value=x.desc||'';document.getElementById('tb').value=x.bg||'';document.getElementById('tr_').value=x.reward||'';document.getElementById('tl').value=x.link||'';document.getElementById('tch').value=x.channelUsername||'';document.getElementById('tac').checked=x.active!==false;document.getElementById('tei').value=i;document.getElementById('taskModT').textContent='টাস্ক সম্পাদনা করুন';document.getElementById('taskMod').classList.add('open');}
+async function saveTask(){const n=document.getElementById('tn').value.trim();if(!n)return showToast('⚠️ নাম দিন');const s=await db.ref('settings/tasks').get();const tasks=s.val()||[];const ei=document.getElementById('tei').value;const ch=document.getElementById('tch').value.trim().replace('@','');const obj={id:ei!==''?(tasks[parseInt(ei)]?.id||'task_'+Date.now()):'task_'+Date.now(),name:n,icon:document.getElementById('ti').value.trim()||'✅',desc:document.getElementById('td_').value.trim(),bg:document.getElementById('tb').value.trim()||'rgba(0,224,150,.12)',reward:parseFloat(document.getElementById('tr_').value)||0,link:document.getElementById('tl').value.trim(),channelUsername:ch||null,type:ch?'channel':'regular',active:document.getElementById('tac').checked};if(ei!=='')tasks[parseInt(ei)]=obj;else tasks.push(obj);await db.ref('settings/tasks').set(tasks);cm('taskMod');showToast('✅ সংরক্ষিত!');}
 async function delTask(i){if(!confirm('মুছে ফেলবেন?'))return;const s=await db.ref('settings/tasks').get();const t=s.val()||[];t.splice(i,1);await db.ref('settings/tasks').set(t);showToast('🗑️ মুছে ফেলা হয়েছে');}
 
 // ══ SUPPORT ══
@@ -839,7 +881,33 @@ async function saveVideo(){await db.ref('settings/video').set({title:document.ge
 document.getElementById('vu').addEventListener('input',e=>{if(e.target.value)showVP(e.target.value);});
 
 // ══ SETTINGS ══
-async function saveSettings(){await db.ref('settings').update({referralBonus:parseFloat(document.getElementById('sref').value)||5,welcomeBonus:parseFloat(document.getElementById('swel').value)||2,minWithdraw:parseFloat(document.getElementById('smwd').value)||50,botUsername:document.getElementById('sbot').value.trim()});showToast('✅ সংরক্ষিত!');}
+async function saveSettings(){
+  await db.ref('settings').update({
+    referralBonus:parseFloat(document.getElementById('sref').value)||5,
+    welcomeBonus:parseFloat(document.getElementById('swel').value)||2,
+    minWithdraw:parseFloat(document.getElementById('smwd').value)||50,
+    botUsername:document.getElementById('sbot').value.trim()
+  });
+  showToast('✅ সংরক্ষিত!');
+}
+
+async function saveBotToken(){
+  const token=document.getElementById('sBotToken').value.trim();
+  if(!token)return showToast('⚠️ Token দিন');
+  await db.ref('settings').update({botToken:token});
+  showToast('✅ Bot Token সংরক্ষিত!');
+}
+
+async function saveWelcome(){
+  const data={
+    enabled:document.getElementById('welEnabled').checked,
+    emoji:document.getElementById('welEmoji').value.trim()||'🎉',
+    title:document.getElementById('welTitle').value.trim()||'Welcome!',
+    message:document.getElementById('welMsg').value.trim()
+  };
+  await db.ref('settings/welcome').set(data);
+  showToast('✅ Welcome Screen সংরক্ষিত!');
+}
 async function changePass(){const n=document.getElementById('np').value,c=document.getElementById('cp').value;if(!n)return showToast('⚠️ পাসওয়ার্ড দিন');if(n!==c)return showToast('⚠️ মিলছে না');await db.ref('adminAuth/password').set(n);document.getElementById('np').value='';document.getElementById('cp').value='';showToast('✅ পাসওয়ার্ড পরিবর্তিত হয়েছে!');}
 
 // ══ BALANCE ══
