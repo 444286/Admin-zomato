@@ -382,11 +382,29 @@ function renderUsers(f=''){
       <td><div style="display:flex;gap:5px;flex-wrap:wrap">
         <button class="btn bgh bsm" onclick="openBal('${x.userId}','${x.userName||'?'}')">💰</button>
         ${x.blocked?`<button class="btn bg bsm" onclick="toggleBlock('${x.userId}',false)">✅ Unblock</button>`:`<button class="btn br bsm" onclick="toggleBlock('${x.userId}',true)">🚫 Block</button>`}
+        <button class="btn bsm" style="background:rgba(255,50,50,.15);color:#ff4444;border:1px solid rgba(255,50,50,.3)" onclick="deleteUser('${x.userId}','${x.userName||'?'}')">🗑️</button>
       </div></td>
     </tr>`).join('');
 }
 function filterUsers(){renderUsers(document.getElementById('usrch').value.toLowerCase());}
 async function toggleBlock(uid,block){const msg=block?'এই ইউজারকে ব্লক করবেন?':'এই ইউজারকে আনব্লক করবেন?';if(!confirm(msg))return;await db.ref('users/'+uid).update({blocked:block});showToast(block?'🚫 ইউজার ব্লক করা হয়েছে!':'✅ ইউজার আনব্লক করা হয়েছে!');}
+
+async function deleteUser(uid,name){
+  if(!confirm(`"${name}" এর সমস্ত ডেটা মুছে ফেলবেন?\nUser + সব Withdrawal history চিরতরে মুছে যাবে!`))return;
+  if(!confirm('আপনি কি নিশ্চিত? এই কাজ পূর্বাবস্থায় ফেরানো যাবে না!'))return;
+  try{
+    // Delete user
+    await db.ref('users/'+uid).remove();
+    // Delete all withdrawals for this user
+    const ws=await db.ref('withdrawals').get();
+    if(ws.exists()){
+      const dels=[];
+      ws.forEach(c=>{if(String(c.val().userId)===String(uid))dels.push(db.ref('withdrawals/'+c.key).remove());});
+      await Promise.all(dels);
+    }
+    showToast('🗑️ ইউজার ও সকল ডেটা মুছে ফেলা হয়েছে!');
+  }catch(e){showToast('❌ Error: '+e.message);}
+}
 
 // ── WITHDRAWALS ──
 function renderWd(){let it=Object.entries(AW).map(([k,v])=>({id:k,...v}));if(wdf!=='all')it=it.filter(w=>w.status===wdf);it.sort((a,b)=>new Date(b.createdAt||0)-new Date(a.createdAt||0));const sM={pending:'b-p',approved:'b-a',rejected:'b-r'};const sL={pending:'⏳ অপেক্ষমান',approved:'✓ অনুমোদিত',rejected:'✗ প্রত্যাখ্যাত'};const t=document.getElementById('wdt');if(!it.length){t.innerHTML=`<tr class="erow"><td colspan="7">কোনো উত্তোলন নেই</td></tr>`;return;}t.innerHTML=it.map(w=>`<tr><td><strong>${w.userName}</strong><br><span style="font-size:11px;color:var(--muted)">${w.userId}</span></td><td>${w.walletLabel||w.wallet}</td><td style="font-family:monospace;font-size:12px">${w.account}</td><td style="color:var(--taka);font-weight:700">৳ ${Number(w.amount).toFixed(2)}</td><td><span class="bdg ${sM[w.status]||'b-p'}">${sL[w.status]||'অপেক্ষমান'}</span>${w.status==='rejected'&&w.reason?`<br><span style="font-size:11px;color:var(--red)">${w.reason}</span>`:''}</td><td style="color:var(--muted);font-size:12px">${fd(w.createdAt)}</td><td>${w.status==='pending'?`<div style="display:flex;gap:6px"><button class="btn bg bsm" onclick="apprWd('${w.id}')">✓</button><button class="btn br bsm" onclick="openRej('${w.id}','${w.userId}',${w.amount})">✗</button></div>`:'—'}</td></tr>`).join('');}
