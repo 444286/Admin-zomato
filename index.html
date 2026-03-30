@@ -375,7 +375,7 @@ function renderUsers(f=''){
       <td style="color:var(--taka);font-weight:700">৳ ${Number(x.balance||0).toFixed(2)}</td>
       <td style="color:var(--green)">৳ ${Number(x.totalEarned||0).toFixed(2)}</td>
       <td style="color:var(--red)">৳ ${Number(x.totalWithdrawn||0).toFixed(2)}</td>
-  <td>${(x.referrals||[]).length}</td>
+  <td style="color:var(--accent);font-weight:600">${Object.values(AU).filter(u=>String(u.referredBy)===String(x.userId)).length}</td>
       <td style="color:var(--accent);font-weight:600">${Object.values(AW).filter(w=>String(w.userId)===String(x.userId)).length}</td>
       <td style="color:var(--muted);font-size:11px">${fd(x.joinedAt)}</td>
       <td>${adsBadge(getTodayAds(x))}</td>
