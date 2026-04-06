@@ -10,7 +10,7 @@
 <style>
 :root{--bg:#0c0e16;--bg2:#111420;--bg3:#181c2c;--card:#13172a;--border:rgba(255,255,255,0.08);--accent:#7c6ffd;--as:rgba(124,111,253,0.12);--green:#00e096;--gs:rgba(0,224,150,0.1);--yellow:#ffc84a;--ys:rgba(255,200,74,0.1);--red:#ff5f5f;--rs:rgba(255,95,95,0.1);--text:#e2e4ef;--muted:#5a6280;--sw:240px;--taka:#ffc84a}
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Hind Siliguri',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;font-size:14px}
+body{font-family:'Hind Siliguri',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;font-size:14px}
 ::-webkit-scrollbar{width:5px}::-webkit-scrollbar-thumb{background:var(--border);border-radius:10px}
 #ls{position:fixed;inset:0;background:var(--bg);z-index:999;display:flex;align-items:center;justify-content:center}
 .lbox{background:var(--bg2);border:1px solid var(--border);border-radius:20px;padding:40px 32px;width:360px;text-align:center}
@@ -20,31 +20,34 @@ body{font-family:'Hind Siliguri',sans-serif;background:var(--bg);color:var(--tex
 .linput:focus{border-color:rgba(124,111,253,.5)}
 .lbtn{width:100%;background:linear-gradient(135deg,var(--accent),#b06bff);color:#fff;border:none;border-radius:10px;padding:14px;font-size:15px;font-weight:700;cursor:pointer;font-family:'Hind Siliguri',sans-serif}
 .lerr{font-size:12px;color:var(--red);margin-top:8px;min-height:18px}
-.sidebar{width:var(--sw);background:var(--bg2);border-right:1px solid var(--border);height:100vh;position:fixed;left:0;top:0;display:flex;flex-direction:column;z-index:50;padding:24px 0;overflow-y:auto}
-.sb-logo{font-family:'Syne',sans-serif;font-size:16px;font-weight:800;color:#fff;padding:0 20px;margin-bottom:4px;line-height:1.3}
-.sb-sub{font-size:11px;color:var(--muted);padding:0 20px;margin-bottom:18px}
-.sb-div{height:1px;background:var(--border);margin:8px 16px}
-.si{display:flex;align-items:center;gap:10px;padding:10px 20px;cursor:pointer;transition:all .18s;position:relative;font-size:13px;font-weight:500;color:var(--muted)}
+/* TOP NAV */
+.topnav{width:100%;background:var(--bg2);border-bottom:1px solid var(--border);position:fixed;top:0;left:0;z-index:50;display:flex;flex-direction:column}
+.tn-header{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;border-bottom:1px solid var(--border)}
+.sb-logo{font-family:'Syne',sans-serif;font-size:15px;font-weight:800;color:#fff;line-height:1.2}
+.sb-sub{font-size:10px;color:var(--muted)}
+.outbtn{background:var(--rs);color:var(--red);border:1px solid rgba(255,95,95,.2);border-radius:8px;padding:6px 12px;font-size:12px;font-weight:600;cursor:pointer;font-family:'Hind Siliguri',sans-serif;white-space:nowrap}
+.tn-items{display:flex;overflow-x:auto;padding:4px 8px;gap:2px}
+.tn-items::-webkit-scrollbar{display:none}
+.si{display:flex;align-items:center;gap:5px;padding:7px 12px;cursor:pointer;transition:all .18s;border-radius:8px;font-size:12px;font-weight:500;color:var(--muted);white-space:nowrap;flex-shrink:0}
 .si:hover{background:rgba(255,255,255,.04);color:var(--text)}
 .si.active{background:var(--as);color:var(--accent)}
-.si.active::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--accent);border-radius:0 3px 3px 0}
-.sic{font-size:17px;width:22px;text-align:center}
-.sbadge{background:var(--red);color:#fff;border-radius:20px;padding:2px 7px;font-size:10px;font-weight:700;margin-left:auto}
-.sb-out{margin-top:auto;padding:12px 16px 0}
-.outbtn{width:100%;background:var(--rs);color:var(--red);border:1px solid rgba(255,95,95,.2);border-radius:10px;padding:11px;font-size:13px;font-weight:600;cursor:pointer;font-family:'Hind Siliguri',sans-serif}
-.main{margin-left:var(--sw);flex:1;padding:28px;min-height:100vh;overflow-x:hidden}
+.sic{font-size:15px}
+.sbadge{background:var(--red);color:#fff;border-radius:20px;padding:1px 6px;font-size:10px;font-weight:700}
+.sb-div{display:none}
+.sb-out{display:none}
+.main{margin-left:0;flex:1;padding:16px;padding-top:110px;min-height:100vh;overflow-x:hidden}
 .sec{display:none}.sec.active{display:block;animation:fi .25s ease}
 @keyframes fi{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 .shd{display:flex;align-items:center;justify-content:space-between;margin-bottom:22px;flex-wrap:wrap;gap:10px}
 .stitle{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:#fff}
 .ssub{font-size:13px;color:var(--muted);margin-top:3px}
-.sgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:24px}
+.sgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:20px}
 .scard{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px}
 .sic2{font-size:24px;margin-bottom:10px}
 .sval{font-family:'Syne',sans-serif;font-size:26px;font-weight:800;color:#fff}
 .sval-taka{font-size:14px;color:var(--taka);font-weight:700}
 .slbl{font-size:12px;color:var(--muted);margin-top:4px}
-.tc{background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:18px}
+.tc{background:var(--card);border:1px solid var(--border);border-radius:14px;overflow-x:auto;margin-bottom:18px}
 .thead{padding:14px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
 .ttitle{font-family:'Syne',sans-serif;font-size:15px;font-weight:700;color:#fff}
 table{width:100%;border-collapse:collapse}
@@ -150,21 +153,23 @@ input:checked+.sldr:before{transform:translateX(20px);background:#fff}
     <div class="lerr" id="lerr"></div>
   </div>
 </div>
-<aside class="sidebar" id="sb" style="display:none">
-  <div class="sb-logo">Zomato Platform</div>
-  <div class="sb-sub">Admin Panel</div>
-  <div class="si active" onclick="go('dashboard',this)"><span class="sic">📊</span> ড্যাশবোর্ড</div>
-  <div class="si" onclick="go('users',this)"><span class="sic">👥</span> ইউজার</div>
-  <div class="si" onclick="go('withdrawals',this)"><span class="sic">💸</span> উত্তোলন <span class="sbadge" id="pbadge" style="display:none">0</span></div>
-  <div class="sb-div"></div>
-  <div class="si" onclick="go('adchain',this)"><span class="sic">📺</span> Ad Chains</div>
-  <div class="si" onclick="go('ads',this)"><span class="sic">🎯</span> Ads List</div>
-  <div class="si" onclick="go('tasks',this)"><span class="sic">⚡</span> টাস্ক</div>
-  <div class="si" onclick="go('support',this)"><span class="sic">🛟</span> সাপোর্ট</div>
-  <div class="si" onclick="go('video',this)"><span class="sic">🎬</span> ভিডিও</div>
-  <div class="si" onclick="go('settings',this)"><span class="sic">⚙️</span> সেটিংস</div>
-  <div class="sb-out"><button class="outbtn" onclick="location.reload()">🚪 লগআউট</button></div>
-</aside>
+<nav class="topnav" id="sb" style="display:none">
+  <div class="tn-header">
+    <div><div class="sb-logo">Zomato Platform</div><div class="sb-sub">Admin Panel</div></div>
+    <button class="outbtn" onclick="location.reload()">🚪 লগআউট</button>
+  </div>
+  <div class="tn-items">
+    <div class="si active" onclick="go('dashboard',this)"><span class="sic">📊</span> ড্যাশবোর্ড</div>
+    <div class="si" onclick="go('users',this)"><span class="sic">👥</span> ইউজার</div>
+    <div class="si" onclick="go('withdrawals',this)"><span class="sic">💸</span> উত্তোলন <span class="sbadge" id="pbadge" style="display:none">0</span></div>
+    <div class="si" onclick="go('adchain',this)"><span class="sic">📺</span> Ad Chains</div>
+    <div class="si" onclick="go('ads',this)"><span class="sic">🎯</span> Ads List</div>
+    <div class="si" onclick="go('tasks',this)"><span class="sic">⚡</span> টাস্ক</div>
+    <div class="si" onclick="go('support',this)"><span class="sic">🛟</span> সাপোর্ট</div>
+    <div class="si" onclick="go('video',this)"><span class="sic">🎬</span> ভিডিও</div>
+    <div class="si" onclick="go('settings',this)"><span class="sic">⚙️</span> সেটিংস</div>
+  </div>
+</nav>
 <main class="main" id="main" style="display:none">
 <!-- DASHBOARD -->
 <div class="sec active" id="sec-dashboard">
@@ -191,9 +196,9 @@ input:checked+.sldr:before{transform:translateX(20px);background:#fff}
     <input type="text" placeholder="🔍 নাম বা ID দিয়ে খুঁজুন..." style="width:260px;padding:9px 14px;border-radius:10px;font-size:13px" id="usrch" oninput="filterUsers()">
   </div>
   <div class="warn-box">🚫 <strong>ব্লক করলে:</strong> ইউজার Mini App খুলতে পারবে না — সাথে সাথে বন্ধ হয়ে যাবে। যেকোনো সময় আনব্লক করা যাবে।</div>
-  <div class="tc">
-    <table><thead><tr><th>ইউজার</th><th>TG ID</th><th>ব্যালেন্স</th><th>অর্জিত</th><th>উত্তোলন</th><th>রেফারেল</th><th>রিকোয়েস্ট</th><th>যোগদান</th><th>আজকের Ads</th><th>স্ট্যাটাস</th><th>অ্যাকশন</th></tr></thead>
-    <tbody id="utbl"><tr class="erow"><td colspan="10">লোড হচ্ছে...</td></tr></tbody></table>
+  <div class="tc" style="overflow-x:auto">
+    <table style="min-width:950px"><thead><tr><th>ইউজার</th><th>TG ID</th><th>ব্যালেন্স</th><th>অর্জিত</th><th>উত্তোলন</th><th>রেফারেল</th><th>রিকোয়েস্ট</th><th>যোগদান</th><th>আজকের Ads</th><th>স্ট্যাটাস</th><th>অ্যাকশন</th></tr></thead>
+    <tbody id="utbl"><tr class="erow"><td colspan="7">লোড হচ্ছে...</td></tr></tbody></table>
   </div>
 </div>
 <!-- WITHDRAWALS -->
@@ -209,7 +214,7 @@ input:checked+.sldr:before{transform:translateX(20px);background:#fff}
   </div>
   <div class="tc">
     <table><thead><tr><th>ইউজার</th><th>রিকোয়েস্ট</th><th>ব্যালেন্স</th><th>আজকের Ads</th><th>ওয়ালেট</th><th>অ্যাকাউন্ট</th><th>পরিমাণ</th><th>স্ট্যাটাস</th><th>সময়</th><th>অ্যাকশন</th></tr></thead>
-    <tbody id="wdt"><tr class="erow"><td colspan="10">লোড হচ্ছে...</td></tr></tbody></table>
+    <tbody id="wdt"><tr class="erow"><td colspan="9">লোড হচ্ছে...</td></tr></tbody></table>
   </div>
 </div>
 <!-- AD CHAINS -->
@@ -314,7 +319,7 @@ async function doLogin(){
   catch(e){if(p==='admin123')showAdmin();else document.getElementById('lerr').textContent='❌ '+e.message;}
 }
 document.getElementById('lpass').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
-function showAdmin(){document.getElementById('ls').style.display='none';document.getElementById('sb').style.display='flex';document.getElementById('main').style.display='block';renderSlots('wc',wcCount);renderSlots('wd',wdCount);initAdmin();}
+function showAdmin(){document.getElementById('ls').style.display='none';document.getElementById('sb').style.display='block';document.getElementById('main').style.display='block';renderSlots('wc',wcCount);renderSlots('wd',wdCount);initAdmin();}
 function initAdmin(){
   db.ref('users').on('value',s=>{AU=s.val()||{};renderDash();renderUsers();});
   db.ref('withdrawals').on('value',s=>{AW=s.val()||{};renderWd();renderPendDash();updateBadge();});
@@ -367,16 +372,14 @@ function renderUsers(f=''){
   if(f)u=u.filter(x=>(x.userName||'').toLowerCase().includes(f)||(x.userId||'').includes(f));
   u.sort((a,b)=>new Date(b.joinedAt||0)-new Date(a.joinedAt||0));
   const t=document.getElementById('utbl');
-  if(!u.length){t.innerHTML=`<tr class="erow"><td colspan="10">কোনো ইউজার নেই</td></tr>`;return;}
+  if(!u.length){t.innerHTML=`<tr class="erow"><td colspan="7">কোনো ইউজার নেই</td></tr>`;return;}
   t.innerHTML=u.map(x=>`
     <tr class="${x.blocked?'blocked-row':''}">
       <td><strong>${x.userName||'?'}</strong></td>
       <td style="font-family:monospace;font-size:11px;color:var(--muted)">${x.userId}</td>
       <td style="color:var(--taka);font-weight:700">৳ ${Number(x.balance||0).toFixed(2)}</td>
-      <td style="color:var(--green)">৳ ${Number(x.totalEarned||0).toFixed(2)}</td>
       <td style="color:var(--red)">৳ ${Number(x.totalWithdrawn||0).toFixed(2)}</td>
-  <td style="color:var(--accent);font-weight:600">${Object.values(AU).filter(u=>String(u.referredBy)===String(x.userId)).length}</td>
-      <td style="color:var(--accent);font-weight:600">${Object.values(AW).filter(w=>String(w.userId)===String(x.userId)).length}</td>
+      <td style="color:var(--accent);font-weight:600">${Object.values(AW).filter(v=>String(v.userId)===String(x.userId)).length}</td>
       <td style="color:var(--muted);font-size:11px">${fd(x.joinedAt)}</td>
       <td>${adsBadge(getTodayAds(x))}</td>
       <td><span class="bdg ${x.blocked?'b-blk':'b-ok'}">${x.blocked?'🚫 ব্লক':'✅ সক্রিয়'}</span></td>
