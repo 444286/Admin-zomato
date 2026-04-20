@@ -76,7 +76,7 @@ textarea{resize:vertical;min-height:70px}
 .slot-lbl{font-size:12px;color:var(--muted);flex:1}
 .slot-select{flex:2;background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:7px 10px;font-size:13px;color:#fff;font-family:'Hind Siliguri',sans-serif;outline:none}
 .slot-select:focus{border-color:rgba(124,111,253,.5)}
-.net-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:14px 0}
+.net-cards{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin:14px 0}
 .net-card{background:var(--bg3);border:2px solid var(--border);border-radius:14px;padding:16px;transition:all .2s}
 .net-card.on{border-color:rgba(0,224,150,.3);background:rgba(0,224,150,.03)}
 .nc-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
@@ -133,12 +133,6 @@ input:checked+.sldr:before{transform:translateX(20px);background:#fff}
 .sdk-item{font-size:12px;color:rgba(255,255,255,.7);line-height:1.8}
 .sdk-item code{background:rgba(255,255,255,.08);padding:2px 7px;border-radius:5px;font-family:monospace;color:var(--accent);font-size:11px}
 .blocked-row td{opacity:.6}
-/* Bulk Action */
-.bulk-bar{display:none;align-items:center;gap:10px;background:rgba(124,111,253,.1);border:1px solid rgba(124,111,253,.25);border-radius:12px;padding:10px 14px;margin-bottom:12px;flex-wrap:wrap}
-.bulk-bar.show{display:flex}
-.bulk-count{font-size:13px;font-weight:600;color:var(--accent);flex:1}
-.wd-checkbox{width:16px;height:16px;accent-color:var(--accent);cursor:pointer;flex-shrink:0}
-.sel-row{background:rgba(124,111,253,.06)!important}
 /* Today Ads Badge */
 .ads-count{display:inline-block;min-width:28px;text-align:center;border-radius:20px;padding:3px 8px;font-size:12px;font-weight:700}
 .ads-0{background:rgba(255,255,255,.06);color:var(--muted)}
@@ -213,14 +207,6 @@ input:checked+.sldr:before{transform:translateX(20px);background:#fff}
       <button class="btn br bsm" onclick="fw('rejected')">✗ প্রত্যাখ্যাত</button>
     </div>
   </div>
-  <!-- BULK ACTION BAR -->
-  <div class="bulk-bar" id="bulkBar">
-    <span class="bulk-count" id="bulkCount">0টি selected</span>
-    <button class="btn bgh bsm" onclick="bulkSelectAll()">সব Select</button>
-    <button class="btn bgh bsm" onclick="bulkClearAll()">Clear</button>
-    <button class="btn bg bsm" onclick="bulkApprove()">✓ সব Approve</button>
-    <button class="btn br bsm" onclick="openBulkReject()">✗ সব Reject</button>
-  </div>
   <div class="tc">
     <table><thead><tr><th>ইউজার</th><th>রিকোয়েস্ট</th><th>ব্যালেন্স</th><th>আজকের Ads</th><th>ওয়ালেট</th><th>অ্যাকাউন্ট</th><th>পরিমাণ</th><th>স্ট্যাটাস</th><th>সময়</th><th>অ্যাকশন</th></tr></thead>
     <tbody id="wdt"><tr class="erow"><td colspan="10">লোড হচ্ছে...</td></tr></tbody></table>
@@ -233,7 +219,7 @@ input:checked+.sldr:before{transform:translateX(20px);background:#fff}
   <div class="chain-wrap">
     <div class="chain-hd"><div class="chain-title">🔑 Ad Network Credentials</div><button class="btn bg" onclick="saveCreds()">💾 Save Credentials</button></div>
     <div class="chain-sub">একবার ID বসান — Watch ও Withdraw দুটো chain এই ব্যবহার হবে</div>
-    <div class="sdk-box"><div class="sdk-title">📦 SDK Info</div><div class="sdk-item">🎯 <strong>Adsgram:</strong> <code>&lt;script src="https://sad.adsgram.ai/js/sad.min.js"&gt;</code> — Mini App এ আছে ✅<br>💰 <strong>Monetag:</strong> Zone ID দিলে auto-load হয় ✅<br>⭐ <strong>Adsterra:</strong> Direct Link বা Script — Adsterra থেকে নিন</div></div>
+    <div class="sdk-box"><div class="sdk-title">📦 SDK Info</div><div class="sdk-item">🎯 <strong>Adsgram:</strong> <code>&lt;script src="https://sad.adsgram.ai/js/sad.min.js"&gt;</code> — Mini App এ আছে ✅<br>💰 <strong>Monetag:</strong> Zone ID দিলে auto-load হয় ✅<br>⭐ <strong>Adsterra:</strong> Direct Link বা Script — Adsterra থেকে নিন<br>🟣 <strong>GigaPub:</strong> Script ID দিলে auto-load হয় ✅</div></div>
     <div class="net-cards">
       <div class="net-card" id="nc-adsgram"><div class="nc-hd"><div class="nc-name">🎯 Adsgram</div><label class="tog"><input type="checkbox" id="adsgram-active" onchange="toggleNC('adsgram')"><span class="sldr"></span></label></div><div class="nc-fields"><div class="nc-f"><label>Block ID</label><input type="text" id="adsgram-blockId" placeholder="e.g. 1234"></div></div><div class="nc-note">📌 <a href="https://ads.gram.io" target="_blank">ads.gram.io</a> → Create Block → Block ID</div></div>
       <div class="net-card" id="nc-monetag"><div class="nc-hd"><div class="nc-name">💰 Monetag</div><label class="tog"><input type="checkbox" id="monetag-active" onchange="toggleNC('monetag')"><span class="sldr"></span></label></div><div class="nc-fields"><div class="nc-f"><label>Zone ID</label><input type="text" id="monetag-zoneId" placeholder="e.g. 8765432"></div><div class="nc-f"><label>Type</label><select id="monetag-type"><option value="onclick">Onclick/Popunder</option><option value="interstitial">Interstitial</option><option value="inpage">In-Page Push</option></select></div></div><div class="nc-note">📌 <a href="https://monetag.com" target="_blank">monetag.com</a> → Zones → Zone ID</div></div>
@@ -302,12 +288,6 @@ input:checked+.sldr:before{transform:translateX(20px);background:#fff}
 <div class="mov" id="adMod"><div class="modal"><div class="mtitle">🎯 <span id="adModT">Ad যোগ করুন</span></div><div class="fg2"><div class="fg"><label>নাম</label><input type="text" id="an"></div><div class="fg"><label>Icon</label><input type="text" id="ai" placeholder="📱"></div><div class="fg"><label>বিবরণ</label><input type="text" id="ad_"></div><div class="fg"><label>BG Color</label><input type="text" id="ab" placeholder="rgba(124,111,253,.15)"></div><div class="fg"><label>পুরস্কার (৳)</label><div class="input-prefix"><span>৳</span><input type="number" id="ar" step="0.01"></div></div><div class="fg"><label>সময় (সেকেন্ড)</label><input type="number" id="adu"></div></div><div style="margin-top:14px;display:flex;align-items:center;justify-content:space-between"><span style="font-size:13px">সক্রিয়</span><label class="tog"><input type="checkbox" id="aac" checked><span class="sldr"></span></label></div><input type="hidden" id="aei"><div class="mrow"><button class="btn bgh" style="flex:1" onclick="cm('adMod')">বাতিল</button><button class="btn bp" style="flex:2" onclick="saveAd()">💾 Save</button></div></div></div>
 <div class="mov" id="taskMod"><div class="modal"><div class="mtitle">⚡ <span id="taskModT">টাস্ক যোগ করুন</span></div><div class="fg2"><div class="fg"><label>নাম</label><input type="text" id="tn"></div><div class="fg"><label>Icon</label><input type="text" id="ti" placeholder="📢"></div><div class="fg"><label>বিবরণ</label><input type="text" id="td_"></div><div class="fg"><label>BG Color</label><input type="text" id="tb"></div><div class="fg"><label>পুরস্কার (৳)</label><div class="input-prefix"><span>৳</span><input type="number" id="tr_" step="0.01"></div></div><div class="fg"><label>লিংক (Channel বা URL)</label><input type="text" id="tl" placeholder="https://t.me/yourchannel"></div><div class="fg full"><label>Channel Username (Verify এর জন্য)</label><input type="text" id="tch" placeholder="yourchannel (@ ছাড়া)"><div style="font-size:11px;color:var(--muted);margin-top:4px">দিলে Join + Verify button আসবে। না দিলে সরাসরি reward।</div></div></div><div style="margin-top:14px;display:flex;align-items:center;justify-content:space-between"><span style="font-size:13px">সক্রিয়</span><label class="tog"><input type="checkbox" id="tac" checked><span class="sldr"></span></label></div><input type="hidden" id="tei"><div class="mrow"><button class="btn bgh" style="flex:1" onclick="cm('taskMod')">বাতিল</button><button class="btn bp" style="flex:2" onclick="saveTask()">💾 Save</button></div></div></div>
 <div class="mov" id="supMod"><div class="modal"><div class="mtitle">🛟 <span id="supModT">কার্ড যোগ করুন</span></div><div class="fg2"><div class="fg"><label>শিরোনাম</label><input type="text" id="spt"></div><div class="fg"><label>Icon</label><input type="text" id="spi" placeholder="💬"></div><div class="fg"><label>বিবরণ</label><input type="text" id="spd"></div><div class="fg"><label>BG Color</label><input type="text" id="spb"></div><div class="fg full"><label>লিংক</label><input type="text" id="spl" placeholder="https://t.me/..."></div></div><input type="hidden" id="spei"><div class="mrow"><button class="btn bgh" style="flex:1" onclick="cm('supMod')">বাতিল</button><button class="btn bp" style="flex:2" onclick="saveSupport()">💾 Save</button></div></div></div>
-<div class="mov" id="bulkRejMod"><div class="modal">
-  <div class="mtitle">✗ Bulk প্রত্যাখ্যান করুন</div>
-  <div style="font-size:13px;color:var(--muted);margin-bottom:14px">Selected সব pending withdrawal প্রত্যাখ্যান হবে এবং balance ফেরত যাবে।</div>
-  <div class="fg"><label>প্রত্যাখ্যানের কারণ</label><textarea id="brr" style="height:80px" placeholder="যেমন: ভুল অ্যাকাউন্ট নম্বর..."></textarea></div>
-  <div class="mrow"><button class="btn bgh" style="flex:1" onclick="cm('bulkRejMod')">বাতিল</button><button class="btn br" style="flex:2" onclick="confirmBulkReject()">✗ সব প্রত্যাখ্যান</button></div>
-</div></div>
 <div class="mov" id="rejMod"><div class="modal"><div class="mtitle">✗ উত্তোলন প্রত্যাখ্যান করুন</div><div class="fg"><label>প্রত্যাখ্যানের কারণ</label><textarea id="rr" style="height:90px" placeholder="যেমন: ভুল অ্যাকাউন্ট নম্বর..."></textarea></div><input type="hidden" id="rwi"><input type="hidden" id="rui"><input type="hidden" id="ram"><div class="mrow"><button class="btn bgh" style="flex:1" onclick="cm('rejMod')">বাতিল</button><button class="btn br" style="flex:2" onclick="confirmReject()">✗ প্রত্যাখ্যান ও ফেরত</button></div></div></div>
 <div class="mov" id="balMod"><div class="modal"><div class="mtitle">💰 ব্যালেন্স পরিবর্তন</div><div style="font-size:13px;color:var(--muted);margin-bottom:16px">ইউজার: <span id="bun" style="color:#fff;font-weight:600"></span></div><div class="fg2"><div class="fg"><label>অ্যাকশন</label><select id="ba"><option value="add">➕ যোগ করুন</option><option value="sub">➖ কমান</option><option value="set">🔄 নির্ধারণ করুন</option></select></div><div class="fg"><label>পরিমাণ (৳)</label><div class="input-prefix"><span>৳</span><input type="number" id="bamt" step="0.01"></div></div></div><input type="hidden" id="bui"><div class="mrow"><button class="btn bgh" style="flex:1" onclick="cm('balMod')">বাতিল</button><button class="btn bp" style="flex:2" onclick="adjustBal()">✓ প্রয়োগ করুন</button></div></div></div>
 <div class="toast" id="toast"></div>
@@ -354,15 +334,15 @@ function initAdmin(){
   });
 }
 function setCnt(chain,n){if(chain==='wc')wcCount=n;else wdCount=n;document.getElementById(chain+'-count').value=n;document.getElementById(chain+'-cnt').querySelectorAll('.cnt-opt').forEach(el=>{el.classList.toggle('active',parseInt(el.getAttribute('data-n'))===n);});renderSlots(chain,n);}
-function renderSlots(chain,count,saved=[]){const c=document.getElementById(chain+'-slots');let h='';for(let i=0;i<count;i++){const sv=saved[i]||'adsgram';h+=`<div class="slot-row"><div class="slot-num">${i+1}</div><div class="slot-lbl">Slot ${i+1}</div><select class="slot-select" id="${chain}-slot-${i}"><option value="adsgram" ${sv==='adsgram'?'selected':''}>🎯 Adsgram</option><option value="monetag" ${sv==='monetag'?'selected':''}>💰 Monetag</option><option value="adsterra" ${sv==='adsterra'?'selected':''}>⭐ Adsterra</option></select></div>`;}c.innerHTML=h;}
+function renderSlots(chain,count,saved=[]){const c=document.getElementById(chain+'-slots');let h='';for(let i=0;i<count;i++){const sv=saved[i]||'adsgram';h+=`<div class="slot-row"><div class="slot-num">${i+1}</div><div class="slot-lbl">Slot ${i+1}</div><select class="slot-select" id="${chain}-slot-${i}"><option value="adsgram" ${sv==='adsgram'?'selected':''}>🎯 Adsgram</option><option value="monetag" ${sv==='monetag'?'selected':''}>💰 Monetag</option><option value="adsterra" ${sv==='adsterra'?'selected':''}>⭐ Adsterra</option><option value="gigapub" ${sv==='gigapub'?'selected':''}>🟣 GigaPub</option></select></div>`;}c.innerHTML=h;}
 function getSlots(chain){const n=chain==='wc'?wcCount:wdCount;return Array.from({length:n},(_,i)=>{const el=document.getElementById(`${chain}-slot-${i}`);return el?el.value:'adsgram';});}
 function toggleNC(n){document.getElementById('nc-'+n).classList.toggle('on',document.getElementById(n+'-active').checked);}
-function loadCreds(c){['adsgram','monetag','adsterra'].forEach(n=>{const d=c[n];if(!d)return;const cb=document.getElementById(n+'-active');if(cb){cb.checked=d.active||false;toggleNC(n);}if(n==='adsgram'&&d.blockId)document.getElementById('adsgram-blockId').value=d.blockId;if(n==='monetag'){if(d.zoneId)document.getElementById('monetag-zoneId').value=d.zoneId;if(d.type)document.getElementById('monetag-type').value=d.type;}if(n==='adsterra'){if(d.link)document.getElementById('adsterra-link').value=d.link;if(d.script)document.getElementById('adsterra-script').value=d.script;}});}
-async function saveCreds(){const c={adsgram:{active:document.getElementById('adsgram-active').checked,blockId:document.getElementById('adsgram-blockId').value.trim()},monetag:{active:document.getElementById('monetag-active').checked,zoneId:document.getElementById('monetag-zoneId').value.trim(),type:document.getElementById('monetag-type').value},adsterra:{active:document.getElementById('adsterra-active').checked,link:document.getElementById('adsterra-link').value.trim(),script:document.getElementById('adsterra-script').value.trim()}};await db.ref('settings/credentials').set(c);showToast('✅ Credentials সংরক্ষিত হয়েছে!');}
+function loadCreds(c){['adsgram','monetag','adsterra'].forEach(n=>{const d=c[n];if(!d)return;const cb=document.getElementById(n+'-active');if(cb){cb.checked=d.active||false;toggleNC(n);}if(n==='adsgram'&&d.blockId)document.getElementById('adsgram-blockId').value=d.blockId;if(n==='monetag'){if(d.zoneId)document.getElementById('monetag-zoneId').value=d.zoneId;if(d.type)document.getElementById('monetag-type').value=d.type;}if(n==='adsterra'){if(d.link)document.getElementById('adsterra-link').value=d.link;if(d.script)document.getElementById('adsterra-script').value=d.script;}if(n==='gigapub'&&d.scriptId)document.getElementById('gigapub-scriptId').value=d.scriptId;});}
+async function saveCreds(){const c={adsgram:{active:document.getElementById('adsgram-active').checked,blockId:document.getElementById('adsgram-blockId').value.trim()},monetag:{active:document.getElementById('monetag-active').checked,zoneId:document.getElementById('monetag-zoneId').value.trim(),type:document.getElementById('monetag-type').value},adsterra:{active:document.getElementById('adsterra-active').checked,link:document.getElementById('adsterra-link').value.trim(),script:document.getElementById('adsterra-script').value.trim()},gigapub:{active:document.getElementById('gigapub-active').checked,scriptId:document.getElementById('gigapub-scriptId').value.trim()}};await db.ref('settings/credentials').set(c);showToast('✅ Credentials সংরক্ষিত হয়েছে!');}
 function loadChain(prefix,data){if(!data)return;const n=data.count||1;if(prefix==='wc'){wcCount=n;if(data.reward!=null)document.getElementById('wc-reward').value=data.reward;if(data.cooldownSec!=null)document.getElementById('wc-cooldown').value=data.cooldownSec;if(data.dailyLimit!=null)document.getElementById('wc-dailylimit').value=data.dailyLimit;}if(prefix==='wd'){wdCount=n;if(data.message)document.getElementById('wd-msg').value=data.message;document.getElementById('wd-enabled').checked=data.enabled||false;toggleWdChain();}document.getElementById(prefix+'-count').value=n;document.getElementById(prefix+'-cnt').querySelectorAll('.cnt-opt').forEach(el=>{el.classList.toggle('active',parseInt(el.getAttribute('data-n'))===n);});renderSlots(prefix,n,data.slots||[]);renderChainPreview(prefix,data);}
 async function saveChain(type){const p=type==='watch'?'wc':'wd';const slots=getSlots(p);const data={count:p==='wc'?wcCount:wdCount,slots,enabled:p==='wd'?document.getElementById('wd-enabled').checked:true};if(p==='wc'){data.reward=parseFloat(document.getElementById('wc-reward').value)||0.5;data.cooldownSec=parseInt(document.getElementById('wc-cooldown').value)||30;data.dailyLimit=parseInt(document.getElementById('wc-dailylimit').value)||5;}if(p==='wd')data.message=document.getElementById('wd-msg').value.trim();await db.ref('settings/'+(type==='watch'?'watchChain':'withdrawChain')).set(data);renderChainPreview(p,data);showToast(`✅ ${type==='watch'?'Watch':'Withdraw'} Chain সংরক্ষিত!`);}
 function toggleWdChain(){const on=document.getElementById('wd-enabled').checked;document.getElementById('wdChainCard').classList.toggle('chain-enabled',on);const b=document.getElementById('wdBadge');b.textContent=on?'ON':'OFF';b.style.background=on?'var(--gs)':'var(--ys)';b.style.color=on?'var(--green)':'var(--yellow)';b.style.borderColor=on?'rgba(0,224,150,.3)':'rgba(255,200,74,.3)';}
-function renderChainPreview(prefix,data){const el=document.getElementById(prefix+'-preview');const slots=data.slots||[];const ic={adsgram:'🎯',monetag:'💰',adsterra:'⭐'};const nm={adsgram:'Adsgram',monetag:'Monetag',adsterra:'Adsterra'};const reward=prefix==='wc'?(data.reward||0.5):null;if(!slots.length){el.innerHTML=`<span style="color:var(--muted);font-size:12px">Save করলে দেখাবে</span>`;return;}el.innerHTML=`<div class="fp-chip" style="background:${prefix==='wc'?'var(--ys)':'var(--gs)'};color:${prefix==='wc'?'var(--yellow)':'var(--green)'}">${prefix==='wc'?'▶ Watch':'💸 Withdraw'}</div><span style="color:var(--muted)">→</span>${slots.map((net,i)=>`<div class="fp-chip" style="background:rgba(255,255,255,.06);color:var(--text)">${ic[net]||'?'} ${nm[net]||net}<span style="background:var(--accent);color:#fff;border-radius:10px;padding:1px 6px;font-size:10px">#${i+1}</span></div>${i<slots.length-1?'<span style="color:var(--muted)">→</span>':''}`).join('')}<span style="color:var(--muted)">→</span><div class="fp-chip" style="background:${prefix==='wc'?'var(--ys)':'var(--gs)'};color:${prefix==='wc'?'var(--yellow)':'var(--green)'}">${prefix==='wc'?`🎉 ৳${Number(reward).toFixed(2)}`:'✅ Submit'}</div>`;}
+function renderChainPreview(prefix,data){const el=document.getElementById(prefix+'-preview');const slots=data.slots||[];const ic={adsgram:'🎯',monetag:'💰',adsterra:'⭐',gigapub:'🟣'};const nm={adsgram:'Adsgram',monetag:'Monetag',adsterra:'Adsterra',gigapub:'GigaPub'};const reward=prefix==='wc'?(data.reward||0.5):null;if(!slots.length){el.innerHTML=`<span style="color:var(--muted);font-size:12px">Save করলে দেখাবে</span>`;return;}el.innerHTML=`<div class="fp-chip" style="background:${prefix==='wc'?'var(--ys)':'var(--gs)'};color:${prefix==='wc'?'var(--yellow)':'var(--green)'}">${prefix==='wc'?'▶ Watch':'💸 Withdraw'}</div><span style="color:var(--muted)">→</span>${slots.map((net,i)=>`<div class="fp-chip" style="background:rgba(255,255,255,.06);color:var(--text)">${ic[net]||'?'} ${nm[net]||net}<span style="background:var(--accent);color:#fff;border-radius:10px;padding:1px 6px;font-size:10px">#${i+1}</span></div>${i<slots.length-1?'<span style="color:var(--muted)">→</span>':''}`).join('')}<span style="color:var(--muted)">→</span><div class="fp-chip" style="background:${prefix==='wc'?'var(--ys)':'var(--gs)'};color:${prefix==='wc'?'var(--yellow)':'var(--green)'}">${prefix==='wc'?`🎉 ৳${Number(reward).toFixed(2)}`:'✅ Submit'}</div>`;}
 
 // ── DASHBOARD ──
 function renderDash(){
@@ -428,77 +408,7 @@ async function deleteUser(uid,name){
 }
 
 // ── WITHDRAWALS ──
-function renderWd(){let it=Object.entries(AW).map(([k,v])=>({id:k,...v}));if(wdf!=='all')it=it.filter(w=>w.status===wdf);it.sort((a,b)=>new Date(b.createdAt||0)-new Date(a.createdAt||0));const sM={pending:'b-p',approved:'b-a',rejected:'b-r'};const sL={pending:'⏳ অপেক্ষমান',approved:'✓ অনুমোদিত',rejected:'✗ প্রত্যাখ্যাত'};const t=document.getElementById('wdt');if(!it.length){t.innerHTML=`<tr class="erow"><td colspan="11">কোনো উত্তোলন নেই</td></tr>`;return;}bulkSelected.clear();updateBulkBar();t.innerHTML=it.map(w=>{const uData=AU[w.userId]||{};const uBal=Number(uData.balance||0).toFixed(2);const isBlocked=uData.blocked||false;const isPending=w.status==='pending';return`<tr class="${isBlocked?'blocked-row':''}" id="wrow_${w.id}"><td>${isPending?`<input type="checkbox" class="wd-checkbox" data-id="${w.id}" data-uid="${w.userId}" data-amt="${w.amount}" onchange="bulkToggle(this)">`:'—'}</td><td><strong>${w.userName}</strong><br><span style="font-size:11px;color:var(--muted)">${w.userId}</span></td><td style="color:var(--accent);font-weight:600">${Object.values(AW).filter(v=>String(v.userId)===String(w.userId)).length}</td><td style="color:var(--taka);font-weight:700">৳ ${uBal}</td><td>${adsBadge(getTodayAds(uData))}</td><td>${w.walletLabel||w.wallet}</td><td style="font-family:monospace;font-size:12px">${w.account}</td><td style="color:var(--taka);font-weight:700">৳ ${Number(w.amount).toFixed(2)}</td><td><span class="bdg ${sM[w.status]||'b-p'}">${sL[w.status]||'অপেক্ষমান'}</span>${w.status==='rejected'&&w.reason?`<br><span style="font-size:11px;color:var(--red)">${w.reason}</span>`:''}</td><td style="color:var(--muted);font-size:12px">${fd(w.createdAt)}</td><td><div style="display:flex;gap:5px;flex-wrap:wrap">${isPending?`<button class="btn bg bsm" onclick="apprWd('${w.id}')">✓</button><button class="btn br bsm" onclick="openRej('${w.id}','${w.userId}',${w.amount})">✗</button>`:''}<br>${isBlocked?`<button class="btn bg bsm" onclick="toggleBlock('${w.userId}',false)">✅ Unblock</button>`:`<button class="btn br bsm" onclick="toggleBlock('${w.userId}',true)">🚫 Block</button>`}</div></td></tr>`}).join('');}
-// ── BULK SELECTION ──
-let bulkSelected = new Set(); // Set of {id, userId, amount}
-
-function bulkToggle(cb){
-  const id=cb.dataset.id, uid=cb.dataset.uid, amt=parseFloat(cb.dataset.amt);
-  if(cb.checked){bulkSelected.add(JSON.stringify({id,uid,amt}));document.getElementById('wrow_'+id)?.classList.add('sel-row');}
-  else{bulkSelected.delete(JSON.stringify({id,uid,amt}));document.getElementById('wrow_'+id)?.classList.remove('sel-row');}
-  updateBulkBar();
-}
-
-function bulkToggleAll(checked){
-  document.querySelectorAll('#wdt input[type=checkbox][data-id]').forEach(cb=>{
-    cb.checked=checked;
-    const id=cb.dataset.id,uid=cb.dataset.uid,amt=parseFloat(cb.dataset.amt);
-    if(checked){bulkSelected.add(JSON.stringify({id,uid,amt}));document.getElementById('wrow_'+id)?.classList.add('sel-row');}
-    else{bulkSelected.delete(JSON.stringify({id,uid,amt}));document.getElementById('wrow_'+id)?.classList.remove('sel-row');}
-  });
-  updateBulkBar();
-}
-
-function bulkSelectAll(){
-  const chkAll=document.getElementById('chkAll');
-  if(chkAll)chkAll.checked=true;
-  bulkToggleAll(true);
-}
-
-function bulkClearAll(){
-  const chkAll=document.getElementById('chkAll');
-  if(chkAll)chkAll.checked=false;
-  bulkToggleAll(false);
-}
-
-function updateBulkBar(){
-  const n=bulkSelected.size;
-  const bar=document.getElementById('bulkBar');
-  if(bar){bar.classList.toggle('show',n>0);document.getElementById('bulkCount').textContent=n+'টি selected';}
-}
-
-async function bulkApprove(){
-  if(!bulkSelected.size)return showToast('⚠️ কিছু select করুন');
-  if(!confirm(bulkSelected.size+'টি withdrawal approve করবেন?'))return;
-  const items=[...bulkSelected].map(s=>JSON.parse(s));
-  showToast('⏳ Processing...');
-  for(const w of items){
-    await db.ref('withdrawals/'+w.id).update({status:'approved'});
-  }
-  bulkSelected.clear();updateBulkBar();
-  showToast('✅ '+items.length+'টি approved!');
-}
-
-function openBulkReject(){
-  if(!bulkSelected.size)return showToast('⚠️ কিছু select করুন');
-  document.getElementById('brr').value='';
-  document.getElementById('bulkRejMod').classList.add('open');
-}
-
-async function confirmBulkReject(){
-  const r=document.getElementById('brr').value.trim();
-  if(!r)return showToast('⚠️ কারণ লিখুন');
-  const items=[...bulkSelected].map(s=>JSON.parse(s));
-  showToast('⏳ Processing...');
-  for(const w of items){
-    await db.ref('withdrawals/'+w.id).update({status:'rejected',reason:r});
-    const snap=await db.ref('users/'+w.uid).get();
-    if(snap.exists()){const d=snap.val();await db.ref('users/'+w.uid).update({balance:(d.balance||0)+w.amt,totalWithdrawn:Math.max(0,(d.totalWithdrawn||0)-w.amt)});}
-  }
-  bulkSelected.clear();updateBulkBar();
-  cm('bulkRejMod');showToast('✗ '+items.length+'টি rejected ও balance ফেরত!');
-}
-
+function renderWd(){let it=Object.entries(AW).map(([k,v])=>({id:k,...v}));if(wdf!=='all')it=it.filter(w=>w.status===wdf);it.sort((a,b)=>new Date(b.createdAt||0)-new Date(a.createdAt||0));const sM={pending:'b-p',approved:'b-a',rejected:'b-r'};const sL={pending:'⏳ অপেক্ষমান',approved:'✓ অনুমোদিত',rejected:'✗ প্রত্যাখ্যাত'};const t=document.getElementById('wdt');if(!it.length){t.innerHTML=`<tr class="erow"><td colspan="10">কোনো উত্তোলন নেই</td></tr>`;return;}t.innerHTML=it.map(w=>{const uData=AU[w.userId]||{};const uBal=Number(uData.balance||0).toFixed(2);const isBlocked=uData.blocked||false;return`<tr class="${isBlocked?'blocked-row':''}"><td><strong>${w.userName}</strong><br><span style="font-size:11px;color:var(--muted)">${w.userId}</span></td><td style="color:var(--accent);font-weight:600">${Object.values(AW).filter(v=>String(v.userId)===String(w.userId)).length}</td><td style="color:var(--taka);font-weight:700">৳ ${uBal}</td><td>${adsBadge(getTodayAds(uData))}</td><td>${w.walletLabel||w.wallet}</td><td style="font-family:monospace;font-size:12px">${w.account}</td><td style="color:var(--taka);font-weight:700">৳ ${Number(w.amount).toFixed(2)}</td><td><span class="bdg ${sM[w.status]||'b-p'}">${sL[w.status]||'অপেক্ষমান'}</span>${w.status==='rejected'&&w.reason?`<br><span style="font-size:11px;color:var(--red)">${w.reason}</span>`:''}</td><td style="color:var(--muted);font-size:12px">${fd(w.createdAt)}</td><td><div style="display:flex;gap:5px;flex-wrap:wrap">${w.status==='pending'?`<button class="btn bg bsm" onclick="apprWd('${w.id}')">✓</button><button class="btn br bsm" onclick="openRej('${w.id}','${w.userId}',${w.amount})">✗</button>`:''}<br>${isBlocked?`<button class="btn bg bsm" onclick="toggleBlock('${w.userId}',false)">✅ Unblock</button>`:`<button class="btn br bsm" onclick="toggleBlock('${w.userId}',true)">🚫 Block</button>`}</div></td></tr>`}).join('');}
 function fw(f){wdf=f;renderWd();}
 async function apprWd(id){await db.ref('withdrawals/'+id).update({status:'approved'});showToast('✅ অনুমোদিত হয়েছে!');}
 function openRej(id,uid,amt){document.getElementById('rwi').value=id;document.getElementById('rui').value=uid;document.getElementById('ram').value=amt;document.getElementById('rr').value='';document.getElementById('rejMod').classList.add('open');}
