@@ -433,7 +433,7 @@ function renderUsers(f=''){
     </td>
 
     <td><strong>${x.userName||'?'}</strong></td>
-       <td>style="font-family:monospace;font-size:11px;color:var(--muted)">${x.userId}</td>
+       <td style="font-family:monospace;font-size:11px;color:var(--muted)">${x.userId}</td>
       <td style="color:var(--taka);font-weight:700">৳ ${Number(x.balance||0).toFixed(2)}</td>
       <td style="color:var(--green)">৳ ${Number(x.totalEarned||0).toFixed(2)}</td>
       <td style="color:var(--red)">৳ ${Number(x.totalWithdrawn||0).toFixed(2)}</td>
