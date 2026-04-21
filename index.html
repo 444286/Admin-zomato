@@ -197,8 +197,14 @@ input:checked+.sldr:before{transform:translateX(20px);background:#fff}
     <input type="text" placeholder="🔍 নাম বা ID দিয়ে খুঁজুন..." style="width:260px;padding:9px 14px;border-radius:10px;font-size:13px" id="usrch" oninput="filterUsers()">
   </div>
   <div class="warn-box">🚫 <strong>ব্লক করলে:</strong> ইউজার Mini App খুলতে পারবে না — সাথে সাথে বন্ধ হয়ে যাবে। যেকোনো সময় আনব্লক করা যাবে।</div>
+<div class="bulk-bar" id="userBulkBar">
+  <span class="bulk-count" id="userBulkCount">0টি selected</span>
+  <button class="btn bgh bsm" onclick="toggleAllUsers(true)">সব Select</button>
+  <button class="btn bgh bsm" onclick="clearUserSelection()">Clear</button>
+  <button class="btn br bsm" onclick="bulkDeleteUsers()">🗑️ সব Delete</button>
+</div>
   <div class="tc">
-    <table><thead><tr><th>ইউজার</th><th>TG ID</th><th>ব্যালেন্স</th><th>অর্জিত</th><th>উত্তোলন</th><th>রেফারেল</th><th>রিকোয়েস্ট</th><th>যোগদান</th><th>আজকের Ads</th><th>স্ট্যাটাস</th><th>অ্যাকশন</th></tr></thead>
+    <table><thead><tr><th><input type="checkbox" id="uChkAll" onchange="toggleAllUsers(this)"></th><th>ইউজার</th><th>TG ID</th><th>ব্যালেন্স</th><th>অর্জিত</th><th>উত্তোলন</th><th>রেফারেল</th><th>রিকোয়েস্ট</th><th>যোগদান</th><th>আজকের Ads</th><th>স্ট্যাটাস</th><th>অ্যাকশন</th></tr></thead>
     <tbody id="utbl"><tr class="erow"><td colspan="10">লোড হচ্ছে...</td></tr></tbody></table>
   </div>
 </div>
@@ -418,9 +424,16 @@ function renderUsers(f=''){
   const t=document.getElementById('utbl');
   if(!u.length){t.innerHTML=`<tr class="erow"><td colspan="10">কোনো ইউজার নেই</td></tr>`;return;}
   t.innerHTML=u.map(x=>`
-    <tr class="${x.blocked?'blocked-row':''}">
-      <td><strong>${x.userName||'?'}</strong></td>
-      <td style="font-family:monospace;font-size:11px;color:var(--muted)">${x.userId}</td>
+  <tr class="${x.blocked?'blocked-row':''}">
+  
+    <td>
+      <input type="checkbox" class="u-checkbox" 
+        data-id="${x.userId}" 
+        onchange="userSelectToggle(this)">
+    </td>
+
+    <td><strong>${x.userName||'?'}</strong></td>
+       style="font-family:monospace;font-size:11px;color:var(--muted)">${x.userId}</td>
       <td style="color:var(--taka);font-weight:700">৳ ${Number(x.balance||0).toFixed(2)}</td>
       <td style="color:var(--green)">৳ ${Number(x.totalEarned||0).toFixed(2)}</td>
       <td style="color:var(--red)">৳ ${Number(x.totalWithdrawn||0).toFixed(2)}</td>
@@ -609,6 +622,107 @@ async function runAutoReject(){
   }catch(e){console.error('Auto reject error:',e);}
 }
 
+
+// ── USER BULK DELETE SYSTEM ──
+let selectedUsers = new Set();
+
+function userSelectToggle(cb){
+  const uid = cb.dataset.id;
+
+  if(cb.checked){
+    selectedUsers.add(uid);
+    cb.closest('tr')?.classList.add('sel-row');
+  }else{
+    selectedUsers.delete(uid);
+    cb.closest('tr')?.classList.remove('sel-row');
+  }
+
+  updateUserBulkBar();
+}
+
+function toggleAllUsers(source){
+  const check = source === true ? true : source.checked;
+
+  document.querySelectorAll('.u-checkbox').forEach(cb=>{
+    cb.checked = check;
+    const uid = cb.dataset.id;
+
+    if(check){
+      selectedUsers.add(uid);
+      cb.closest('tr')?.classList.add('sel-row');
+    }else{
+      selectedUsers.delete(uid);
+      cb.closest('tr')?.classList.remove('sel-row');
+    }
+  });
+
+  updateUserBulkBar();
+}
+
+function clearUserSelection(){
+  selectedUsers.clear();
+
+  document.querySelectorAll('.u-checkbox').forEach(cb=>{
+    cb.checked = false;
+    cb.closest('tr')?.classList.remove('sel-row');
+  });
+
+  updateUserBulkBar();
+}
+
+function updateUserBulkBar(){
+  const bar = document.getElementById('userBulkBar');
+  const count = selectedUsers.size;
+
+  if(bar){
+    bar.classList.toggle('show', count > 0);
+    document.getElementById('userBulkCount').textContent = count + 'টি selected';
+  }
+}
+
+// 🔥 BULK DELETE MAIN
+async function bulkDeleteUsers(){
+  if(!selectedUsers.size){
+    return showToast('⚠️ কিছু select করুন');
+  }
+
+  if(!confirm(`${selectedUsers.size} জন ইউজার delete করবেন?\nসব data + withdrawal history মুছে যাবে!`)) return;
+  if(!confirm('⚠️ FINAL CONFIRM! এই কাজ ফেরানো যাবে না!')) return;
+
+  try{
+    showToast('⏳ Deleting...');
+
+    const wSnap = await db.ref('withdrawals').get();
+
+    for(const uid of selectedUsers){
+
+      // 🧹 Delete user
+      await db.ref('users/' + uid).remove();
+
+      // 🧹 Delete withdrawals
+      if(wSnap.exists()){
+        const tasks = [];
+
+        wSnap.forEach(c=>{
+          if(String(c.val().userId) === String(uid)){
+            tasks.push(db.ref('withdrawals/' + c.key).remove());
+          }
+        });
+
+        await Promise.all(tasks);
+      }
+    }
+
+    const deletedCount = selectedUsers.size;
+
+    clearUserSelection();
+
+    showToast(`🗑️ ${deletedCount} জন ইউজার ডিলিট হয়েছে!`);
+
+  }catch(e){
+    showToast('❌ Error: ' + e.message);
+  }
+}
 // ── HELPERS ──
 function go(s,el){document.querySelectorAll('.sec').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.si').forEach(x=>x.classList.remove('active'));document.getElementById('sec-'+s).classList.add('active');el.classList.add('active');}
 function cm(id){document.getElementById(id).classList.remove('open');}
