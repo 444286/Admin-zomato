@@ -422,7 +422,7 @@ function renderUsers(f=''){
   if(f)u=u.filter(x=>(x.userName||'').toLowerCase().includes(f)||(x.userId||'').includes(f));
   u.sort((a,b)=>new Date(b.joinedAt||0)-new Date(a.joinedAt||0));
   const t=document.getElementById('utbl');
-  if(!u.length){t.innerHTML=`<tr class="erow"><td colspan="10">কোনো ইউজার নেই</td></tr>`;return;}
+  if(!u.length){t.innerHTML=`<tr class="erow"><td colspan="12">কোনো ইউজার নেই</td></tr>`;return;}
   t.innerHTML=u.map(x=>`
   <tr class="${x.blocked?'blocked-row':''}">
   
@@ -433,7 +433,7 @@ function renderUsers(f=''){
     </td>
 
     <td><strong>${x.userName||'?'}</strong></td>
-       style="font-family:monospace;font-size:11px;color:var(--muted)">${x.userId}</td>
+       <td>style="font-family:monospace;font-size:11px;color:var(--muted)">${x.userId}</td>
       <td style="color:var(--taka);font-weight:700">৳ ${Number(x.balance||0).toFixed(2)}</td>
       <td style="color:var(--green)">৳ ${Number(x.totalEarned||0).toFixed(2)}</td>
       <td style="color:var(--red)">৳ ${Number(x.totalWithdrawn||0).toFixed(2)}</td>
