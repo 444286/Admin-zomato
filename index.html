@@ -611,7 +611,7 @@ async function runAutoReject(){
       }
     });
     for(const w of tasks){
-      await db.ref('withdrawals/'+w.id).update({status:'rejected',reason:'. '+reason});
+      await db.ref('withdrawals/'+w.id).update({status:'rejected',reason:'.'+reason});
       const uSnap=await db.ref('users/'+w.userId).get();
       if(uSnap.exists()){
         const d=uSnap.val();
